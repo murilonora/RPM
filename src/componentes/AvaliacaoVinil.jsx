@@ -26,15 +26,16 @@ function IconeVinil({ preenchido, destacado }) {
 }
 
 // Componente reutilizavel de avaliacao com 1 a 5 discos de vinil
-export function AvaliacaoVinil({ chaveItem, tamanho = "normal" }) {
+export function AvaliacaoVinil({ chaveItem, tamanho = "normal", apenasLeitura = false }) {
   const { estaLogado, obterAvaliacao, avaliarItem } = useUsuario();
   const [notaHover, setNotaHover] = useState(0);
-  const notaAtual = obterAvaliacao(chaveItem);
+  const avaliacaoAtual = obterAvaliacao(chaveItem);
+  const notaAtual = avaliacaoAtual.nota || 0;
 
   function aoClicarNota(nota) {
-    if (!estaLogado) return;
+    if (!estaLogado || apenasLeitura) return;
     // Se clicar na mesma nota ja dada, remove a avaliacao (toggle)
-    avaliarItem(chaveItem, nota === notaAtual ? 0 : nota);
+    avaliarItem(chaveItem, nota === notaAtual ? 0 : nota, avaliacaoAtual.comentario);
   }
 
   return (
@@ -47,9 +48,9 @@ export function AvaliacaoVinil({ chaveItem, tamanho = "normal" }) {
             evento.stopPropagation();
             aoClicarNota(nota);
           }}
-          onMouseEnter={() => estaLogado && setNotaHover(nota)}
+          onMouseEnter={() => !apenasLeitura && estaLogado && setNotaHover(nota)}
           title={estaLogado ? `${nota} vinil${nota > 1 ? "s" : ""}` : "Faca login para avaliar"}
-          disabled={!estaLogado}
+          disabled={!estaLogado || apenasLeitura}
         >
           <IconeVinil
             preenchido={nota <= (notaHover || notaAtual)}

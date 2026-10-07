@@ -42,7 +42,23 @@ export function PaginaTodosAlbuns({ aoSelecionarArtista }) {
                 <span>{album.reproducoes} streams</span>
               </div>
               <div style={{ marginTop: "12px", paddingTop: "12px", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-                <AvaliacaoVinil chaveItem={`album-${album.artistaRef.id}-${indiceAlbum}`} tamanho="pequeno" />
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation(); // prevent going to artist page
+                    aoAvaliar({
+                      chave: `album-${album.artistaRef.id}-${indiceAlbum}`,
+                      titulo: album.titulo,
+                      subtitulo: `Album - ${album.artistaRef.nome}`,
+                      capa: album.capa
+                    });
+                  }}
+                  style={{ display: "flex", alignItems: "center", gap: "8px", background: "transparent", border: "none", color: "#d94e28", cursor: "pointer", fontSize: "0.85rem", fontWeight: "bold", padding: 0 }}
+                >
+                  <div style={{ width: "20px", height: "20px", borderRadius: "50%", background: "#191525", border: "1px solid #333", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <div style={{ width: "6px", height: "6px", background: "#f7f4ed", borderRadius: "50%" }} />
+                  </div>
+                  Avaliar Disco
+                </button>
               </div>
             </div>
           </div>

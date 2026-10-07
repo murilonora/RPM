@@ -73,27 +73,28 @@ export function ProvedorUsuario({ children }) {
     setAvaliacoes({});
   }
 
-  // Salva ou atualiza a nota de um item (musica ou album)
+  // Salva ou atualiza a nota e o comentario de um item (musica ou album)
   const avaliarItem = useCallback(
-    (chaveItem, nota) => {
+    (chaveItem, nota, comentario = "") => {
       if (!idSessao) return;
-      const novasAvaliacoes = { ...avaliacoes, [chaveItem]: nota };
+      const novasAvaliacoes = { ...avaliacoes, [chaveItem]: { nota, comentario } };
       setAvaliacoes(novasAvaliacoes);
       salvarNoStorage(`rpm_avaliacoes_${idSessao}`, novasAvaliacoes);
     },
     [idSessao, avaliacoes]
   );
 
-  // Retorna a nota atual de um item (0 se nao avaliado)
+  // Retorna a nota e comentario atual de um item
   function obterAvaliacao(chaveItem) {
-    return avaliacoes[chaveItem] || 0;
+    return avaliacoes[chaveItem] || { nota: 0, comentario: "" };
   }
 
   // Estatisticas calculadas em tempo real
-  const totalAvaliacoes = Object.values(avaliacoes).filter((n) => n > 0).length;
+  const valoresAvaliacoes = Object.values(avaliacoes).filter((a) => a.nota > 0);
+  const totalAvaliacoes = valoresAvaliacoes.length;
   const mediaAvaliacoes =
     totalAvaliacoes > 0
-      ? (Object.values(avaliacoes).filter((n) => n > 0).reduce((soma, n) => soma + n, 0) / totalAvaliacoes).toFixed(1)
+      ? (valoresAvaliacoes.reduce((soma, a) => soma + a.nota, 0) / totalAvaliacoes).toFixed(1)
       : "0.0";
 
   const valor = {

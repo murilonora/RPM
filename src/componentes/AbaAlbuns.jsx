@@ -1,7 +1,5 @@
-import { AvaliacaoVinil } from "./AvaliacaoVinil";
-
 // Grid de exibicao dos albuns lancados pelo artista
-export function AbaAlbuns({ albuns = [], nomeArtista = "", artistaId = "" }) {
+export function AbaAlbuns({ albuns = [], nomeArtista = "", artistaId = "", aoAvaliar }) {
   if (!albuns || albuns.length === 0) {
     return <p className="p-4 text-center">Nenhum album encontrado.</p>;
   }
@@ -18,7 +16,17 @@ export function AbaAlbuns({ albuns = [], nomeArtista = "", artistaId = "" }) {
   return (
     <div className="album-grid">
       {albuns.map((album, indice) => (
-        <article className="album-card" key={`${album.titulo}-${indice}`}>
+        <article 
+          className="album-card" 
+          key={`${album.titulo}-${indice}`} 
+          style={{ cursor: "pointer", position: "relative" }}
+          onClick={() => aoAvaliar && aoAvaliar({
+            chave: `album-${artistaId}-${indice}`,
+            titulo: album.titulo,
+            subtitulo: `Album - ${album.ano}`,
+            capa: album.capa
+          })}
+        >
           <div
             className={`album-art album-art-${(indice % 3) + 1}`}
             style={{ overflow: "hidden", position: "relative" }}
@@ -39,6 +47,9 @@ export function AbaAlbuns({ albuns = [], nomeArtista = "", artistaId = "" }) {
                 </small>
               </>
             )}
+            <div style={{ position: "absolute", bottom: "8px", right: "8px", width: "28px", height: "28px", borderRadius: "50%", background: "#191525", border: "2px solid #2a2a2a", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 10px rgba(0,0,0,0.5)" }}>
+              <div style={{ width: "8px", height: "8px", background: "#f7f4ed", borderRadius: "50%" }} />
+            </div>
           </div>
           <div className="album-meta">
             <span>{album.ano}</span>
@@ -46,10 +57,6 @@ export function AbaAlbuns({ albuns = [], nomeArtista = "", artistaId = "" }) {
           </div>
           <h3>{album.titulo}</h3>
           <p>{album.reproducoes} reproducoes</p>
-          <AvaliacaoVinil
-            chaveItem={`album-${artistaId}-${indice}`}
-            tamanho="pequeno"
-          />
         </article>
       ))}
     </div>

@@ -1,7 +1,5 @@
-import { AvaliacaoVinil } from "./AvaliacaoVinil";
-
 // Lista com as musicas mais reproduzidas do artista selecionado
-export function AbaMusicas({ musicas = [], artistaId = "" }) {
+export function AbaMusicas({ musicas = [], artistaId = "", aoAvaliar }) {
   if (!musicas || musicas.length === 0) {
     return <p className="p-4 text-center">Nenhuma faixa encontrada.</p>;
   }
@@ -12,10 +10,19 @@ export function AbaMusicas({ musicas = [], artistaId = "" }) {
         <span># / Musica</span>
         <span>Album</span>
         <span>Ano</span>
-        <span>Sua Nota</span>
+        <span>Reproducoes</span>
       </div>
       {musicas.map((musica, indice) => (
-        <div className="ranking-row" key={`${musica.titulo}-${indice}`}>
+        <button 
+          className="ranking-row" 
+          key={`${musica.titulo}-${indice}`}
+          onClick={() => aoAvaliar && aoAvaliar({
+            chave: `musica-${artistaId}-${indice}`,
+            titulo: musica.titulo,
+            subtitulo: `Musica - ${musica.album}`,
+            capa: musica.capa
+          })}
+        >
           <span className="rank">{String(indice + 1).padStart(2, "0")}</span>
           <span
             className="track-title"
@@ -33,17 +40,15 @@ export function AbaMusicas({ musicas = [], artistaId = "" }) {
                 }}
               />
             )}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "20px", height: "20px", borderRadius: "50%", background: "#191525", border: "1px solid #333" }}>
+              <div style={{ width: "6px", height: "6px", background: "#f7f4ed", borderRadius: "50%" }} />
+            </div>
             <strong>{musica.titulo}</strong>
           </span>
           <span>{musica.album}</span>
           <span>{musica.ano}</span>
-          <span className="avaliacao-celula">
-            <AvaliacaoVinil
-              chaveItem={`musica-${artistaId}-${indice}`}
-              tamanho="pequeno"
-            />
-          </span>
-        </div>
+          <b>{musica.reproducoes}</b>
+        </button>
       ))}
     </div>
   );

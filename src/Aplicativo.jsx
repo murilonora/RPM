@@ -8,12 +8,14 @@ import { PaginaTodosArtistas } from "./paginas/PaginaTodosArtistas";
 import { PaginaTodosAlbuns } from "./paginas/PaginaTodosAlbuns";
 import { PaginaColecao } from "./paginas/PaginaColecao";
 import { listaDeArtistas } from "./dados/dadosMusicais";
+import { ModalAvaliacao } from "./componentes/ModalAvaliacao";
 
 // Componente raiz da aplicacao com gerenciamento de rotas e estado global
 export default function Aplicativo() {
   const [paginaAtual, setPaginaAtual] = useState("inicio");
   const [artistaSelecionado, setArtistaSelecionado] = useState(listaDeArtistas[0]);
   const [modalAutenticacaoVisivel, setModalAutenticacaoVisivel] = useState(false);
+  const [dadosAvaliacao, setDadosAvaliacao] = useState({ visivel: false, item: null });
 
   function navegarParaInicio() {
     setPaginaAtual("inicio");
@@ -54,6 +56,14 @@ export default function Aplicativo() {
     setModalAutenticacaoVisivel(false);
   }
 
+  function abrirAvaliacao(itemProps) {
+    setDadosAvaliacao({ visivel: true, item: itemProps });
+  }
+
+  function fecharAvaliacao() {
+    setDadosAvaliacao({ visivel: false, item: null });
+  }
+
   return (
     <ProvedorUsuario>
       <div className="app-shell">
@@ -74,6 +84,7 @@ export default function Aplicativo() {
           <PaginaArtista
             artista={artistaSelecionado}
             aoVoltarAoInicio={navegarParaInicio}
+            aoAvaliar={abrirAvaliacao}
           />
         )}
 
@@ -82,7 +93,7 @@ export default function Aplicativo() {
         )}
 
         {paginaAtual === "todos-albuns" && (
-          <PaginaTodosAlbuns aoSelecionarArtista={selecionarArtista} />
+          <PaginaTodosAlbuns aoSelecionarArtista={selecionarArtista} aoAvaliar={abrirAvaliacao} />
         )}
 
         {paginaAtual === "colecao" && (
@@ -92,6 +103,12 @@ export default function Aplicativo() {
         <ModalAutenticacao
           visivel={modalAutenticacaoVisivel}
           aoFechar={fecharModalDeAutenticacao}
+        />
+
+        <ModalAvaliacao
+          visivel={dadosAvaliacao.visivel}
+          item={dadosAvaliacao.item}
+          aoFechar={fecharAvaliacao}
         />
       </div>
     </ProvedorUsuario>

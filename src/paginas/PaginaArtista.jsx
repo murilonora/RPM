@@ -4,7 +4,7 @@ import { AbaAlbuns } from "../componentes/AbaAlbuns";
 import { AbaHistoria } from "../componentes/AbaHistoria";
 
 // Página de detalhes, músicas, álbuns e história do artista selecionado
-export function PaginaArtista({ artista, aoVoltarAoInicio }) {
+export function PaginaArtista({ artista, aoVoltarAoInicio, aoAvaliar }) {
   const [abaAtiva, setAbaAtiva] = useState("musicas");
 
   if (!artista) {
@@ -79,9 +79,9 @@ export function PaginaArtista({ artista, aoVoltarAoInicio }) {
         </div>
 
         <div className="tab-content">
-          {abaAtiva === "musicas" && <AbaMusicas musicas={artista.musicas} artistaId={artista.id} />}
+          {abaAtiva === "musicas" && <AbaMusicas musicas={artista.musicas} artistaId={artista.id} aoAvaliar={aoAvaliar} />}
           {abaAtiva === "albuns" && (
-            <AbaAlbuns albuns={artista.albuns} nomeArtista={artista.nome} artistaId={artista.id} />
+            <AbaAlbuns albuns={artista.albuns} nomeArtista={artista.nome} artistaId={artista.id} aoAvaliar={aoAvaliar} />
           )}
           {abaAtiva === "historia" && (
             <AbaHistoria

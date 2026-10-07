@@ -20,8 +20,10 @@ export function PaginaColecao({ aoSelecionarArtista }) {
 
   // Mapeia as chaves de avaliacao para objetos com dados completos do item avaliado
   const itensAvaliados = Object.entries(avaliacoes)
-    .filter(([, nota]) => nota > 0)
-    .map(([chave, nota]) => {
+    .filter(([, obj]) => obj.nota > 0)
+    .map(([chave, obj]) => {
+      const nota = obj.nota;
+      const comentario = obj.comentario;
       const partes = chave.split("-");
       const tipo = partes[0]; // "musica" ou "album"
       const indice = parseInt(partes[partes.length - 1], 10);
@@ -41,7 +43,7 @@ export function PaginaColecao({ aoSelecionarArtista }) {
         capa = artista.albuns[indice].capa;
       }
 
-      return { chave, tipo, titulo, capa, nota, artista };
+      return { chave, tipo, titulo, capa, nota, comentario, artista };
     })
     .filter(Boolean)
     .sort((a, b) => b.nota - a.nota);
@@ -117,7 +119,12 @@ export function PaginaColecao({ aoSelecionarArtista }) {
                 <div className="card-body">
                   <h3 className="card-title">{item.titulo}</h3>
                   <p className="card-subtitle">{item.artista.nome}</p>
-                  <AvaliacaoVinil chaveItem={item.chave} tamanho="pequeno" />
+                  <AvaliacaoVinil chaveItem={item.chave} tamanho="pequeno" apenasLeitura />
+                  {item.comentario && (
+                    <p style={{ marginTop: "12px", fontSize: "0.85rem", fontStyle: "italic", color: "#aaa" }}>
+                      "{item.comentario}"
+                    </p>
+                  )}
                 </div>
               </div>
             ))}
@@ -146,7 +153,12 @@ export function PaginaColecao({ aoSelecionarArtista }) {
                 <div className="card-body">
                   <h3 className="card-title">{item.titulo}</h3>
                   <p className="card-subtitle">{item.artista.nome}</p>
-                  <AvaliacaoVinil chaveItem={item.chave} tamanho="pequeno" />
+                  <AvaliacaoVinil chaveItem={item.chave} tamanho="pequeno" apenasLeitura />
+                  {item.comentario && (
+                    <p style={{ marginTop: "12px", fontSize: "0.85rem", fontStyle: "italic", color: "#aaa" }}>
+                      "{item.comentario}"
+                    </p>
+                  )}
                 </div>
               </div>
             ))}
