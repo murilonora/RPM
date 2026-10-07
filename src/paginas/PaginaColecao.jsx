@@ -10,9 +10,22 @@ export function PaginaColecao({ aoSelecionarArtista }) {
   if (!usuarioLogado) {
     return (
       <main className="page-grid">
-        <div className="page-header" style={{ textAlign: "center", padding: "80px 20px" }}>
-          <h2 className="page-title">Minha Colecao</h2>
-          <p className="page-subtitle">Faca login para ver suas avaliacoes e estatisticas.</p>
+        <div style={{ textAlign: "center", padding: "60px 20px" }}>
+          <img 
+            src="/assets/vinil-triste.jpg" 
+            alt="Vinil Triste" 
+            style={{ 
+              width: "220px", 
+              margin: "0 auto 24px", 
+              display: "block", 
+              borderRadius: "16px",
+              boxShadow: "0 10px 30px rgba(0,0,0,0.2)"
+            }} 
+          />
+          <h2 className="page-title" style={{ fontSize: "2rem" }}>Voce ainda nao tem conta!</h2>
+          <p className="page-subtitle" style={{ fontSize: "1.1rem", marginTop: "12px" }}>
+            Faca login ou cadastre-se para comecar a criar o seu diario musical e avaliar discos.
+          </p>
         </div>
       </main>
     );
