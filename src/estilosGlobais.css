@@ -1394,23 +1394,4 @@ button {
   color: #f7f4ed;
 }
 
-/* Correcao de tabela de musicas na pagina do artista (fundo escuro para contrastar o vinil) */
-.ranking-list {
-  background: #1a1924;
-  border-radius: 12px;
-  padding: 16px;
-}
-.list-header {
-  color: #888;
-}
-.ranking-row {
-  color: #f7f4ed;
-}
-.ranking-row:hover {
-  background: rgba(255,255,255,0.05);
-}
-.avaliacao-celula {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
+
