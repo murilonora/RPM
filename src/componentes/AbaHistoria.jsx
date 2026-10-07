@@ -7,8 +7,8 @@ export function AbaHistoria({ biografia = [], citacao = "", resumo = "" }) {
       {resumo && <p className="story-lead">{resumo}</p>}
 
       <div className="story-columns">
-        {paragrafos.map((paragrafo, index) => (
-          <p key={index}>{paragrafo}</p>
+        {paragrafos.map((paragrafo, indice) => (
+          <p key={indice}>{paragrafo}</p>
         ))}
       </div>
 

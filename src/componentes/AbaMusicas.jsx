@@ -1,5 +1,7 @@
-// Lista com as músicas mais reproduzidas do artista selecionado
-export function AbaMusicas({ musicas = [] }) {
+import { AvaliacaoVinil } from "./AvaliacaoVinil";
+
+// Lista com as musicas mais reproduzidas do artista selecionado
+export function AbaMusicas({ musicas = [], artistaId = "" }) {
   if (!musicas || musicas.length === 0) {
     return <p className="p-4 text-center">Nenhuma faixa encontrada.</p>;
   }
@@ -7,29 +9,41 @@ export function AbaMusicas({ musicas = [] }) {
   return (
     <div className="ranking-list">
       <div className="list-header">
-        <span># / Música</span>
-        <span>Álbum</span>
+        <span># / Musica</span>
+        <span>Album</span>
         <span>Ano</span>
-        <span>Reproduções</span>
+        <span>Sua Nota</span>
       </div>
       {musicas.map((musica, indice) => (
-        <button className="ranking-row" key={`${musica.titulo}-${indice}`}>
+        <div className="ranking-row" key={`${musica.titulo}-${indice}`}>
           <span className="rank">{String(indice + 1).padStart(2, "0")}</span>
-          <span className="track-title" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <span
+            className="track-title"
+            style={{ display: "flex", alignItems: "center", gap: "10px" }}
+          >
             {musica.capa && (
               <img
                 src={musica.capa}
                 alt={musica.titulo}
-                style={{ width: "36px", height: "36px", borderRadius: "4px", objectFit: "cover" }}
+                style={{
+                  width: "36px",
+                  height: "36px",
+                  borderRadius: "4px",
+                  objectFit: "cover",
+                }}
               />
             )}
-            <i aria-hidden="true">▶</i>
             <strong>{musica.titulo}</strong>
           </span>
           <span>{musica.album}</span>
           <span>{musica.ano}</span>
-          <b>{musica.reproducoes}</b>
-        </button>
+          <span className="avaliacao-celula">
+            <AvaliacaoVinil
+              chaveItem={`musica-${artistaId}-${indice}`}
+              tamanho="pequeno"
+            />
+          </span>
+        </div>
       ))}
     </div>
   );

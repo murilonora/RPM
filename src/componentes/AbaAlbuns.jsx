@@ -1,7 +1,9 @@
-// Grid de exibição dos álbuns lançados pelo artista
-export function AbaAlbuns({ albuns = [], nomeArtista = "" }) {
+import { AvaliacaoVinil } from "./AvaliacaoVinil";
+
+// Grid de exibicao dos albuns lancados pelo artista
+export function AbaAlbuns({ albuns = [], nomeArtista = "", artistaId = "" }) {
   if (!albuns || albuns.length === 0) {
-    return <p className="p-4 text-center">Nenhum álbum encontrado.</p>;
+    return <p className="p-4 text-center">Nenhum album encontrado.</p>;
   }
 
   const siglas = nomeArtista
@@ -17,7 +19,10 @@ export function AbaAlbuns({ albuns = [], nomeArtista = "" }) {
     <div className="album-grid">
       {albuns.map((album, indice) => (
         <article className="album-card" key={`${album.titulo}-${indice}`}>
-          <div className={`album-art album-art-${(indice % 3) + 1}`} style={{ overflow: "hidden", position: "relative" }}>
+          <div
+            className={`album-art album-art-${(indice % 3) + 1}`}
+            style={{ overflow: "hidden", position: "relative" }}
+          >
             {album.capa ? (
               <img
                 src={album.capa}
@@ -29,7 +34,9 @@ export function AbaAlbuns({ albuns = [], nomeArtista = "" }) {
                 <span>
                   {nomeArtista.split(" ").slice(0, 2).join("\n") || "DISCO"}
                 </span>
-                <small>{siglas} — {String(indice + 1).padStart(2, "0")}</small>
+                <small>
+                  {siglas} — {String(indice + 1).padStart(2, "0")}
+                </small>
               </>
             )}
           </div>
@@ -38,7 +45,11 @@ export function AbaAlbuns({ albuns = [], nomeArtista = "" }) {
             <span>{album.faixas}</span>
           </div>
           <h3>{album.titulo}</h3>
-          <p>{album.reproducoes} reproduções</p>
+          <p>{album.reproducoes} reproducoes</p>
+          <AvaliacaoVinil
+            chaveItem={`album-${artistaId}-${indice}`}
+            tamanho="pequeno"
+          />
         </article>
       ))}
     </div>

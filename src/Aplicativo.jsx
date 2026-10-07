@@ -1,15 +1,19 @@
 import { useState } from "react";
+import { ProvedorUsuario } from "./contextos/ContextoUsuario";
 import { Cabecalho } from "./componentes/Cabecalho";
+import { ModalAutenticacao } from "./componentes/ModalAutenticacao";
 import { PaginaInicial } from "./paginas/PaginaInicial";
 import { PaginaArtista } from "./paginas/PaginaArtista";
 import { PaginaTodosArtistas } from "./paginas/PaginaTodosArtistas";
 import { PaginaTodosAlbuns } from "./paginas/PaginaTodosAlbuns";
+import { PaginaColecao } from "./paginas/PaginaColecao";
 import { listaDeArtistas } from "./dados/dadosMusicais";
 
-// Componente raiz da aplicacao
+// Componente raiz da aplicacao com gerenciamento de rotas e estado global
 export default function Aplicativo() {
   const [paginaAtual, setPaginaAtual] = useState("inicio");
   const [artistaSelecionado, setArtistaSelecionado] = useState(listaDeArtistas[0]);
+  const [modalAutenticacaoVisivel, setModalAutenticacaoVisivel] = useState(false);
 
   function navegarParaInicio() {
     setPaginaAtual("inicio");
@@ -22,48 +26,74 @@ export default function Aplicativo() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  function descobrirAleatorio() {
+  function sortearArtistaAleatorioENavegar() {
     const indiceAleatorio = Math.floor(Math.random() * listaDeArtistas.length);
     selecionarArtista(listaDeArtistas[indiceAleatorio]);
   }
 
-  function mostrarTodosArtistas() {
+  function navegarParaPaginaDeTodosArtistas() {
     setPaginaAtual("todos-artistas");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  function mostrarTodosAlbuns() {
+  function navegarParaPaginaDeTodosAlbuns() {
     setPaginaAtual("todos-albuns");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
+  function navegarParaColecao() {
+    setPaginaAtual("colecao");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function abrirModalDeAutenticacao() {
+    setModalAutenticacaoVisivel(true);
+  }
+
+  function fecharModalDeAutenticacao() {
+    setModalAutenticacaoVisivel(false);
+  }
+
   return (
-    <div className="app-shell">
-      <Cabecalho
-        aoIrParaInicio={navegarParaInicio}
-        aoClicarDescobrir={descobrirAleatorio}
-        aoClicarArtistas={mostrarTodosArtistas}
-        aoClicarAlbuns={mostrarTodosAlbuns}
-      />
-
-      {paginaAtual === "inicio" && (
-        <PaginaInicial aoSelecionarArtista={selecionarArtista} />
-      )}
-
-      {paginaAtual === "artista" && (
-        <PaginaArtista
-          artista={artistaSelecionado}
-          aoVoltarAoInicio={navegarParaInicio}
+    <ProvedorUsuario>
+      <div className="app-shell">
+        <Cabecalho
+          aoIrParaInicio={navegarParaInicio}
+          aoClicarDescobrir={sortearArtistaAleatorioENavegar}
+          aoClicarArtistas={navegarParaPaginaDeTodosArtistas}
+          aoClicarAlbuns={navegarParaPaginaDeTodosAlbuns}
+          aoClicarColecao={navegarParaColecao}
+          aoClicarEntrar={abrirModalDeAutenticacao}
         />
-      )}
 
-      {paginaAtual === "todos-artistas" && (
-        <PaginaTodosArtistas aoSelecionarArtista={selecionarArtista} />
-      )}
+        {paginaAtual === "inicio" && (
+          <PaginaInicial aoSelecionarArtista={selecionarArtista} />
+        )}
 
-      {paginaAtual === "todos-albuns" && (
-        <PaginaTodosAlbuns aoSelecionarArtista={selecionarArtista} />
-      )}
-    </div>
+        {paginaAtual === "artista" && (
+          <PaginaArtista
+            artista={artistaSelecionado}
+            aoVoltarAoInicio={navegarParaInicio}
+          />
+        )}
+
+        {paginaAtual === "todos-artistas" && (
+          <PaginaTodosArtistas aoSelecionarArtista={selecionarArtista} />
+        )}
+
+        {paginaAtual === "todos-albuns" && (
+          <PaginaTodosAlbuns aoSelecionarArtista={selecionarArtista} />
+        )}
+
+        {paginaAtual === "colecao" && (
+          <PaginaColecao aoSelecionarArtista={selecionarArtista} />
+        )}
+
+        <ModalAutenticacao
+          visivel={modalAutenticacaoVisivel}
+          aoFechar={fecharModalDeAutenticacao}
+        />
+      </div>
+    </ProvedorUsuario>
   );
 }

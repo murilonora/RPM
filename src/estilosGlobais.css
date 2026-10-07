@@ -1123,3 +1123,294 @@ button {
     gap: 16px;
   }
 }
+
+/* =============================
+   SISTEMA DE AVALIACAO (VINIL)
+   ============================= */
+.avaliacao-vinil {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.avaliacao-vinil.pequeno {
+  gap: 2px;
+}
+.botao-vinil {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+.botao-vinil:hover:not(:disabled) {
+  transform: scale(1.15) rotate(15deg);
+}
+.botao-vinil:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.icone-vinil {
+  transition: all 0.3s ease;
+}
+.icone-vinil.destacado {
+  transform: rotate(45deg);
+}
+.icone-vinil.preenchido {
+  transform: rotate(90deg);
+}
+.avaliacao-vinil.pequeno .icone-vinil {
+  width: 20px;
+  height: 20px;
+}
+.nota-texto {
+  margin-left: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ff0004;
+}
+
+/* =============================
+   MODAL DE AUTENTICACAO
+   ============================= */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(10, 9, 16, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+.modal-conteudo {
+  background: #1a1924;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 16px;
+  padding: 32px;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  color: #f7f4ed;
+  border: 1px solid rgba(255,255,255,0.1);
+  animation: modalIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.modal-fechar {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  color: #888;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.modal-fechar:hover {
+  color: #ff0004;
+}
+.modal-titulo {
+  font-family: "DM Serif Display:Regular", serif;
+  font-size: 1.6rem;
+  margin: 0 0 24px 0;
+  text-align: center;
+}
+.modal-abas {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  background: #0e0d15;
+  padding: 6px;
+  border-radius: 99px;
+}
+.modal-abas button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 99px;
+  border: none;
+  background: transparent;
+  color: #888;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.modal-abas button.ativa {
+  background: #f7f4ed;
+  color: #191525;
+}
+.modal-formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.campo-formulario label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #aaa;
+}
+.campo-formulario input {
+  width: 100%;
+  background: #0e0d15;
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 12px 16px;
+  border-radius: 8px;
+  color: #f7f4ed;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+.campo-formulario input:focus {
+  outline: none;
+  border-color: #ff0004;
+}
+.modal-erro {
+  color: #ff0004;
+  font-size: 0.85rem;
+  margin: 0;
+  text-align: center;
+}
+.botao-principal {
+  background: #ff0004;
+  color: #fff;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background 0.2s;
+}
+.botao-principal:hover {
+  background: #d90003;
+}
+
+/* =============================
+   CABECALHO - USUARIO LOGADO
+   ============================= */
+.usuario-logado {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.nome-usuario {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #191525;
+  background: rgba(25, 21, 37, 0.05);
+  padding: 6px 12px;
+  border-radius: 99px;
+}
+
+/* =============================
+   PAGINA DE COLECAO
+   ============================= */
+.colecao-estatisticas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+.estatistica-card {
+  background: #1a1924;
+  padding: 24px;
+  border-radius: 12px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+.estatistica-card strong {
+  display: block;
+  font-family: "DM Serif Display:Regular", serif;
+  font-size: 3rem;
+  color: #ff0004;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.estatistica-card span {
+  font-size: 0.85rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.colecao-favorito {
+  background: linear-gradient(135deg, #2563eb, #ff0004);
+  border-radius: 16px;
+  padding: 3px;
+  margin-bottom: 50px;
+}
+.colecao-favorito > h3 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.favorito-card {
+  background: #0e0d15;
+  border-radius: 14px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.favorito-card:hover {
+  transform: scale(1.02);
+}
+.favorito-card img {
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+.favorito-card strong {
+  display: block;
+  font-size: 2rem;
+  font-family: "DM Serif Display:Regular", serif;
+  margin-bottom: 8px;
+  color: #f7f4ed;
+}
+.favorito-card span {
+  font-size: 1.1rem;
+  color: #aaa;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.colecao-secao-titulo {
+  font-size: 1.5rem;
+  font-family: "DM Sans:Bold", sans-serif;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 12px;
+  margin: 0 0 24px 0;
+  color: #f7f4ed;
+}
+
+/* Correcao de tabela de musicas na pagina do artista (fundo escuro para contrastar o vinil) */
+.ranking-list {
+  background: #1a1924;
+  border-radius: 12px;
+  padding: 16px;
+}
+.list-header {
+  color: #888;
+}
+.ranking-row {
+  color: #f7f4ed;
+}
+.ranking-row:hover {
+  background: rgba(255,255,255,0.05);
+}
+.avaliacao-celula {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
