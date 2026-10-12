@@ -1,22 +1,22 @@
 import { useState, useEffect } from "react";
+// Certifique-se de que o ficheiro DiscoSVG.jsx está na mesma pasta
 import { DiscoSVG } from './DiscoSVG'; 
 
 export default function Avaliacao({ idElemento }) {
-    // Agora o componente recebe idElemento em vez de artistaId
     const [nota, setNota] = useState(0);
     const [hover, setHover] = useState(0);
 
+    // Carrega a nota guardada assim que o componente aparece no ecrã
     useEffect(() => {
-        // Usamos diretamente o idElemento para procurar a nota
         const notaSalva = localStorage.getItem(idElemento);
         if (notaSalva) {
             setNota(Number(notaSalva));
         }
     }, [idElemento]);
 
+    // Guarda a nova nota tanto no ecrã como no armazenamento do navegador
     const salvarNota = (novaNota) => {
         setNota(novaNota);
-        // Usamos diretamente o idElemento para gravar a nota
         localStorage.setItem(idElemento, novaNota);
     };
 
@@ -35,6 +35,7 @@ export default function Avaliacao({ idElemento }) {
                                 ? 'grayscale-0 opacity-100 scale-110 drop-shadow-[0_0_8px_rgba(244,63,94,0.6)]' 
                                 : 'grayscale opacity-30 hover:opacity-60 hover:scale-105'
                         }`}
+                        title={`Dar nota ${estrela}`}
                     >
                         <div className="w-7 h-7">
                             <DiscoSVG />
