@@ -67,14 +67,14 @@ export function AbaAlbuns({ albuns = [], nomeArtista = "" }) {
         ))}
       </div>
 
-      {/* POP-UP BLINDADO (Com CSS Inline para ignorar bloqueios da Aba) */}
       {albumAberto && (
         <div 
           style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.85)', zIndex: 99999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
           onClick={() => setAlbumAberto(null)}
         >
+          {/* Fundo mudado para #F8F5EE (Creme) e borda mais suave */}
           <div 
-            style={{ backgroundColor: '#18181b', border: '1px solid #3f3f46', borderRadius: '12px', display: 'flex', gap: '24px', width: '800px', maxWidth: '95vw', height: '500px', padding: '24px', position: 'relative' }}
+            style={{ backgroundColor: '#F8F5EE', border: '1px solid #e5e7eb', borderRadius: '12px', display: 'flex', gap: '24px', width: '800px', maxWidth: '95vw', height: '500px', padding: '24px', position: 'relative' }}
             onClick={(e) => e.stopPropagation()} 
           >
             <button 
@@ -84,24 +84,28 @@ export function AbaAlbuns({ albuns = [], nomeArtista = "" }) {
               ✕
             </button>
 
-            <div style={{ width: '50%', display: 'flex', flexDirection: 'column', height: '100%', borderRight: '1px solid #3f3f46', paddingRight: '24px' }}>
+            <div style={{ width: '50%', display: 'flex', flexDirection: 'column', height: '100%', borderRight: '1px solid #e5e7eb', paddingRight: '24px' }}>
               {albumAberto.capa ? (
-                <img src={albumAberto.capa} alt={albumAberto.titulo} style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', borderRadius: '8px' }} />
+                <img src={albumAberto.capa} alt={albumAberto.titulo} style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', borderRadius: '8px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }} />
               ) : (
-                <div style={{ width: '100%', aspectRatio: '1/1', backgroundColor: '#27272a', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ width: '100%', aspectRatio: '1/1', backgroundColor: '#e4e4e7', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                    <span style={{ color: '#71717a', fontWeight: 'bold', fontSize: '24px' }}>{siglas}</span>
                 </div>
               )}
-              <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginTop: '16px', color: 'white' }}>{albumAberto.titulo}</h2>
-              <p style={{ color: '#9ca3af', marginTop: '4px' }}>{albumAberto.ano}</p>
+              {/* Texto do título escurecido para #18181b */}
+              <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginTop: '16px', color: '#18181b' }}>{albumAberto.titulo}</h2>
+              <p style={{ color: '#52525b', marginTop: '4px' }}>{albumAberto.ano}</p>
             </div>
 
             <div style={{ width: '50%', overflowY: 'auto', paddingRight: '8px' }}>
-              <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '16px', color: 'white' }}>Avaliar Faixas</h3>
+              {/* Título "Avaliar Faixas" escurecido */}
+              <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '16px', color: '#18181b' }}>Avaliar Faixas</h3>
               
               {faixasParaAvaliar.map((faixa, index) => (
-                <div key={faixa.id} style={{ display: 'flex', flexDirection: 'column', marginBottom: '16px', padding: '12px', backgroundColor: 'rgba(39, 39, 42, 0.4)', borderRadius: '8px' }}>
-                  <span style={{ color: 'white', fontWeight: '500', marginBottom: '8px' }}>
+                // Fundo das faixas mudado para branco com uma leve sombra para destacar no creme
+                <div key={faixa.id} style={{ display: 'flex', flexDirection: 'column', marginBottom: '16px', padding: '12px', backgroundColor: '#ffffff', borderRadius: '8px', border: '1px solid #f4f4f5' }}>
+                  {/* Nome da faixa escurecido */}
+                  <span style={{ color: '#27272a', fontWeight: '500', marginBottom: '8px' }}>
                     {index + 1}. {faixa.titulo}
                   </span>
                   <Avaliacao idElemento={faixa.id} />
