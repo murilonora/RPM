@@ -1,3 +1,4 @@
+import Avaliacao from './Avaliacao';
 // Grid de exibição dos álbuns lançados pelo artista
 export function AbaAlbuns({ albuns = [], nomeArtista = "" }) {
   if (!albuns || albuns.length === 0) {
@@ -41,7 +42,7 @@ export function AbaAlbuns({ albuns = [], nomeArtista = "" }) {
           <p>{album.reproducoes} reproduções</p>
 
           <Avaliacao idElemento={`album_${album.id}`} />
-          
+
         </article>
       ))}
     </div>
