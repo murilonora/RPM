@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AbaMusicas } from "../componentes/AbaMusicas";
 import { AbaAlbuns } from "../componentes/AbaAlbuns";
 import { AbaHistoria } from "../componentes/AbaHistoria";
+import  Avaliacao  from '../componentes/Avaliacao';
 
 // Página de detalhes, músicas, álbuns e história do artista selecionado
 export function PaginaArtista({ artista, aoVoltarAoInicio }) {
