@@ -39,6 +39,9 @@ export function AbaAlbuns({ albuns = [], nomeArtista = "" }) {
           </div>
           <h3>{album.titulo}</h3>
           <p>{album.reproducoes} reproduções</p>
+
+          <Avaliacao idElemento={`album_${album.id}`} />
+          
         </article>
       ))}
     </div>

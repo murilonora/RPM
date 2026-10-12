@@ -1,3 +1,5 @@
+import Avaliacao from '../componentes/Avaliacao';
+
 // Lista com as músicas mais reproduzidas do artista selecionado
 export function AbaMusicas({ musicas = [] }) {
   if (!musicas || musicas.length === 0) {
@@ -11,9 +13,10 @@ export function AbaMusicas({ musicas = [] }) {
         <span>Álbum</span>
         <span>Ano</span>
         <span>Reproduções</span>
+        <span>Avaliação</span>
       </div>
       {musicas.map((musica, indice) => (
-        <button className="ranking-row" key={`${musica.titulo}-${indice}`}>
+        <div className="ranking-row" key={`${musica.titulo}-${indice}`}>
           <span className="rank">{String(indice + 1).padStart(2, "0")}</span>
           <span className="track-title" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             {musica.capa && (
@@ -29,7 +32,8 @@ export function AbaMusicas({ musicas = [] }) {
           <span>{musica.album}</span>
           <span>{musica.ano}</span>
           <b>{musica.reproducoes}</b>
-        </button>
+          <Avaliacao idElemento={`faixa_${musica.id}`} />
+        </div>
       ))}
     </div>
   );

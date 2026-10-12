@@ -65,7 +65,7 @@ export function PaginaArtista({ artista, aoVoltarAoInicio }) {
           </div>
         </div>
 
-        <Avaliacao artistaId={artista.id} />
+        <Avaliacao idElemento={`artista_${artista.id}`} />
 
         <div className="tabs" role="tablist" aria-label="Conteúdo da artista"></div>
 
