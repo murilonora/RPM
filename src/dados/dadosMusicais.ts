@@ -2,6 +2,10 @@
 // TIPAGENS (TYPESCRIPT)
 // ==========================================
 
+export interface Faixa {
+  id: string;
+  titulo: string;
+}
 export interface Musica {
   titulo: string;
   album: string;
@@ -18,6 +22,7 @@ export interface Album {
   reproducoes: string;
   streams: number;
   capa?: string;
+  listaFaixas?: Faixa[];
 }
 
 export interface Artista {
