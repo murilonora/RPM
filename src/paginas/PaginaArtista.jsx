@@ -65,6 +65,10 @@ export function PaginaArtista({ artista, aoVoltarAoInicio }) {
           </div>
         </div>
 
+        <Avaliacao artistaId={artista.id} />
+
+        <div className="tabs" role="tablist" aria-label="Conteúdo da artista"></div>
+
         <div className="tabs" role="tablist" aria-label="Conteúdo da artista">
           {Object.keys(rotulosAbas).map((chave) => (
             <button
