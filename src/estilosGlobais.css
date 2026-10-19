@@ -1679,3 +1679,334 @@ button {
     font-size: 0.95rem;
   }
 }
+
+/* ========================================================
+   PAGINA ALBUNS — ESTILO EDITORIAL COM DISCO DE VINIL SAINDO
+   ======================================================== */
+.albuns-lista-editorial {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.album-linha-item {
+  display: grid;
+  grid-template-columns: 80px 140px 1fr auto;
+  align-items: center;
+  gap: 28px;
+  padding: 24px 48px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: #14121c;
+  color: #f7f4ed;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: visible;
+}
+
+/* Efeito Hover na linha do álbum: Inversão de cor */
+.album-linha-item:hover {
+  background: #f7f4ed !important;
+  color: #14121c !important;
+  transform: scale(1.008);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  z-index: 5;
+}
+
+.album-linha-item:hover .artistas-item-numero {
+  color: #e0261f !important;
+  font-weight: 800;
+}
+
+.album-linha-item:hover .album-item-nome {
+  color: #14121c !important;
+  transform: translateX(10px);
+}
+
+.album-linha-item:hover .album-item-artista {
+  color: #e0261f !important;
+  transform: translateX(10px);
+}
+
+.album-linha-item:hover .album-meta-ano,
+.album-linha-item:hover .album-meta-faixas,
+.album-linha-item:hover .album-meta-reproducoes {
+  color: #555047 !important;
+}
+
+/* ----------------------------------------------------
+   CONTAINER DA CAPA + DISCO DE VINIL DESLIZANTE
+   ---------------------------------------------------- */
+.album-sleeve-container {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  flex-shrink: 0;
+}
+
+/* O Disco de Vinil que fica por trás da capa */
+.album-vinyl-disc {
+  position: absolute;
+  top: 3px;
+  left: 6px;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #242424 0%, #111111 60%, #050505 100%);
+  border: 1px solid #333333;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  transition: transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
+  pointer-events: none;
+}
+
+/* Sulcos concêntricos do disco */
+.vinyl-grooves {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 4px rgba(0, 0, 0, 0.8), inset 0 0 0 8px rgba(255, 255, 255, 0.04);
+}
+
+.vinyl-grooves-inner {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 255, 255, 0.06);
+}
+
+/* Rótulo / Selo Central do Vinil */
+.vinyl-center-label {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #ff0004;
+  border: 2px solid #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.vinyl-center-hole {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #14121c;
+  border: 1px solid #555;
+}
+
+/* Capa física do álbum que fica por cima do disco */
+.album-jacket-cover {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #252233;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
+  z-index: 2;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+}
+
+.album-jacket-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.album-jacket-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 1.4rem;
+  color: #777;
+  background: linear-gradient(135deg, #2a2740, #14121c);
+}
+
+/* ANIMAÇÃO AO PASSAR O MOUSE: DISCO SAI DA CAPA E GIRA! */
+.album-linha-item:hover .album-vinyl-disc {
+  transform: translateX(45px) rotate(160deg);
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5));
+}
+
+.album-linha-item:hover .album-jacket-cover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.35);
+  border-color: #14121c;
+}
+
+/* Nomes e títulos */
+.album-item-titulos {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.album-item-nome {
+  font-family: "DM Sans:Bold", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(1.6rem, 3.2vw, 2.5rem);
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: #f7f4ed;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s ease;
+}
+
+.album-item-artista {
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #8c877d;
+  letter-spacing: 0.05em;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s ease;
+}
+
+/* Metadados */
+.album-item-metas {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  font-family: "DM Sans:Bold", monospace, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.album-meta-ano {
+  color: #8c877d;
+  min-width: 50px;
+}
+
+.album-meta-faixas {
+  color: #8c877d;
+  min-width: 80px;
+}
+
+.album-meta-reproducoes {
+  color: #8c877d;
+  min-width: 120px;
+}
+
+/* Botão Avaliar Disco no final da linha */
+.album-btn-avaliar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 99px;
+  background: #ff0004;
+  color: #ffffff;
+  border: none;
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 10px rgba(255, 0, 4, 0.3);
+}
+
+.album-btn-avaliar:hover {
+  background: #cc0003;
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 6px 16px rgba(255, 0, 4, 0.45);
+}
+
+.album-linha-item:hover .album-btn-avaliar {
+  background: #14121c;
+  color: #f7f4ed;
+  box-shadow: 0 4px 12px rgba(20, 18, 28, 0.25);
+}
+
+.album-linha-item:hover .album-btn-avaliar:hover {
+  background: #ff0004;
+  color: #ffffff;
+}
+
+.btn-vinil-mini {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #14121c;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  display: inline-block;
+  position: relative;
+}
+
+.btn-vinil-mini::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+/* Responsividade da Lista de Álbuns */
+@media (max-width: 980px) {
+  .album-linha-item {
+    padding: 18px 24px;
+    grid-template-columns: 50px 110px 1fr;
+    gap: 16px;
+  }
+  .album-item-metas {
+    display: none;
+  }
+  .album-sleeve-container {
+    width: 76px;
+    height: 76px;
+  }
+  .album-jacket-cover {
+    width: 76px;
+    height: 76px;
+  }
+  .album-vinyl-disc {
+    width: 70px;
+    height: 70px;
+  }
+  .album-linha-item:hover .album-vinyl-disc {
+    transform: translateX(30px) rotate(140deg);
+  }
+}
+
+@media (max-width: 640px) {
+  .album-linha-item {
+    padding: 14px 16px;
+    grid-template-columns: 40px 80px 1fr;
+    gap: 12px;
+  }
+  .album-sleeve-container {
+    width: 60px;
+    height: 60px;
+  }
+  .album-jacket-cover {
+    width: 60px;
+    height: 60px;
+  }
+  .album-vinyl-disc {
+    width: 56px;
+    height: 56px;
+  }
+  .album-linha-item:hover .album-vinyl-disc {
+    transform: translateX(20px) rotate(120deg);
+  }
+}
