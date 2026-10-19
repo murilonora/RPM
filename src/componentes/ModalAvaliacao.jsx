@@ -35,18 +35,16 @@ export function ModalAvaliacao({ visivel, aoFechar, item }) {
         {!estaLogado ? (
           <div style={{ textAlign: "center", padding: "10px 0" }}>
             <img 
-              src="/assets/vinil triste.png"
+              src="/assets/vinil-triste.png"
               alt="Vinil Triste" 
               style={{ 
                 width: "160px", 
                 margin: "0 auto 16px", 
                 display: "block",
-                borderRadius: "16px",
-
               }} 
             />
             <h2 className="modal-titulo" style={{ marginBottom: "8px", fontSize: "1.4rem" }}>
-              Voce ainda não tem conta!
+              Você ainda não tem conta!
             </h2>
             <p style={{ color: "#aaa", fontSize: "0.95rem" }}>
               Cadastre-se rapidinho para poder avaliar discos, salvar favoritos e muito mais.

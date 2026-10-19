@@ -12,19 +12,17 @@ export function PaginaColecao({ aoSelecionarArtista }) {
       <main className="page-grid">
         <div style={{ textAlign: "center", padding: "60px 20px" }}>
           <img 
-            src="/assets/vinil-triste.jpg" 
+            src="/assets/vinil-triste.png" 
             alt="Vinil Triste" 
             style={{ 
               width: "220px", 
               margin: "0 auto 24px", 
               display: "block", 
-              borderRadius: "16px",
-              boxShadow: "0 10px 30px rgba(0,0,0,0.2)"
             }} 
           />
-          <h2 className="page-title" style={{ fontSize: "2rem" }}>Voce ainda nao tem conta!</h2>
+          <h2 className="page-title" style={{ fontSize: "2rem" }}>Você ainda não tem conta!</h2>
           <p className="page-subtitle" style={{ fontSize: "1.1rem", marginTop: "12px" }}>
-            Faca login ou cadastre-se para comecar a criar o seu diario musical e avaliar discos.
+            Faça login ou cadastre-se para começar a criar o seu diário musical e avaliar discos.
           </p>
         </div>
       </main>
