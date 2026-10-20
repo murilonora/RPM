@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { listaDeArtistas, categoriasMusicais } from "../dados/dadosMusicais";
 import { FundoMosaicoHero } from "../componentes/FundoMosaicoHero";
 
@@ -63,6 +63,22 @@ const CORES_TIPO = {
 export function PaginaInicial({ aoSelecionarArtista }) {
   const [termoBusca, setTermoBusca] = useState("");
   const [categoriaAtiva, setCategoriaAtiva] = useState("Todos");
+  const [artistasExplorar, setArtistasExplorar] = useState([]);
+
+  // Função para sortear 5 artistas aleatórios da base de dados
+  function sortearArtistasExplorar() {
+    const embaralhada = [...listaDeArtistas].sort(() => 0.5 - Math.random());
+    setArtistasExplorar(embaralhada.slice(0, 5));
+  }
+
+  // Sorteia inicialmente e atualiza periodicamente a cada 7 segundos
+  useEffect(() => {
+    sortearArtistasExplorar();
+    const intervalo = setInterval(() => {
+      sortearArtistasExplorar();
+    }, 7000);
+    return () => clearInterval(intervalo);
+  }, []);
 
   const artistaEmDestaque =
     listaDeArtistas.find((a) => a.id === "racionais-mcs") || listaDeArtistas[0];
@@ -278,20 +294,24 @@ export function PaginaInicial({ aoSelecionarArtista }) {
           </form>
 
           <div className="quick-search">
-            <span>Explorar:</span>
-            {["Matuê", "Racionais MC's", "Kendrick Lamar", "2Pac", "Travis Scott"].map(
-              (item) => (
-                <button
-                  key={item}
-                  onClick={() => {
-                    const encontrado = listaDeArtistas.find((a) => a.nome === item);
-                    if (encontrado) aoSelecionarArtista(encontrado);
-                  }}
-                >
-                  {item}
-                </button>
-              )
-            )}
+            <span
+              onClick={sortearArtistasExplorar}
+              title="Clique para sortear outros artistas"
+              style={{ cursor: "pointer" }}
+            >
+              Explorar ⟳:
+            </span>
+            {artistasExplorar.map((artista) => (
+              <button
+                key={artista.id}
+                type="button"
+                className="btn-explorar-item"
+                onClick={() => aoSelecionarArtista(artista)}
+                title={`Ver página de ${artista.nome}`}
+              >
+                {artista.nome}
+              </button>
+            ))}
           </div>
         </div>
         <span className="hero-index">RPM — ROTAÇÃO POR MINUTO</span>

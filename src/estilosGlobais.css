@@ -314,25 +314,45 @@ button {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin-top: 16px;
+  margin-top: 18px;
+  flex-wrap: wrap;
 }
 
 .quick-search span {
   margin-right: 4px;
-  color: #888390;
-  font-size: 9px;
+  color: #c8c4cf;
+  font-size: 10px;
   letter-spacing: 1.4px;
+  font-weight: 700;
   text-transform: uppercase;
+  transition: color 0.2s ease;
+}
+
+.quick-search span:hover {
+  color: #ff0004;
 }
 
 .quick-search button {
-  padding: 6px 11px;
-  border: 1px solid rgb(247 244 237 / 25%);
+  padding: 6px 14px;
+  border: 1px solid rgba(247, 244, 237, 0.28);
   border-radius: 999px;
-  background: transparent;
-  color: #d8d4dc;
-  font-size: 10px;
+  background: rgba(20, 18, 28, 0.65);
+  backdrop-filter: blur(8px);
+  color: #f7f4ed;
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
   cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.quick-search button:hover {
+  background: #f7f4ed;
+  color: #14121c;
+  border-color: #f7f4ed;
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
 }
 
 .hero-index {
