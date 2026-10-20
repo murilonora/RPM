@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { listaDeArtistas, categoriasMusicais } from "../dados/dadosMusicais";
+import { FundoMosaicoHero } from "../componentes/FundoMosaicoHero";
 
 // Estilos reutilizáveis para o dropdown de busca
 const estiloDropdown = {
@@ -155,8 +156,7 @@ export function PaginaInicial({ aoSelecionarArtista }) {
   return (
     <main>
       <section className="home-hero">
-        <div className="hero-photo" aria-hidden="true" />
-        <div className="hero-shade" />
+        <FundoMosaicoHero aoSelecionarArtista={aoSelecionarArtista} />
         <div className="hero-content">
           <h1>
             Toda música tem uma história.
