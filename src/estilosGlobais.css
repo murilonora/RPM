@@ -2161,7 +2161,7 @@ button {
    ======================================================== */
 .colecao-editorial-root {
   min-height: calc(100vh - 76px);
-  background: #14121c;
+  background: #08080a; /* Preto vinil carvão absoluto, sem nenhum tom azul */
   color: #f7f4ed;
   display: flex;
   flex-direction: column;
@@ -2171,8 +2171,8 @@ button {
 /* 1. PASSAPORTE / FICHA DO CRÍTICO */
 .passaporte-critico {
   background: #f7f4ed;
-  color: #191525;
-  border-bottom: 2px solid #191525;
+  color: #121214;
+  border-bottom: 2px solid #121214;
   padding: 36px 48px 24px;
 }
 
@@ -2188,11 +2188,11 @@ button {
   width: 84px;
   height: 84px;
   border-radius: 50%;
-  background: #14121c;
+  background: #08080a;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 20px rgba(25, 21, 37, 0.25);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
   border: 3px solid #ff0004;
   flex-shrink: 0;
 }
@@ -2218,7 +2218,7 @@ button {
 }
 
 .selo-rpm {
-  background: #14121c;
+  background: #08080a;
   color: #f7f4ed;
   font-family: "DM Sans:Bold", monospace, sans-serif;
   font-size: 0.65rem;
@@ -2242,7 +2242,7 @@ button {
   font-size: clamp(2rem, 3.8vw, 3.2rem);
   font-weight: 400;
   line-height: 1;
-  color: #191525;
+  color: #08080a;
   letter-spacing: -0.02em;
 }
 
@@ -2253,12 +2253,12 @@ button {
 }
 
 .passaporte-id code {
-  background: rgba(25, 21, 37, 0.08);
+  background: rgba(8, 8, 10, 0.08);
   padding: 2px 6px;
   border-radius: 4px;
   font-family: monospace;
   font-weight: 600;
-  color: #191525;
+  color: #08080a;
 }
 
 /* Fita Métrica / Indicadores Técnicos */
@@ -2266,7 +2266,7 @@ button {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 16px;
-  border-top: 1px solid rgba(25, 21, 37, 0.12);
+  border-top: 1px solid rgba(8, 8, 10, 0.12);
   padding-top: 20px;
 }
 
@@ -2288,7 +2288,7 @@ button {
   font-family: "DM Serif Display:Regular", serif;
   font-size: 2.6rem;
   line-height: 1;
-  color: #191525;
+  color: #08080a;
 }
 
 .metrica-valor.destaque-vermelho {
@@ -2300,32 +2300,34 @@ button {
   color: #888;
 }
 
-/* 2. O TEMPLO DO VINIL / DISCO DE OURO NA PAREDE */
+/* 2. O TEMPLO DO VINIL / MOLDURA EDITORIAL CREME & DISCO DE OURO */
 .templo-vinil-secao {
   margin: 36px 48px 0;
 }
 
 .templo-vinil-quadro {
-  background: radial-gradient(circle at 15% 20%, #201d2c 0%, #111019 70%, #0a0910 100%);
-  border: 1px solid rgba(255, 215, 0, 0.28);
+  background: #f7f4ed; /* Moldura editorial creme de estúdio, acabamento premium */
+  color: #08080a;
+  border: 2px solid #ffd700;
   border-radius: 16px;
-  padding: 32px 36px;
+  padding: 34px 40px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 40px rgba(255, 215, 0, 0.05);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 45px rgba(255, 215, 0, 0.15);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .templo-vinil-quadro:hover {
-  border-color: rgba(255, 215, 0, 0.5);
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 50px rgba(255, 215, 0, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8), 0 0 60px rgba(255, 215, 0, 0.25);
+  border-color: #ffe066;
 }
 
 .templo-header-linha {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 2px solid rgba(8, 8, 10, 0.12);
   padding-bottom: 16px;
   margin-bottom: 28px;
   flex-wrap: wrap;
@@ -2339,9 +2341,9 @@ button {
 }
 
 .templo-estrela-ouro {
-  color: #ffd700;
-  font-size: 1.1rem;
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+  color: #d4af37;
+  font-size: 1.2rem;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .templo-selo-texto {
@@ -2349,9 +2351,9 @@ button {
   font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.14em;
-  background: linear-gradient(90deg, #ffd700, #ffae00, #ffffff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #08080a;
+  background: none;
+  -webkit-text-fill-color: initial;
 }
 
 .templo-acoes-topo {
@@ -2362,31 +2364,33 @@ button {
 
 .templo-nota-ouro {
   font-family: "DM Sans:Bold", sans-serif;
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   font-weight: 800;
-  color: #ffd700;
+  color: #ff0004;
   letter-spacing: 0.06em;
 }
 
 .templo-btn-trocar {
-  background: rgba(255, 215, 0, 0.12);
-  border: 1px solid rgba(255, 215, 0, 0.35);
-  color: #ffd700;
+  background: #08080a;
+  border: 1px solid #08080a;
+  color: #f7f4ed;
   font-family: "DM Sans:Bold", sans-serif;
   font-size: 0.75rem;
   font-weight: 800;
-  padding: 6px 14px;
+  padding: 7px 16px;
   border-radius: 99px;
   cursor: pointer;
   letter-spacing: 0.06em;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .templo-btn-trocar:hover {
-  background: #ffd700;
-  color: #14121c;
+  background: #ff0004;
+  border-color: #ff0004;
+  color: #ffffff;
   transform: translateY(-2px);
-  box-shadow: 0 4px 14px rgba(255, 215, 0, 0.4);
+  box-shadow: 0 6px 16px rgba(255, 0, 4, 0.35);
 }
 
 /* Grid de Conteúdo */
@@ -2412,9 +2416,9 @@ button {
   width: 130px;
   height: 130px;
   border-radius: 50%;
-  background: radial-gradient(circle, #ffe066 0%, #d4af37 40%, #aa8c2c 70%, #554411 100%);
+  background: radial-gradient(circle, #ffe066 0%, #d4af37 40%, #aa8c2c 70%, #44350c 100%);
   border: 2px solid #fff3a8;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), 0 0 25px rgba(212, 175, 55, 0.4);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(212, 175, 55, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2427,8 +2431,8 @@ button {
   width: 108px;
   height: 108px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: inset 0 0 0 6px rgba(0, 0, 0, 0.3), inset 0 0 0 12px rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: inset 0 0 0 6px rgba(0, 0, 0, 0.25), inset 0 0 0 12px rgba(255, 255, 255, 0.15);
 }
 
 .disco-ouro-groove-inner {
@@ -2436,7 +2440,7 @@ button {
   width: 74px;
   height: 74px;
   border-radius: 50%;
-  border: 1px dashed rgba(0, 0, 0, 0.35);
+  border: 1px dashed rgba(0, 0, 0, 0.3);
 }
 
 .disco-ouro-selo {
@@ -2455,7 +2459,7 @@ button {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: #14121c;
+  background: #08080a;
   border: 1px solid #ffffff;
 }
 
@@ -2465,9 +2469,9 @@ button {
   height: 140px;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
   z-index: 2;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 2px solid #08080a;
   transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
 
@@ -2481,7 +2485,8 @@ button {
 .templo-capa-placeholder {
   width: 100%;
   height: 100%;
-  background: #252233;
+  background: #08080a;
+  color: #f7f4ed;
   display: grid;
   place-items: center;
   font-weight: 800;
@@ -2492,7 +2497,7 @@ button {
   position: absolute;
   top: 6px;
   left: 6px;
-  background: rgba(14, 13, 21, 0.85);
+  background: #08080a;
   font-family: monospace;
   font-size: 0.6rem;
   font-weight: 800;
@@ -2504,7 +2509,7 @@ button {
 /* Efeito ao passar o mouse: disco de ouro desliza para fora e brilha */
 .templo-conteudo-grid:hover .templo-disco-ouro {
   transform: translateX(65px) rotate(180deg);
-  filter: drop-shadow(0 10px 20px rgba(255, 215, 0, 0.5));
+  filter: drop-shadow(0 10px 20px rgba(212, 175, 55, 0.6));
 }
 
 .templo-conteudo-grid:hover .templo-capa-cover {
@@ -2530,23 +2535,25 @@ button {
 .templo-obra-titulo {
   margin: 0;
   font-family: "DM Serif Display:Regular", serif;
-  font-size: clamp(2rem, 3.4vw, 3rem);
+  font-size: clamp(2.2rem, 3.6vw, 3.2rem);
   font-weight: 400;
   line-height: 1;
-  color: #f7f4ed;
+  color: #08080a;
+  letter-spacing: -0.02em;
 }
 
 .templo-obra-desc {
-  margin: 4px 0 0;
-  font-size: 0.9rem;
-  color: #8c877d;
+  margin: 6px 0 0;
+  font-size: 0.95rem;
+  color: #555047;
+  font-weight: 500;
 }
 
 .templo-placa-comentario {
   margin-top: 14px;
   padding: 14px 20px;
-  background: rgba(255, 255, 255, 0.04);
-  border-left: 3px solid #ffd700;
+  background: rgba(8, 8, 10, 0.05);
+  border-left: 3px solid #ff0004;
   border-radius: 0 10px 10px 0;
   position: relative;
 }
@@ -2557,8 +2564,8 @@ button {
   left: 8px;
   font-family: serif;
   font-size: 2.2rem;
-  color: #ffd700;
-  opacity: 0.4;
+  color: #ff0004;
+  opacity: 0.3;
   line-height: 1;
 }
 
@@ -2566,15 +2573,15 @@ button {
   margin: 0 0 6px 0;
   font-style: italic;
   font-size: 0.95rem;
-  color: #f7f4ed;
+  color: #08080a;
   line-height: 1.5;
 }
 
 .placa-assinatura {
   display: block;
   font-size: 0.75rem;
-  font-weight: 700;
-  color: #ffd700;
+  font-weight: 800;
+  color: #ff0004;
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
@@ -2584,18 +2591,19 @@ button {
   display: flex;
   align-items: center;
   gap: 16px;
-  color: #888;
-  font-size: 0.85rem;
+  color: #777;
+  font-size: 0.88rem;
 }
 
 .templo-btn-escrever {
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #08080a;
+  border: 1px solid #08080a;
   color: #f7f4ed;
-  padding: 6px 14px;
+  padding: 7px 16px;
   border-radius: 99px;
   font-family: "DM Sans:Bold", sans-serif;
   font-size: 0.75rem;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -2603,6 +2611,7 @@ button {
 .templo-btn-escrever:hover {
   background: #ff0004;
   border-color: #ff0004;
+  color: #ffffff;
 }
 
 /* 3. BARRA DE CONTROLE / ABAS */
@@ -2642,7 +2651,7 @@ button {
 
 .aba-btn.ativa {
   background: #f7f4ed;
-  color: #14121c;
+  color: #08080a;
   border-color: #f7f4ed;
   box-shadow: 0 4px 14px rgba(247, 244, 237, 0.15);
 }
@@ -2679,8 +2688,8 @@ button {
   align-items: center;
   gap: 24px;
   padding: 20px 48px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-  background: #14121c;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: #08080a; /* Preto carvão profundo, sem tom azul */
   color: #f7f4ed;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -2688,7 +2697,7 @@ button {
 
 .colecao-linha-item:hover {
   background: #f7f4ed !important;
-  color: #14121c !important;
+  color: #08080a !important;
   transform: scale(1.008);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
   z-index: 5;
@@ -2699,7 +2708,7 @@ button {
 }
 
 .colecao-linha-item:hover .colecao-obra-nome {
-  color: #14121c !important;
+  color: #08080a !important;
   transform: translateX(6px);
 }
 
@@ -2709,13 +2718,13 @@ button {
 }
 
 .colecao-linha-item:hover .colecao-btn-editar {
-  background: #14121c;
+  background: #08080a;
   color: #f7f4ed;
 }
 
 .colecao-linha-item.linha-favorito-destaque {
   border-left: 4px solid #ffd700;
-  background: linear-gradient(90deg, rgba(255, 215, 0, 0.05) 0%, rgba(20, 18, 28, 1) 40%);
+  background: linear-gradient(90deg, rgba(255, 215, 0, 0.08) 0%, rgba(8, 8, 10, 1) 45%);
 }
 
 .badge-mini-favorito {
@@ -2724,7 +2733,7 @@ button {
   font-weight: 800;
   letter-spacing: 0.1em;
   background: #ffd700;
-  color: #14121c;
+  color: #08080a;
   padding: 2px 6px;
   border-radius: 4px;
   margin-left: 8px;
@@ -2753,7 +2762,7 @@ button {
 
 .btn-coroar-favorito.coroado {
   background: #ffd700;
-  color: #14121c;
+  color: #08080a;
   border-color: #ffd700;
   box-shadow: 0 0 12px rgba(255, 215, 0, 0.35);
 }
