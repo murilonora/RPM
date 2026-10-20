@@ -19,14 +19,14 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
   // Se não estiver logado, exibe estado empático com o mascote
   if (!usuarioLogado) {
     return (
-      <main className="colecao-editorial-root">
+      <main className="colecao-brutal-root">
         <div className="colecao-deslogado-box">
           <img
             src="/assets/vinil-triste.png"
             alt="Vinil Triste"
             className="colecao-deslogado-img"
           />
-          <span className="colecao-tag-aviso">ACESSO RESTRITO</span>
+          <span className="brutal-badge-mono">ACESSO_RESTRITO // REGISTRO_EXIGIDO</span>
           <h2 className="colecao-deslogado-titulo">Você ainda não tem conta!</h2>
           <p className="colecao-deslogado-sub">
             Faça login ou cadastre sua conta de crítico para começar a catalogar seu acervo
@@ -60,7 +60,7 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
         if (tipo === "musica" && artista.musicas[indice]) {
           const m = artista.musicas[indice];
           titulo = m.titulo;
-          subtitulo = `Faixa de "${m.album}"`;
+          subtitulo = `Faixa · "${m.album}"`;
           capa = m.capa;
           ano = m.ano;
         } else if (tipo === "album" && artista.albuns[indice]) {
@@ -102,8 +102,7 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
     return itensAvaliados;
   }, [itensAvaliados, abaFiltro]);
 
-  // Encontra o favorito supremo:
-  // Se o usuário selecionou manualmente, usa a seleção dele; caso contrário, pega o de maior nota
+  // Favorito supremo
   const favoritoAbsoluto = useMemo(() => {
     if (itensAvaliados.length === 0) return null;
     if (chaveFavoritoManual) {
@@ -114,87 +113,85 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
   }, [itensAvaliados, chaveFavoritoManual]);
 
   return (
-    <main className="colecao-editorial-root">
-      {/* 1. FICHA / PASSAPORTE DO CRÍTICO (HEADER EDITORIAL) */}
-      <section className="passaporte-critico">
-        <div className="passaporte-top">
-          <div className="passaporte-avatar">
-            <span className="passaporte-avatar-vinil" />
-            <div className="passaporte-avatar-inicial">
-              {usuarioLogado.nome.charAt(0).toUpperCase()}
+    <main className="colecao-brutal-root">
+      {/* 1. FICHA TÉCNICA DO CRÍTICO (ESTILO ARQUIVO GEOMÉTRICO) */}
+      <section className="arquivo-ficha-critico">
+        <div className="ficha-topo-grid">
+          <div className="ficha-identificacao">
+            <div className="ficha-codigo-linha">
+              <span className="ficha-label-mono">ARQUIVO_RPM // FICHA_CRÍTICO</span>
+              <span className="ficha-serial">ID: #{usuarioLogado.id.slice(0, 10).toUpperCase()}</span>
             </div>
+            <h1 className="ficha-nome-critico">{usuarioLogado.nome}</h1>
+            <p className="ficha-credencial">
+              CREDENTIAL: <code>{usuarioLogado.email || usuarioLogado.id}</code> · STATUS: ATIVO
+            </p>
           </div>
 
-          <div className="passaporte-info">
-            <div className="passaporte-meta-selo">
-              <span className="selo-rpm">RPM ARCHIVE</span>
-              <span className="selo-status">CRÍTICO ATIVO · NÍVEL OURO</span>
+          <div className="ficha-selo-caixa">
+            <div className="selo-caixa-topo">COLEÇÃO_CERTIFICADA</div>
+            <div className="selo-caixa-corpo">
+              <span className="selo-ano-gravacao">RPM·2026</span>
+              <strong className="selo-grau">CRÍTICO OURO</strong>
             </div>
-            <h1 className="passaporte-nome">{usuarioLogado.nome}</h1>
-            <p className="passaporte-id">
-              REGISTRO: <code>{usuarioLogado.email || usuarioLogado.id}</code>
-            </p>
           </div>
         </div>
 
-        {/* Barra de Fita Métrica / Indicadores Técnicos */}
-        <div className="passaporte-metricas">
-          <div className="metrica-bloco">
-            <span className="metrica-rotulo">ACERVO AVALIADO</span>
-            <strong className="metrica-valor">{totalAvaliacoes}</strong>
-            <small className="metrica-desc">discos & faixas</small>
+        {/* Grade de Estatísticas Brutalistas */}
+        <div className="ficha-metricas-grid">
+          <div className="metrica-quadro">
+            <span className="metrica-mono-tag">TOTAL_AVALIADO</span>
+            <strong className="metrica-mono-num">{String(totalAvaliacoes).padStart(2, "0")}</strong>
+            <span className="metrica-mono-sub">OBRAS CATALOGADAS</span>
           </div>
-          <div className="metrica-bloco">
-            <span className="metrica-rotulo">MÉDIA GERAL</span>
-            <strong className="metrica-valor destaque-vermelho">{mediaAvaliacoes}</strong>
-            <small className="metrica-desc">em discos de vinil</small>
+          <div className="metrica-quadro metrica-destaque-red">
+            <span className="metrica-mono-tag">MÉDIA_VINIS</span>
+            <strong className="metrica-mono-num">{mediaAvaliacoes}</strong>
+            <span className="metrica-mono-sub">DE 5.0 ESTRELAS</span>
           </div>
-          <div className="metrica-bloco">
-            <span className="metrica-rotulo">OBRAS-PRIMAS (5/5)</span>
-            <strong className="metrica-valor">{totalObrasPrimas}</strong>
-            <small className="metrica-desc">grau máximo</small>
+          <div className="metrica-quadro">
+            <span className="metrica-mono-tag">OBRAS_PRIMAS</span>
+            <strong className="metrica-mono-num">{String(totalObrasPrimas).padStart(2, "0")}</strong>
+            <span className="metrica-mono-sub">GRAU MÁXIMO (5/5)</span>
           </div>
-          <div className="metrica-bloco">
-            <span className="metrica-rotulo">RESENHAS REGISTRADAS</span>
-            <strong className="metrica-valor">{totalResenhas}</strong>
-            <small className="metrica-desc">críticas escritas</small>
+          <div className="metrica-quadro">
+            <span className="metrica-mono-tag">RESENHAS_TXT</span>
+            <strong className="metrica-mono-num">{String(totalResenhas).padStart(2, "0")}</strong>
+            <span className="metrica-mono-sub">CRÍTICAS ESCRITAS</span>
           </div>
         </div>
       </section>
 
-      {/* 2. O TEMPLO DO VINIL / DISCO DE OURO NA PAREDE (FAVORITO ABSOLUTO) */}
-      {favoritoAbsoluto ? (
-        <section className="templo-vinil-secao">
-          <div className="templo-vinil-quadro">
-            {/* Faixa Superior com Selo Dourado e Ações */}
-            <div className="templo-header-linha">
-              <div className="templo-selo-wrap">
-                <span className="templo-estrela-ouro">★</span>
-                <span className="templo-selo-texto">DISCO DE OURO · FAVORITO SUPREMO</span>
+      {/* 2. O TEMPLO DO DISCO DE OURO (PLACA DE PRECISÃO GEOMÉTRICA) */}
+      {favoritoAbsoluto && (
+        <section className="templo-ouro-arquivo">
+          <div className="placa-ouro-moldura">
+            {/* Faixa superior mecânica */}
+            <div className="placa-ouro-header">
+              <div className="placa-ouro-badge">
+                <span className="ouro-quadrado-icon">■</span>
+                <span>DISCO DE OURO // FAVORITO SUPREMO DO ACERVO</span>
               </div>
-
-              <div className="templo-acoes-topo">
-                <span className="templo-nota-ouro">{favoritoAbsoluto.nota}/5 VINIS</span>
+              <div className="placa-ouro-controles">
+                <span className="placa-nota-carimbo">{favoritoAbsoluto.nota}/5 VINIS</span>
                 <button
                   type="button"
-                  className="templo-btn-trocar"
+                  className="placa-btn-trocar"
                   onClick={() => setModalSeletorAberto(true)}
-                  title="Trocar qual obra fica exposta no seu Templo de Ouro"
+                  title="Trocar qual obra ocupa o pedestal de ouro"
                 >
-                  ⟳ Trocar Favorito
+                  [ ⟳ TROCAR FAVORITO ]
                 </button>
               </div>
             </div>
 
-            {/* Corpo em Perspectiva com Disco de Ouro Físico */}
+            {/* Corpo da Obra de Ouro com Capa e Disco Saindo */}
             <div
-              className="templo-conteudo-grid"
+              className="placa-ouro-corpo"
               onClick={() => aoSelecionarArtista(favoritoAbsoluto.artista)}
             >
-              {/* Moldura Física com Disco de Ouro saindo */}
-              <div className="templo-moldura-vinil">
-                {/* Disco Dourado / Ouro com Sulcos e Brilho */}
-                <div className="templo-disco-ouro" aria-hidden="true">
+              <div className="placa-disco-wrap">
+                <div className="placa-disco-ouro" aria-hidden="true">
                   <div className="disco-ouro-groove" />
                   <div className="disco-ouro-groove-inner" />
                   <div className="disco-ouro-selo">
@@ -202,44 +199,42 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
                   </div>
                 </div>
 
-                {/* Capa do Álbum em Relevo */}
-                <div className="templo-capa-cover">
+                <div className="placa-capa-quadrada">
                   {favoritoAbsoluto.capa ? (
                     <img
                       src={favoritoAbsoluto.capa}
                       alt={favoritoAbsoluto.titulo}
-                      className="templo-capa-img"
+                      className="placa-capa-img"
                     />
                   ) : (
-                    <div className="templo-capa-placeholder">LP</div>
+                    <div className="placa-capa-placeholder">LP</div>
                   )}
-                  <span className="templo-tipo-badge">
-                    {favoritoAbsoluto.tipo === "album" ? "ÁLBUM" : "FAIXA"}
+                  <span className="placa-tipo-etiqueta">
+                    {favoritoAbsoluto.tipo === "album" ? "LP" : "SINGLE"}
                   </span>
                 </div>
               </div>
 
-              {/* Informações Editoriais e Placa Comemorativa */}
-              <div className="templo-info-col">
-                <span className="templo-artista-eyebrow">
-                  {favoritoAbsoluto.artista.nome} · {favoritoAbsoluto.ano || "Acervo"}
+              <div className="placa-dados-col">
+                <span className="placa-artista-head">
+                  {favoritoAbsoluto.artista.nome} · ANO {favoritoAbsoluto.ano || "N/A"}
                 </span>
-                <h2 className="templo-obra-titulo">{favoritoAbsoluto.titulo}</h2>
-                <p className="templo-obra-desc">{favoritoAbsoluto.subtitulo}</p>
+                <h2 className="placa-titulo-obra">{favoritoAbsoluto.titulo}</h2>
+                <p className="placa-sub-detalhe">{favoritoAbsoluto.subtitulo}</p>
 
                 {favoritoAbsoluto.comentario ? (
-                  <div className="templo-placa-comentario">
-                    <span className="placa-aspas">“</span>
-                    <p className="placa-texto">{favoritoAbsoluto.comentario}</p>
-                    <span className="placa-assinatura">— {usuarioLogado.nome}</span>
+                  <div className="placa-resenha-box">
+                    <span className="resenha-tag-mono">// RESENHA DO CRÍTICO:</span>
+                    <p className="resenha-texto-aspas">"{favoritoAbsoluto.comentario}"</p>
+                    <span className="resenha-assinatura">— {usuarioLogado.nome}</span>
                   </div>
                 ) : (
-                  <div className="templo-placa-vazia">
-                    <span>Nenhuma resenha escrita ainda para esta obra.</span>
+                  <div className="placa-sem-resenha">
+                    <span>Sem resenha textual registrada.</span>
                     {aoAvaliar && (
                       <button
                         type="button"
-                        className="templo-btn-escrever"
+                        className="placa-btn-adicionar-txt"
                         onClick={(e) => {
                           e.stopPropagation();
                           aoAvaliar({
@@ -250,7 +245,7 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
                           });
                         }}
                       >
-                        + Escrever Resenha do Favorito
+                        [ + ESCREVER RESENHA ]
                       </button>
                     )}
                   </div>
@@ -259,171 +254,161 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
             </div>
           </div>
         </section>
-      ) : null}
+      )}
 
-      {/* 3. BARRA DE FILTROS DAS AVALIAÇÕES */}
-      <section className="colecao-controle-secao">
-        <div className="colecao-abas-filtro">
+      {/* 3. BARRA DE FILTRO BRUTALISTA (SEM PÍLULAS REDONDAS) */}
+      <section className="arquivo-filtros-secao">
+        <div className="arquivo-abas-bloco">
           <button
-            className={`aba-btn ${abaFiltro === "TODOS" ? "ativa" : ""}`}
+            className={`aba-reta-btn ${abaFiltro === "TODOS" ? "ativo" : ""}`}
             onClick={() => setAbaFiltro("TODOS")}
           >
-            Todos ({totalAvaliacoes})
+            TODOS [{String(totalAvaliacoes).padStart(2, "0")}]
           </button>
           <button
-            className={`aba-btn ${abaFiltro === "ALBUNS" ? "ativa" : ""}`}
+            className={`aba-reta-btn ${abaFiltro === "ALBUNS" ? "ativo" : ""}`}
             onClick={() => setAbaFiltro("ALBUNS")}
           >
-            Álbuns ({totalAlbuns})
+            ÁLBUNS [{String(totalAlbuns).padStart(2, "0")}]
           </button>
           <button
-            className={`aba-btn ${abaFiltro === "MUSICAS" ? "ativa" : ""}`}
+            className={`aba-reta-btn ${abaFiltro === "MUSICAS" ? "ativo" : ""}`}
             onClick={() => setAbaFiltro("MUSICAS")}
           >
-            Faixas ({totalMusicas})
+            FAIXAS [{String(totalMusicas).padStart(2, "0")}]
           </button>
           <button
-            className={`aba-btn ${abaFiltro === "OBRAS_PRIMAS" ? "ativa" : ""}`}
+            className={`aba-reta-btn ${abaFiltro === "OBRAS_PRIMAS" ? "ativo" : ""}`}
             onClick={() => setAbaFiltro("OBRAS_PRIMAS")}
           >
-            ★ 5 Vinis ({totalObrasPrimas})
+            ★ 5 VINIS [{String(totalObrasPrimas).padStart(2, "0")}]
           </button>
         </div>
 
         {totalAvaliacoes > 0 && aoNavegarParaAlbuns && (
-          <button className="colecao-btn-adicionar" onClick={aoNavegarParaAlbuns}>
-            + Explorar mais álbuns
+          <button className="arquivo-btn-explorar" onClick={aoNavegarParaAlbuns}>
+            + EXPLORAR ACERVO COMPLETO
           </button>
         )}
       </section>
 
-      {/* 4. LISTA EDITORIAL DE DISCOS / FICHAS DE AUDIÇÃO */}
-      <section className="colecao-lista-editorial">
+      {/* 4. ESTANTE DE FICHAS TÉCNICAS (GRID DE CARDS RETOS DE ARQUIVO) */}
+      <section className="arquivo-grid-secao">
         {totalAvaliacoes === 0 ? (
-          /* ESTADO VAZIO COM DESIGN TEMÁTICO */
-          <div className="colecao-vazio-card">
+          <div className="arquivo-vazio-box">
             <img
               src="/assets/vinil-triste.png"
               alt="Estante Vazia"
               className="vazio-vinil-icone"
             />
-            <h3 className="vazio-titulo">Sua estante de discos ainda está em silêncio</h3>
+            <h3 className="vazio-titulo">ESTANTE EM SILÊNCIO</h3>
             <p className="vazio-subtitulo">
-              Você ainda não registrou nenhuma avaliação. Explore a discografia dos maiores
-              artistas, dê suas notas de 1 a 5 vinis e crie seu diário oficial de crítico musical!
+              Nenhuma obra catalogada no seu acervo pessoal. Navegue pelos álbuns dos artistas,
+              atribua suas notas e monte sua coleção oficial de críticas.
             </p>
             {aoNavegarParaAlbuns && (
-              <button className="vazio-btn-cta" onClick={aoNavegarParaAlbuns}>
-                Avaliar Meu Primeiro Álbum →
+              <button className="arquivo-cta-btn" onClick={aoNavegarParaAlbuns}>
+                CATALOGAR MEU PRIMEIRO DISCO →
               </button>
             )}
           </div>
         ) : itensFiltrados.length === 0 ? (
-          <div className="colecao-sem-filtro">
-            <p>Nenhum item encontrado nesta categoria de filtro.</p>
+          <div className="arquivo-sem-itens">
+            <p>// NENHUM REGISTRO ENCONTRADO NESTE FILTRO</p>
           </div>
         ) : (
-          itensFiltrados.map((item, index) => {
-            const numeroFormatado = String(index + 1).padStart(2, "0");
-            const ehFavoritoAtual = favoritoAbsoluto && favoritoAbsoluto.chave === item.chave;
+          <div className="fichas-arquivo-grid">
+            {itensFiltrados.map((item) => {
+              const ehFavoritoAtual = favoritoAbsoluto && favoritoAbsoluto.chave === item.chave;
 
-            return (
-              <div
-                key={item.chave}
-                className={`colecao-linha-item ${ehFavoritoAtual ? "linha-favorito-destaque" : ""}`}
-                onClick={() => aoSelecionarArtista(item.artista)}
-              >
-                {/* Índice numérico vermelho */}
-                <span className="colecao-item-numero">{numeroFormatado}</span>
+              return (
+                <div
+                  key={item.chave}
+                  className={`ficha-card-item ${ehFavoritoAtual ? "card-favorito-ativo" : ""}`}
+                  onClick={() => aoSelecionarArtista(item.artista)}
+                >
+                  {/* Cabeçalho da Ficha */}
+                  <div className="ficha-card-header">
+                    <span className="ficha-card-tipo">
+                      {item.tipo === "album" ? "LP // ÁLBUM" : "FAIXA // SINGLE"}
+                    </span>
+                    {ehFavoritoAtual ? (
+                      <span className="ficha-card-ouro-badge">★ FAVORITO SUPREMO</span>
+                    ) : (
+                      <span className="ficha-card-ano">{item.ano || "RPM"}</span>
+                    )}
+                  </div>
 
-                {/* Capa com vinil deslizante */}
-                <div className="colecao-capa-box">
-                  {item.capa ? (
-                    <img src={item.capa} alt={item.titulo} className="colecao-capa-img" />
-                  ) : (
-                    <div className="colecao-capa-placeholder">
-                      {item.titulo.slice(0, 2).toUpperCase()}
+                  {/* Capa e Títulos */}
+                  <div className="ficha-card-body">
+                    <div className="ficha-capa-wrap">
+                      {item.capa ? (
+                        <img src={item.capa} alt={item.titulo} className="ficha-capa-img" />
+                      ) : (
+                        <div className="ficha-capa-vazia">LP</div>
+                      )}
+                    </div>
+
+                    <div className="ficha-titulos-box">
+                      <span className="ficha-card-artista">{item.artista.nome}</span>
+                      <h3 className="ficha-card-titulo">{item.titulo}</h3>
+                    </div>
+                  </div>
+
+                  {/* Resenha do Usuário (se houver) */}
+                  {item.comentario && (
+                    <div className="ficha-card-comentario">
+                      "{item.comentario}"
                     </div>
                   )}
-                  <span className="colecao-tag-tipo">
-                    {item.tipo === "album" ? "LP" : "FAIXA"}
-                  </span>
-                </div>
 
-                {/* Informações da obra */}
-                <div className="colecao-item-info">
-                  <div className="colecao-item-titulos">
-                    <h3 className="colecao-obra-nome">
-                      {item.titulo}
-                      {ehFavoritoAtual && (
-                        <span className="badge-mini-favorito" title="Favorito Supremo">
-                          ★ OURO
-                        </span>
+                  {/* Rodapé com Nota em Vinis e Ações Técnicas */}
+                  <div className="ficha-card-footer" onClick={(e) => e.stopPropagation()}>
+                    <div className="ficha-vinis-rating">
+                      <AvaliacaoVinil chaveItem={item.chave} tamanho="pequeno" apenasLeitura />
+                    </div>
+
+                    <div className="ficha-botoes-acoes">
+                      <button
+                        type="button"
+                        className={`btn-ficha-coroar ${ehFavoritoAtual ? "ativo" : ""}`}
+                        onClick={() => definirFavorito(item.chave)}
+                        title={ehFavoritoAtual ? "Favorito Supremo Ativo" : "Definir como Favorito Supremo"}
+                      >
+                        {ehFavoritoAtual ? "★ OURO" : "TORNAR FAVORITO"}
+                      </button>
+
+                      {aoAvaliar && (
+                        <button
+                          type="button"
+                          className="btn-ficha-editar"
+                          onClick={() => {
+                            aoAvaliar({
+                              chave: item.chave,
+                              titulo: item.titulo,
+                              subtitulo: `${item.tipo === "album" ? "Álbum" : "Música"} • ${item.artista.nome}`,
+                              capa: item.capa,
+                            });
+                          }}
+                          title="Editar nota e comentário"
+                        >
+                          EDITAR
+                        </button>
                       )}
-                    </h3>
-                    <span className="colecao-artista-sub">{item.artista.nome}</span>
+                    </div>
                   </div>
-
-                  {item.comentario && (
-                    <p className="colecao-comentario-texto">
-                      "{item.comentario}"
-                    </p>
-                  )}
                 </div>
-
-                {/* Avaliação em Vinis, Botão de Favoritar e Botão de Editar */}
-                <div className="colecao-item-direita">
-                  <div className="colecao-vinis-bloco">
-                    <AvaliacaoVinil chaveItem={item.chave} tamanho="pequeno" apenasLeitura />
-                  </div>
-
-                  {/* Botão de Coroar como Favorito Supremo */}
-                  <button
-                    type="button"
-                    className={`btn-coroar-favorito ${ehFavoritoAtual ? "coroado" : ""}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      definirFavorito(item.chave);
-                    }}
-                    title={
-                      ehFavoritoAtual
-                        ? "Esta é a sua Obra-Prima atual no Templo"
-                        : "Definir esta obra como seu Favorito Supremo"
-                    }
-                  >
-                    ★ {ehFavoritoAtual ? "Favorito" : "Tornar Favorito"}
-                  </button>
-
-                  {aoAvaliar && (
-                    <button
-                      type="button"
-                      className="colecao-btn-editar"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        aoAvaliar({
-                          chave: item.chave,
-                          titulo: item.titulo,
-                          subtitulo: `${item.tipo === "album" ? "Álbum" : "Música"} • ${item.artista.nome}`,
-                          capa: item.capa,
-                        });
-                      }}
-                      title="Editar nota ou comentário"
-                    >
-                      Editar Nota
-                    </button>
-                  )}
-                </div>
-              </div>
-            );
-          })
+              );
+            })}
+          </div>
         )}
       </section>
 
-      {/* 5. MODAL SELETOR DO FAVORITO SUPREMO */}
+      {/* 5. MODAL SELETOR DE FAVORITO (ARQUIVO RETO) */}
       {modalSeletorAberto && (
         <div className="modal-overlay" onClick={() => setModalSeletorAberto(false)}>
           <div
-            className="modal-conteudo modal-seletor-favorito"
+            className="modal-conteudo modal-brutal-seletor"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -434,12 +419,12 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
               ✕
             </button>
 
-            <span className="modal-seletor-tag">RPM HALL OF FAME</span>
-            <h2 className="modal-titulo" style={{ margin: "4px 0 8px" }}>
+            <span className="modal-seletor-tag">RPM_ARCHIVE // TROCA_DE_FAVORITO</span>
+            <h2 className="modal-titulo" style={{ margin: "4px 0 8px", textAlign: "left" }}>
               Escolha seu Disco de Ouro
             </h2>
-            <p style={{ color: "#aaa", fontSize: "0.85rem", marginBottom: "20px" }}>
-              Selecione qual disco ou faixa ocupará o pedestal de honra da sua coleção:
+            <p style={{ color: "#888", fontSize: "0.85rem", marginBottom: "20px" }}>
+              Selecione o registro que ficará gravado no pedestal da sua coleção:
             </p>
 
             <div className="seletor-lista-itens">
@@ -449,7 +434,7 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
                 return (
                   <div
                     key={item.chave}
-                    className={`seletor-card-item ${selecionado ? "selecionado" : ""}`}
+                    className={`seletor-card-item brutal-item ${selecionado ? "selecionado" : ""}`}
                     onClick={() => {
                       definirFavorito(item.chave);
                       setModalSeletorAberto(false);
@@ -463,13 +448,13 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
                     <div className="seletor-item-textos">
                       <strong>{item.titulo}</strong>
                       <span>
-                        {item.artista.nome} · {item.nota}/5 vinis
+                        {item.artista.nome} · {item.nota}/5 VINIS
                       </span>
                     </div>
                     {selecionado ? (
                       <span className="seletor-check-badge">★ ATUAL</span>
                     ) : (
-                      <span className="seletor-btn-escolher">Escolher</span>
+                      <span className="seletor-btn-escolher">[ SELECIONAR ]</span>
                     )}
                   </div>
                 );

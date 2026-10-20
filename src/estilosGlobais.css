@@ -2157,259 +2157,262 @@ button {
 
 
 /* ========================================================
-   PAGINA COLECAO — ESTILO EDITORIAL / PASSAPORTE DO CRÍTICO
+   PAGINA COLECAO — ARQUIVO TÉCNICO BRUTALISTA / FICHÁRIO DE VINIL
    ======================================================== */
-.colecao-editorial-root {
+.colecao-brutal-root {
   min-height: calc(100vh - 76px);
-  background: #08080a; /* Preto vinil carvão absoluto, sem nenhum tom azul */
+  background: #08080a; /* Preto vinil carvão absoluto */
   color: #f7f4ed;
   display: flex;
   flex-direction: column;
   padding-bottom: 80px;
 }
 
-/* 1. PASSAPORTE / FICHA DO CRÍTICO */
-.passaporte-critico {
+/* 1. FICHA TÉCNICA DO CRÍTICO */
+.arquivo-ficha-critico {
   background: #f7f4ed;
-  color: #121214;
-  border-bottom: 2px solid #121214;
-  padding: 36px 48px 24px;
+  color: #08080a;
+  border-bottom: 2px solid #08080a;
+  padding: 32px 48px;
 }
 
-.passaporte-top {
+.ficha-topo-grid {
   display: flex;
-  align-items: center;
-  gap: 28px;
-  margin-bottom: 28px;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
 }
 
-.passaporte-avatar {
-  position: relative;
-  width: 84px;
-  height: 84px;
-  border-radius: 50%;
-  background: #08080a;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
-  border: 3px solid #ff0004;
-  flex-shrink: 0;
-}
-
-.passaporte-avatar-inicial {
-  font-family: "DM Serif Display:Regular", serif;
-  font-size: 2.4rem;
-  color: #f7f4ed;
-  line-height: 1;
-}
-
-.passaporte-info {
+.ficha-identificacao {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.passaporte-meta-selo {
+.ficha-codigo-linha {
   display: flex;
   align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
+  gap: 12px;
+  font-family: "DM Sans:Bold", monospace, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
 }
 
-.selo-rpm {
+.ficha-label-mono {
+  background: #08080a;
+  color: #f7f4ed;
+  padding: 2px 8px;
+  font-weight: 800;
+}
+
+.ficha-serial {
+  color: #ff0004;
+  font-weight: 800;
+}
+
+.ficha-nome-critico {
+  margin: 6px 0 0;
+  font-family: "DM Serif Display:Regular", serif;
+  font-size: clamp(2.4rem, 4vw, 3.6rem);
+  font-weight: 400;
+  line-height: 1;
+  color: #08080a;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.ficha-credencial {
+  margin: 6px 0 0;
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: #555047;
+}
+
+.ficha-credencial code {
+  background: rgba(8, 8, 10, 0.08);
+  padding: 2px 6px;
+  font-weight: 700;
+  color: #08080a;
+}
+
+.ficha-selo-caixa {
+  border: 2px solid #08080a;
+  padding: 0;
+  min-width: 170px;
+  text-align: center;
+}
+
+.selo-caixa-topo {
   background: #08080a;
   color: #f7f4ed;
   font-family: "DM Sans:Bold", monospace, sans-serif;
   font-size: 0.65rem;
   font-weight: 800;
-  letter-spacing: 0.12em;
-  padding: 3px 8px;
-  border-radius: 4px;
+  letter-spacing: 0.14em;
+  padding: 4px 8px;
 }
 
-.selo-status {
-  color: #ff0004;
-  font-family: "DM Sans:Bold", monospace, sans-serif;
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+.selo-caixa-corpo {
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: #ffffff;
 }
 
-.passaporte-nome {
-  margin: 2px 0 0;
-  font-family: "DM Serif Display:Regular", serif;
-  font-size: clamp(2rem, 3.8vw, 3.2rem);
-  font-weight: 400;
-  line-height: 1;
-  color: #08080a;
-  letter-spacing: -0.02em;
-}
-
-.passaporte-id {
-  margin: 4px 0 0;
-  font-size: 0.8rem;
-  color: #666;
-}
-
-.passaporte-id code {
-  background: rgba(8, 8, 10, 0.08);
-  padding: 2px 6px;
-  border-radius: 4px;
+.selo-ano-gravacao {
   font-family: monospace;
-  font-weight: 600;
-  color: #08080a;
+  font-size: 0.65rem;
+  color: #777;
+  font-weight: 700;
 }
 
-/* Fita Métrica / Indicadores Técnicos */
-.passaporte-metricas {
+.selo-grau {
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 0.82rem;
+  color: #ff0004;
+  letter-spacing: 0.08em;
+  font-weight: 800;
+}
+
+/* Grade de Métricas Brutalistas */
+.ficha-metricas-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 16px;
-  border-top: 1px solid rgba(8, 8, 10, 0.12);
-  padding-top: 20px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border: 1px solid #08080a;
+  background: #ffffff;
 }
 
-.metrica-bloco {
+.metrica-quadro {
+  padding: 16px 20px;
+  border-right: 1px solid #08080a;
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
-.metrica-rotulo {
-  font-family: "DM Sans:Bold", monospace, sans-serif;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  color: #777;
+.metrica-quadro:last-child {
+  border-right: none;
 }
 
-.metrica-valor {
-  font-family: "DM Serif Display:Regular", serif;
-  font-size: 2.6rem;
+.metrica-mono-tag {
+  font-family: monospace;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #666;
+}
+
+.metrica-mono-num {
+  font-family: "DM Serif Display:Regular", monospace, serif;
+  font-size: 2.8rem;
   line-height: 1;
   color: #08080a;
 }
 
-.metrica-valor.destaque-vermelho {
+.metrica-destaque-red .metrica-mono-num {
   color: #ff0004;
 }
 
-.metrica-desc {
-  font-size: 0.72rem;
+.metrica-mono-sub {
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 0.65rem;
   color: #888;
+  letter-spacing: 0.06em;
 }
 
-/* 2. O TEMPLO DO VINIL / MOLDURA EDITORIAL CREME & DISCO DE OURO */
-.templo-vinil-secao {
+/* 2. O TEMPLO DO DISCO DE OURO (PLACA GEOMÉTRICA) */
+.templo-ouro-arquivo {
   margin: 36px 48px 0;
 }
 
-.templo-vinil-quadro {
-  background: #f7f4ed; /* Moldura editorial creme de estúdio, acabamento premium */
-  color: #08080a;
+.placa-ouro-moldura {
+  background: #0d0c12;
   border: 2px solid #ffd700;
-  border-radius: 16px;
-  padding: 34px 40px;
+  padding: 28px 36px;
   position: relative;
-  overflow: hidden;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 45px rgba(255, 215, 0, 0.15);
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.08);
 }
 
-.templo-vinil-quadro:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8), 0 0 60px rgba(255, 215, 0, 0.25);
-  border-color: #ffe066;
-}
-
-.templo-header-linha {
+.placa-ouro-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid rgba(8, 8, 10, 0.12);
-  padding-bottom: 16px;
-  margin-bottom: 28px;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+  padding-bottom: 14px;
+  margin-bottom: 24px;
   flex-wrap: wrap;
   gap: 12px;
 }
 
-.templo-selo-wrap {
+.placa-ouro-badge {
   display: flex;
   align-items: center;
   gap: 8px;
-}
-
-.templo-estrela-ouro {
-  color: #d4af37;
-  font-size: 1.2rem;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-}
-
-.templo-selo-texto {
   font-family: "DM Sans:Bold", monospace, sans-serif;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.14em;
-  color: #08080a;
-  background: none;
-  -webkit-text-fill-color: initial;
+  color: #ffd700;
 }
 
-.templo-acoes-topo {
+.ouro-quadrado-icon {
+  color: #ff0004;
+  font-size: 0.8rem;
+}
+
+.placa-ouro-controles {
   display: flex;
   align-items: center;
   gap: 16px;
 }
 
-.templo-nota-ouro {
-  font-family: "DM Sans:Bold", sans-serif;
-  font-size: 0.88rem;
+.placa-nota-carimbo {
+  font-family: monospace;
+  font-size: 0.82rem;
   font-weight: 800;
-  color: #ff0004;
-  letter-spacing: 0.06em;
+  color: #ffd700;
+  border: 1px solid #ffd700;
+  padding: 3px 8px;
 }
 
-.templo-btn-trocar {
-  background: #08080a;
-  border: 1px solid #08080a;
+.placa-btn-trocar {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
   color: #f7f4ed;
-  font-family: "DM Sans:Bold", sans-serif;
+  font-family: monospace;
   font-size: 0.75rem;
-  font-weight: 800;
-  padding: 7px 16px;
-  border-radius: 99px;
+  font-weight: 700;
+  padding: 6px 14px;
   cursor: pointer;
   letter-spacing: 0.06em;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s;
 }
 
-.templo-btn-trocar:hover {
-  background: #ff0004;
-  border-color: #ff0004;
-  color: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(255, 0, 4, 0.35);
+.placa-btn-trocar:hover {
+  background: #ffd700;
+  color: #08080a;
+  border-color: #ffd700;
 }
 
-/* Grid de Conteúdo */
-.templo-conteudo-grid {
+.placa-ouro-corpo {
   display: grid;
   grid-template-columns: 200px 1fr;
   align-items: center;
-  gap: 48px;
+  gap: 40px;
   cursor: pointer;
 }
 
-/* Moldura e Disco de Ouro Físico saindo */
-.templo-moldura-vinil {
+.placa-disco-wrap {
   position: relative;
   width: 140px;
   height: 140px;
 }
 
-.templo-disco-ouro {
+.placa-disco-ouro {
   position: absolute;
   top: 5px;
   left: 10px;
@@ -2418,7 +2421,7 @@ button {
   border-radius: 50%;
   background: radial-gradient(circle, #ffe066 0%, #d4af37 40%, #aa8c2c 70%, #44350c 100%);
   border: 2px solid #fff3a8;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(212, 175, 55, 0.35);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8), 0 0 25px rgba(212, 175, 55, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2426,66 +2429,28 @@ button {
   transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.disco-ouro-groove {
-  position: absolute;
-  width: 108px;
-  height: 108px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: inset 0 0 0 6px rgba(0, 0, 0, 0.25), inset 0 0 0 12px rgba(255, 255, 255, 0.15);
-}
-
-.disco-ouro-groove-inner {
-  position: absolute;
-  width: 74px;
-  height: 74px;
-  border-radius: 50%;
-  border: 1px dashed rgba(0, 0, 0, 0.3);
-}
-
-.disco-ouro-selo {
-  position: relative;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: #ff0004;
-  border: 2px solid #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.disco-ouro-furo {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #08080a;
-  border: 1px solid #ffffff;
-}
-
-.templo-capa-cover {
+.placa-capa-quadrada {
   position: relative;
   width: 140px;
   height: 140px;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #14121c;
   z-index: 2;
-  border: 2px solid #08080a;
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+  transition: transform 0.3s ease;
 }
 
-.templo-capa-img {
+.placa-capa-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-.templo-capa-placeholder {
+.placa-capa-placeholder {
   width: 100%;
   height: 100%;
-  background: #08080a;
+  background: #14121c;
   color: #f7f4ed;
   display: grid;
   place-items: center;
@@ -2493,639 +2458,504 @@ button {
   font-size: 2rem;
 }
 
-.templo-tipo-badge {
+.placa-tipo-etiqueta {
   position: absolute;
-  top: 6px;
-  left: 6px;
-  background: #08080a;
+  top: 0;
+  left: 0;
+  background: #ff0004;
+  color: #ffffff;
   font-family: monospace;
   font-size: 0.6rem;
   font-weight: 800;
   padding: 2px 6px;
-  border-radius: 4px;
-  color: #ffd700;
 }
 
-/* Efeito ao passar o mouse: disco de ouro desliza para fora e brilha */
-.templo-conteudo-grid:hover .templo-disco-ouro {
+.placa-ouro-corpo:hover .placa-disco-ouro {
   transform: translateX(65px) rotate(180deg);
   filter: drop-shadow(0 10px 20px rgba(212, 175, 55, 0.6));
 }
 
-.templo-conteudo-grid:hover .templo-capa-cover {
-  transform: scale(1.04);
+.placa-ouro-corpo:hover .placa-capa-quadrada {
+  transform: scale(1.03);
 }
 
-/* Textos da Coluna */
-.templo-info-col {
+.placa-dados-col {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.templo-artista-eyebrow {
-  font-family: "DM Sans:Bold", monospace, sans-serif;
-  font-size: 0.85rem;
+.placa-artista-head {
+  font-family: monospace;
+  font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.1em;
   color: #ff0004;
   text-transform: uppercase;
 }
 
-.templo-obra-titulo {
+.placa-titulo-obra {
   margin: 0;
   font-family: "DM Serif Display:Regular", serif;
   font-size: clamp(2.2rem, 3.6vw, 3.2rem);
   font-weight: 400;
   line-height: 1;
-  color: #08080a;
+  color: #f7f4ed;
   letter-spacing: -0.02em;
 }
 
-.templo-obra-desc {
-  margin: 6px 0 0;
-  font-size: 0.95rem;
-  color: #555047;
-  font-weight: 500;
+.placa-sub-detalhe {
+  margin: 4px 0 0;
+  font-size: 0.88rem;
+  color: #8c877d;
 }
 
-.templo-placa-comentario {
+.placa-resenha-box {
   margin-top: 14px;
-  padding: 14px 20px;
-  background: rgba(8, 8, 10, 0.05);
-  border-left: 3px solid #ff0004;
-  border-radius: 0 10px 10px 0;
-  position: relative;
+  padding: 12px 18px;
+  background: rgba(255, 215, 0, 0.05);
+  border-left: 2px solid #ffd700;
+  border-top: 1px solid rgba(255, 215, 0, 0.15);
+  border-bottom: 1px solid rgba(255, 215, 0, 0.15);
 }
 
-.placa-aspas {
-  position: absolute;
-  top: -8px;
-  left: 8px;
-  font-family: serif;
-  font-size: 2.2rem;
-  color: #ff0004;
-  opacity: 0.3;
-  line-height: 1;
+.resenha-tag-mono {
+  font-family: monospace;
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #ffd700;
+  letter-spacing: 0.1em;
+  display: block;
+  margin-bottom: 4px;
 }
 
-.placa-texto {
+.resenha-texto-aspas {
   margin: 0 0 6px 0;
   font-style: italic;
   font-size: 0.95rem;
-  color: #08080a;
+  color: #f7f4ed;
   line-height: 1.5;
 }
 
-.placa-assinatura {
+.resenha-assinatura {
   display: block;
-  font-size: 0.75rem;
-  font-weight: 800;
+  font-family: monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
   color: #ff0004;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
 }
 
-.templo-placa-vazia {
+.placa-sem-resenha {
   margin-top: 12px;
   display: flex;
   align-items: center;
   gap: 16px;
-  color: #777;
-  font-size: 0.88rem;
+  color: #666;
+  font-size: 0.85rem;
 }
 
-.templo-btn-escrever {
-  background: #08080a;
-  border: 1px solid #08080a;
+.placa-btn-adicionar-txt {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   color: #f7f4ed;
-  padding: 7px 16px;
-  border-radius: 99px;
-  font-family: "DM Sans:Bold", sans-serif;
+  padding: 6px 14px;
+  font-family: monospace;
   font-size: 0.75rem;
-  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
 }
 
-.templo-btn-escrever:hover {
+.placa-btn-adicionar-txt:hover {
   background: #ff0004;
   border-color: #ff0004;
-  color: #ffffff;
 }
 
-/* 3. BARRA DE CONTROLE / ABAS */
-.colecao-controle-secao {
+/* 3. BARRA DE FILTRO BRUTALISTA */
+.arquivo-filtros-secao {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 32px 48px 16px;
+  padding: 36px 48px 16px;
   gap: 16px;
   flex-wrap: wrap;
 }
 
-.colecao-abas-filtro {
+.arquivo-abas-bloco {
   display: flex;
   align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.aba-btn {
-  background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.15);
-  color: #8c877d;
-  padding: 8px 18px;
-  border-radius: 99px;
-  font-family: "DM Sans:Bold", sans-serif;
-  font-size: 0.8rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.25s ease;
 }
 
-.aba-btn:hover {
-  border-color: #f7f4ed;
+.aba-reta-btn {
+  background: transparent;
+  border: none;
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
+  color: #8c877d;
+  padding: 10px 18px;
+  font-family: monospace;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.aba-reta-btn:last-child {
+  border-right: none;
+}
+
+.aba-reta-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
   color: #f7f4ed;
 }
 
-.aba-btn.ativa {
+.aba-reta-btn.ativo {
   background: #f7f4ed;
   color: #08080a;
-  border-color: #f7f4ed;
-  box-shadow: 0 4px 14px rgba(247, 244, 237, 0.15);
 }
 
-.colecao-btn-adicionar {
+.arquivo-btn-explorar {
   background: transparent;
-  border: 1px dashed rgba(255, 255, 255, 0.25);
+  border: 1px dashed rgba(255, 255, 255, 0.3);
   color: #c8c4cf;
-  padding: 8px 18px;
-  border-radius: 99px;
-  font-family: "DM Sans:Bold", sans-serif;
-  font-size: 0.78rem;
+  padding: 10px 18px;
+  font-family: monospace;
+  font-size: 0.75rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.colecao-btn-adicionar:hover {
+.arquivo-btn-explorar:hover {
   background: rgba(255, 255, 255, 0.08);
   color: #f7f4ed;
   border-color: #f7f4ed;
 }
 
-/* 4. LISTA EDITORIAL DE ITENS */
-.colecao-lista-editorial {
+/* 4. GRID DE FICHAS TÉCNICAS (ESTANTE DE DISCOS) */
+.arquivo-grid-secao {
+  padding: 16px 48px 40px;
+}
+
+.fichas-arquivo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 20px;
+}
+
+.ficha-card-item {
+  background: #0f0e14;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   flex-direction: column;
-  width: 100%;
-}
-
-.colecao-linha-item {
-  display: grid;
-  grid-template-columns: 70px 90px 1fr auto;
-  align-items: center;
-  gap: 24px;
-  padding: 20px 48px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  background: #08080a; /* Preto carvão profundo, sem tom azul */
-  color: #f7f4ed;
+  padding: 18px;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.25s ease;
+  position: relative;
 }
 
-.colecao-linha-item:hover {
-  background: #f7f4ed !important;
-  color: #08080a !important;
-  transform: scale(1.008);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
-  z-index: 5;
+.ficha-card-item:hover {
+  border-color: #f7f4ed;
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
 }
 
-.colecao-linha-item:hover .colecao-item-numero {
-  color: #e0261f !important;
+.ficha-card-item.card-favorito-ativo {
+  border-color: #ffd700;
+  background: linear-gradient(180deg, rgba(255, 215, 0, 0.06) 0%, #0f0e14 40%);
 }
 
-.colecao-linha-item:hover .colecao-obra-nome {
-  color: #08080a !important;
-  transform: translateX(6px);
+.ficha-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 10px;
+  margin-bottom: 14px;
 }
 
-.colecao-linha-item:hover .colecao-comentario-texto {
-  color: #3f3b47 !important;
-  border-left-color: #ff0004;
-}
-
-.colecao-linha-item:hover .colecao-btn-editar {
-  background: #08080a;
-  color: #f7f4ed;
-}
-
-.colecao-linha-item.linha-favorito-destaque {
-  border-left: 4px solid #ffd700;
-  background: linear-gradient(90deg, rgba(255, 215, 0, 0.08) 0%, rgba(8, 8, 10, 1) 45%);
-}
-
-.badge-mini-favorito {
-  font-family: "DM Sans:Bold", monospace, sans-serif;
+.ficha-card-tipo {
+  font-family: monospace;
   font-size: 0.65rem;
   font-weight: 800;
   letter-spacing: 0.1em;
-  background: #ffd700;
-  color: #08080a;
-  padding: 2px 6px;
-  border-radius: 4px;
-  margin-left: 8px;
-  vertical-align: middle;
+  color: #8c877d;
 }
 
-.btn-coroar-favorito {
-  background: transparent;
-  border: 1px solid rgba(255, 215, 0, 0.4);
+.ficha-card-ano {
+  font-family: monospace;
+  font-size: 0.7rem;
+  color: #555;
+  font-weight: 700;
+}
+
+.ficha-card-ouro-badge {
+  font-family: monospace;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
   color: #ffd700;
-  font-family: "DM Sans:Bold", sans-serif;
-  font-size: 0.72rem;
-  font-weight: 700;
-  padding: 6px 12px;
-  border-radius: 99px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
 }
 
-.btn-coroar-favorito:hover {
-  background: rgba(255, 215, 0, 0.15);
-  border-color: #ffd700;
-  transform: scale(1.05);
+.ficha-card-body {
+  display: flex;
+  gap: 14px;
+  align-items: center;
 }
 
-.btn-coroar-favorito.coroado {
-  background: #ffd700;
-  color: #08080a;
-  border-color: #ffd700;
-  box-shadow: 0 0 12px rgba(255, 215, 0, 0.35);
-}
-
-.colecao-item-numero {
-  font-family: "DM Sans:Bold", sans-serif;
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #ff0004;
-  letter-spacing: 0.04em;
-}
-
-.colecao-capa-box {
+.ficha-capa-wrap {
   width: 72px;
   height: 72px;
-  border-radius: 6px;
-  overflow: hidden;
-  position: relative;
-  background: #252233;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   flex-shrink: 0;
+  background: #191525;
 }
 
-.colecao-capa-img {
+.ficha-capa-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-.colecao-capa-placeholder {
+.ficha-capa-vazia {
   width: 100%;
   height: 100%;
   display: grid;
   place-items: center;
-  font-weight: 700;
-  color: #777;
-}
-
-.colecao-tag-tipo {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  background: rgba(14, 13, 21, 0.85);
-  font-family: monospace;
-  font-size: 0.55rem;
   font-weight: 800;
-  padding: 1px 4px;
-  border-radius: 3px;
-  color: #f7f4ed;
+  color: #555;
 }
 
-.colecao-item-info {
+.ficha-titulos-box {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-}
-
-.colecao-item-titulos {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.colecao-obra-nome {
-  margin: 0;
-  font-family: "DM Sans:Bold", -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 1.35rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  color: #f7f4ed;
-  transition: transform 0.25s ease, color 0.2s ease;
-}
-
-.colecao-artista-sub {
-  font-family: "DM Sans:Bold", sans-serif;
-  font-size: 0.85rem;
-  color: #ff0004;
-}
-
-.colecao-comentario-texto {
-  margin: 4px 0 0;
-  font-size: 0.82rem;
-  font-style: italic;
-  color: #aaa;
-  border-left: 2px solid rgba(255, 0, 4, 0.4);
-  padding-left: 10px;
-}
-
-.colecao-item-direita {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.colecao-btn-editar {
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #c8c4cf;
-  font-family: "DM Sans:Bold", sans-serif;
-  font-size: 0.72rem;
-  font-weight: 700;
-  padding: 6px 12px;
-  border-radius: 99px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.colecao-btn-editar:hover {
-  background: #ff0004;
-  color: #ffffff;
-  border-color: #ff0004;
-}
-
-/* ESTADO VAZIO / SEM AVALIAÇÕES */
-.colecao-vazio-card {
-  margin: 48px auto;
-  max-width: 600px;
-  padding: 48px 32px;
-  text-align: center;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px dashed rgba(255, 255, 255, 0.15);
-  border-radius: 16px;
-}
-
-.vazio-vinil-icone {
-  width: 140px;
-  margin: 0 auto 20px;
-  display: block;
-}
-
-.vazio-titulo {
-  font-family: "DM Serif Display:Regular", serif;
-  font-size: 1.8rem;
-  margin: 0 0 10px;
-  color: #f7f4ed;
-}
-
-.vazio-subtitulo {
-  color: #8c877d;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  margin: 0 0 28px;
-}
-
-.vazio-btn-cta {
-  background: #ff0004;
-  color: #ffffff;
-  border: none;
-  font-family: "DM Sans:Bold", sans-serif;
-  font-size: 0.85rem;
-  font-weight: 800;
-  padding: 12px 28px;
-  border-radius: 99px;
-  cursor: pointer;
-  letter-spacing: 0.05em;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 6px 20px rgba(255, 0, 4, 0.35);
-}
-
-.vazio-btn-cta:hover {
-  background: #cc0003;
-  transform: translateY(-2px) scale(1.04);
-  box-shadow: 0 10px 28px rgba(255, 0, 4, 0.5);
-}
-
-.colecao-sem-filtro {
-  text-align: center;
-  padding: 60px 20px;
-  color: #666;
-  font-size: 1rem;
-}
-
-/* ESTADO DESLOGADO */
-.colecao-deslogado-box {
-  margin: 60px auto;
-  max-width: 520px;
-  text-align: center;
-  padding: 30px 20px;
-}
-
-.colecao-deslogado-img {
-  width: 180px;
-  margin: 0 auto 20px;
-  display: block;
-}
-
-.colecao-tag-aviso {
-  display: inline-block;
-  background: rgba(255, 0, 4, 0.15);
-  color: #ff0004;
-  border: 1px solid #ff0004;
-  font-family: monospace;
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  padding: 3px 10px;
-  border-radius: 4px;
-  margin-bottom: 12px;
-}
-
-.colecao-deslogado-titulo {
-  font-family: "DM Serif Display:Regular", serif;
-  font-size: 2.2rem;
-  margin: 0 0 12px;
-}
-
-.colecao-deslogado-sub {
-  color: #8c877d;
-  font-size: 0.95rem;
-  line-height: 1.6;
-}
-
-/* RESPONSIVIDADE */
-@media (max-width: 980px) {
-  .passaporte-critico {
-    padding: 24px;
-  }
-  .colecao-destaque-banner {
-    margin: 24px 24px 0;
-    padding: 20px;
-  }
-  .colecao-controle-secao {
-    padding: 24px 24px 12px;
-  }
-  .colecao-linha-item {
-    padding: 16px 24px;
-    grid-template-columns: 40px 60px 1fr;
-    gap: 16px;
-  }
-  .colecao-item-direita {
-    display: none;
-  }
-}
-
-@media (max-width: 640px) {
-  .passaporte-top {
-    flex-direction: column;
-    text-align: center;
-    gap: 16px;
-  }
-  .passaporte-meta-selo {
-    justify-content: center;
-  }
-  .passaporte-metricas {
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    text-align: center;
-  }
-  .destaque-corpo {
-    flex-direction: column;
-    text-align: center;
-  }
-  .colecao-linha-item {
-    padding: 14px 16px;
-    grid-template-columns: 30px 50px 1fr;
-    gap: 12px;
-  }
-  .colecao-capa-box {
-    width: 50px;
-    height: 50px;
-  }
-}
-
-
-/* MODAL SELETOR DO FAVORITO SUPREMO */
-.modal-seletor-favorito {
-  max-width: 520px;
-}
-
-.modal-seletor-tag {
-  display: inline-block;
-  font-family: "DM Sans:Bold", monospace, sans-serif;
-  font-size: 0.65rem;
-  letter-spacing: 0.14em;
-  color: #ffd700;
-  font-weight: 800;
-  margin-bottom: 4px;
-}
-
-.seletor-lista-itens {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  max-height: 380px;
-  overflow-y: auto;
-  padding-right: 4px;
-}
-
-.seletor-card-item {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 10px 14px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.seletor-card-item:hover {
-  background: rgba(255, 215, 0, 0.08);
-  border-color: rgba(255, 215, 0, 0.35);
-  transform: translateX(4px);
-}
-
-.seletor-card-item.selecionado {
-  border-color: #ffd700;
-  background: rgba(255, 215, 0, 0.12);
-}
-
-.seletor-item-capa {
-  width: 46px;
-  height: 46px;
-  border-radius: 6px;
-  object-fit: cover;
-  flex-shrink: 0;
-}
-
-.seletor-item-textos {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
+  gap: 2px;
   min-width: 0;
 }
 
-.seletor-item-textos strong {
-  font-size: 0.95rem;
-  color: #f7f4ed;
+.ficha-card-artista {
+  font-family: monospace;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #ff0004;
+  text-transform: uppercase;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.seletor-item-textos span {
-  font-size: 0.78rem;
-  color: #8c877d;
-}
-
-.seletor-check-badge {
-  font-family: "DM Sans:Bold", monospace, sans-serif;
-  font-size: 0.7rem;
-  font-weight: 800;
-  color: #ffd700;
-  letter-spacing: 0.08em;
-}
-
-.seletor-btn-escolher {
+.ficha-card-titulo {
+  margin: 0;
   font-family: "DM Sans:Bold", sans-serif;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #aaa;
-  padding: 4px 10px;
-  border-radius: 99px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  transition: all 0.2s ease;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #f7f4ed;
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.seletor-card-item:hover .seletor-btn-escolher {
-  color: #ffd700;
-  border-color: #ffd700;
-  background: rgba(255, 215, 0, 0.1);
+.ficha-card-comentario {
+  margin-top: 14px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 2px solid rgba(255, 0, 4, 0.5);
+  font-style: italic;
+  font-size: 0.82rem;
+  color: #bbb;
+  line-height: 1.4;
 }
+
+.ficha-card-footer {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.ficha-botoes-acoes {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-ficha-coroar {
+  background: transparent;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  color: #ffd700;
+  font-family: monospace;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 4px 8px;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: all 0.2s;
+}
+
+.btn-ficha-coroar:hover {
+  background: rgba(255, 215, 0, 0.15);
+  border-color: #ffd700;
+}
+
+.btn-ficha-coroar.ativo {
+  background: #ffd700;
+  color: #08080a;
+}
+
+.btn-ficha-editar {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #aaa;
+  font-family: monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-ficha-editar:hover {
+  background: #ff0004;
+  border-color: #ff0004;
+  color: #ffffff;
+}
+
+/* ESTADO VAZIO BRUTALISTA */
+.arquivo-vazio-box {
+  margin: 40px auto;
+  max-width: 580px;
+  padding: 48px 32px;
+  text-align: center;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  background: #0f0e14;
+}
+
+.vazio-titulo {
+  font-family: "DM Sans:Bold", monospace, sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 0.1em;
+  margin: 0 0 8px;
+  color: #f7f4ed;
+}
+
+.vazio-subtitulo {
+  color: #888;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 0 0 24px;
+}
+
+.arquivo-cta-btn {
+  background: #ff0004;
+  color: #ffffff;
+  border: none;
+  font-family: monospace;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.arquivo-cta-btn:hover {
+  background: #cc0003;
+  transform: translateY(-2px);
+}
+
+.arquivo-sem-itens {
+  text-align: center;
+  padding: 60px 20px;
+  font-family: monospace;
+  color: #666;
+}
+
+/* MODAL SELETOR BRUTALISTA */
+.modal-brutal-seletor {
+  border-radius: 0 !important;
+  border: 2px solid #ffd700 !important;
+  background: #08080a !important;
+  max-width: 540px;
+}
+
+.seletor-card-item.brutal-item {
+  border-radius: 0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #0f0e14;
+}
+
+.seletor-card-item.brutal-item:hover {
+  border-color: #ffd700;
+  background: rgba(255, 215, 0, 0.08);
+}
+
+.seletor-card-item.brutal-item.selecionado {
+  border-color: #ffd700;
+  background: rgba(255, 215, 0, 0.15);
+}
+
+.seletor-item-capa {
+  border-radius: 0;
+}
+
+/* RESPONSIVIDADE BRUTALISTA */
+@media (max-width: 980px) {
+  .arquivo-ficha-critico {
+    padding: 24px;
+  }
+  .ficha-metricas-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .metrica-quadro:nth-child(2) {
+    border-right: none;
+  }
+  .metrica-quadro {
+    border-bottom: 1px solid #08080a;
+  }
+  .templo-ouro-arquivo {
+    margin: 24px 24px 0;
+    padding: 20px;
+  }
+  .placa-ouro-corpo {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .arquivo-filtros-secao,
+  .arquivo-grid-secao {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .ficha-topo-grid {
+    flex-direction: column;
+  }
+  .ficha-selo-caixa {
+    width: 100%;
+  }
+  .ficha-metricas-grid {
+    grid-template-columns: 1fr;
+  }
+  .metrica-quadro {
+    border-right: none;
+    border-bottom: 1px solid #08080a;
+  }
+  .arquivo-abas-bloco {
+    flex-direction: column;
+    width: 100%;
+  }
+  .aba-reta-btn {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    width: 100%;
+    text-align: left;
+  }
+}
+
