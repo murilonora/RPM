@@ -15,14 +15,14 @@ export function Cabecalho({
   return (
     <header className="site-header">
       <Logotipo aoClicar={aoIrParaInicio} />
-      <nav aria-label="Navegacao principal">
+      <nav aria-label="Navegação principal">
         <button onClick={aoClicarDescobrir}>Descobrir</button>
         <button onClick={aoClicarArtistas}>Artistas</button>
-        <button onClick={aoClicarAlbuns}>Albuns</button>
+        <button onClick={aoClicarAlbuns}>Álbuns</button>
       </nav>
       <div className="header-actions">
         <button className="collection-button" onClick={aoClicarColecao}>
-          Colecao
+          Coleção
         </button>
         {estaLogado ? (
           <div className="usuario-logado">

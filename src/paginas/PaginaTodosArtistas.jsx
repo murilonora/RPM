@@ -1,6 +1,13 @@
 import { useState, useMemo } from "react";
 import { listaDeArtistas } from "../dados/dadosMusicais";
 
+function normalizarTexto(texto = "") {
+  return texto
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
+
 export function PaginaTodosArtistas({ aoSelecionarArtista }) {
   const [termoBusca, setTermoBusca] = useState("");
   const [letraFiltro, setLetraFiltro] = useState("TODOS");
@@ -24,14 +31,14 @@ export function PaginaTodosArtistas({ aoSelecionarArtista }) {
 
   // Filtra por termo de busca e letra selecionada
   const artistasFiltrados = useMemo(() => {
-    const termo = termoBusca.trim().toLowerCase();
+    const termo = normalizarTexto(termoBusca.trim());
     return artistasOrdenados.filter((artista) => {
       const bateTexto =
         !termo ||
-        artista.nome.toLowerCase().includes(termo) ||
-        artista.categoria.toLowerCase().includes(termo) ||
-        artista.genero.toLowerCase().includes(termo) ||
-        artista.origem.toLowerCase().includes(termo);
+        normalizarTexto(artista.nome).includes(termo) ||
+        normalizarTexto(artista.categoria).includes(termo) ||
+        normalizarTexto(artista.genero).includes(termo) ||
+        normalizarTexto(artista.origem).includes(termo);
 
       const inicial = artista.nome.charAt(0).toUpperCase();
       const bateLetra = letraFiltro === "TODOS" || inicial === letraFiltro;

@@ -49,7 +49,7 @@ export function AvaliacaoVinil({ chaveItem, tamanho = "normal", apenasLeitura = 
             aoClicarNota(nota);
           }}
           onMouseEnter={() => !apenasLeitura && estaLogado && setNotaHover(nota)}
-          title={estaLogado ? `${nota} vinil${nota > 1 ? "s" : ""}` : "Faca login para avaliar"}
+          title={estaLogado ? `${nota} ${nota > 1 ? "vinis" : "vinil"}` : "Faça login para avaliar"}
           disabled={!estaLogado || apenasLeitura}
         >
           <IconeVinil

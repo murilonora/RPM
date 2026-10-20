@@ -64,7 +64,7 @@ export function PaginaArtista({ artista, aoVoltarAoInicio, aoAvaliar }) {
           </div>
         </div>
 
-        <div className="tabs" role="tablist" aria-label="Conteúdo da artista">
+        <div className="tabs" role="tablist" aria-label="Conteúdo do artista">
           {Object.keys(rotulosAbas).map((chave) => (
             <button
               key={chave}

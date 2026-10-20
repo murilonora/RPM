@@ -56,14 +56,14 @@ export function ModalAvaliacao({ visivel, aoFechar, item }) {
         ) : (
           <form onSubmit={aoSalvar} className="modal-formulario">
             <h2 className="modal-titulo" style={{ marginBottom: "8px" }}>
-              Sua Avaliacao
+              Sua Avaliação
             </h2>
 
-            <div style={{ display: "flex", gap: "16px", alignItems: "center", marginBottom: "24px", padding: "16px", background: "rgba(255,255,255,0.05)", borderRadius: "12px" }}>
+            <div style={{ display: "flex", gap: "16px", alignItems: "center", marginBottom: "24px", padding: "16px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "0px" }}>
               {item.capa ? (
-                <img src={item.capa} alt={item.titulo} style={{ width: "64px", height: "64px", borderRadius: "8px", objectFit: "cover" }} />
+                <img src={item.capa} alt={item.titulo} style={{ width: "64px", height: "64px", borderRadius: "0px", objectFit: "cover" }} />
               ) : (
-                <div style={{ width: "64px", height: "64px", borderRadius: "8px", background: "#333", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px", fontWeight: "bold" }}>
+                <div style={{ width: "64px", height: "64px", borderRadius: "0px", background: "#333", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px", fontWeight: "bold" }}>
                   {item.titulo.slice(0, 2).toUpperCase()}
                 </div>
               )}
@@ -79,7 +79,7 @@ export function ModalAvaliacao({ visivel, aoFechar, item }) {
             </div>
 
             <div className="campo-formulario">
-              <label htmlFor="campo-comentario">Comentario (Opcional)</label>
+              <label htmlFor="campo-comentario">Comentário (opcional)</label>
               <textarea
                 id="campo-comentario"
                 rows="4"
@@ -87,15 +87,15 @@ export function ModalAvaliacao({ visivel, aoFechar, item }) {
                 value={comentarioTemp}
                 onChange={(e) => setComentarioTemp(e.target.value)}
                 style={{
-                  width: "100%", background: "#0e0d15", border: "1px solid rgba(255,255,255,0.1)",
-                  padding: "12px 16px", borderRadius: "8px", color: "#f7f4ed", resize: "vertical",
+                  width: "100%", background: "#0e0d15", border: "1px solid rgba(255,255,255,0.15)",
+                  padding: "12px 16px", borderRadius: "0px", color: "#f7f4ed", resize: "vertical",
                   fontFamily: "inherit"
                 }}
               />
             </div>
 
-            <button type="submit" className="botao-principal" style={{ marginTop: "16px" }}>
-              Salvar Avaliacao
+            <button type="submit" className="botao-principal" style={{ marginTop: "16px", borderRadius: "0px" }}>
+              Salvar Avaliação
             </button>
           </form>
         )}

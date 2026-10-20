@@ -7,10 +7,10 @@ export function AbaMusicas({ musicas = [], artistaId = "", aoAvaliar }) {
   return (
     <div className="ranking-list">
       <div className="list-header">
-        <span># / Musica</span>
-        <span>Album</span>
+        <span># / Música</span>
+        <span>Álbum</span>
         <span>Ano</span>
-        <span>Reproducoes</span>
+        <span>Reproduções</span>
       </div>
       {musicas.map((musica, indice) => (
         <button 
@@ -19,7 +19,7 @@ export function AbaMusicas({ musicas = [], artistaId = "", aoAvaliar }) {
           onClick={() => aoAvaliar && aoAvaliar({
             chave: `musica-${artistaId}-${indice}`,
             titulo: musica.titulo,
-            subtitulo: `Musica - ${musica.album}`,
+            subtitulo: `Música • ${musica.album}`,
             capa: musica.capa
           })}
         >
@@ -35,7 +35,7 @@ export function AbaMusicas({ musicas = [], artistaId = "", aoAvaliar }) {
                 style={{
                   width: "36px",
                   height: "36px",
-                  borderRadius: "4px",
+                  borderRadius: "0px",
                   objectFit: "cover",
                 }}
               />

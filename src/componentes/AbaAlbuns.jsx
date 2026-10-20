@@ -1,7 +1,7 @@
-// Grid de exibicao dos albuns lancados pelo artista
+// Grid de exibição dos álbuns lançados pelo artista
 export function AbaAlbuns({ albuns = [], nomeArtista = "", artistaId = "", aoAvaliar }) {
   if (!albuns || albuns.length === 0) {
-    return <p className="p-4 text-center">Nenhum album encontrado.</p>;
+    return <p className="p-4 text-center">Nenhum álbum encontrado.</p>;
   }
 
   const siglas = nomeArtista
@@ -23,7 +23,7 @@ export function AbaAlbuns({ albuns = [], nomeArtista = "", artistaId = "", aoAva
           onClick={() => aoAvaliar && aoAvaliar({
             chave: `album-${artistaId}-${indice}`,
             titulo: album.titulo,
-            subtitulo: `Album - ${album.ano}`,
+            subtitulo: `Álbum • ${album.ano}`,
             capa: album.capa
           })}
         >
@@ -56,7 +56,7 @@ export function AbaAlbuns({ albuns = [], nomeArtista = "", artistaId = "", aoAva
             <span>{album.faixas}</span>
           </div>
           <h3>{album.titulo}</h3>
-          <p>{album.reproducoes} reproducoes</p>
+          <p>{album.reproducoes} reproduções</p>
         </article>
       ))}
     </div>

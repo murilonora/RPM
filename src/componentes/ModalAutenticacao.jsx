@@ -29,7 +29,7 @@ export function ModalAutenticacao({ visivel, aoFechar }) {
       }
       const usuario = entrarComEmail(email.trim());
       if (!usuario) {
-        setErro("E-mail nao encontrado. Cadastre-se primeiro.");
+        setErro("E-mail não encontrado. Cadastre-se primeiro.");
         return;
       }
       limparEFechar();
@@ -51,7 +51,7 @@ export function ModalAutenticacao({ visivel, aoFechar }) {
         </button>
 
         <h2 className="modal-titulo">
-          {modoAtivo === "entrar" ? "Entrar na sua conta" : "Criar conta de critico"}
+          {modoAtivo === "entrar" ? "Entrar na sua conta" : "Criar conta de crítico"}
         </h2>
 
         <div className="modal-abas">
@@ -78,7 +78,7 @@ export function ModalAutenticacao({ visivel, aoFechar }) {
         <form onSubmit={aoSubmeterFormulario} className="modal-formulario">
           {modoAtivo === "cadastrar" && (
             <div className="campo-formulario">
-              <label htmlFor="campo-nome">Nome do Critico</label>
+              <label htmlFor="campo-nome">Nome do Crítico</label>
               <input
                 id="campo-nome"
                 type="text"

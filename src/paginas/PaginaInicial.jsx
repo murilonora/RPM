@@ -2,6 +2,14 @@ import { useState, useEffect } from "react";
 import { listaDeArtistas, categoriasMusicais } from "../dados/dadosMusicais";
 import { FundoMosaicoHero } from "../componentes/FundoMosaicoHero";
 
+// Função para normalizar texto removendo acentos e convertendo para minúsculas
+function normalizarTexto(texto = "") {
+  return texto
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
+
 // Estilos reutilizáveis para o dropdown de busca
 const estiloDropdown = {
   position: "absolute",
@@ -9,7 +17,8 @@ const estiloDropdown = {
   left: 0,
   right: 0,
   background: "#ffffff",
-  borderRadius: "12px",
+  borderRadius: "0px",
+  border: "1px solid #191525",
   boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
   marginTop: "8px",
   maxHeight: "400px",
@@ -25,7 +34,7 @@ const estiloItemBusca = {
   textAlign: "left",
   padding: "8px 12px",
   marginBottom: "4px",
-  borderRadius: "8px",
+  borderRadius: "0px",
   border: "none",
   cursor: "pointer",
   background: "transparent",
@@ -34,7 +43,7 @@ const estiloItemBusca = {
 const estiloFoto = {
   width: "48px",
   height: "48px",
-  borderRadius: "8px",
+  borderRadius: "0px",
   objectFit: "cover",
   marginRight: "12px",
   flexShrink: 0,
@@ -47,7 +56,7 @@ const estiloBadge = (cor) => ({
   textTransform: "uppercase",
   letterSpacing: "0.06em",
   padding: "2px 8px",
-  borderRadius: "20px",
+  borderRadius: "0px",
   marginBottom: "3px",
   background: cor,
   color: "#ffffff",
@@ -83,7 +92,7 @@ export function PaginaInicial({ aoSelecionarArtista }) {
   const artistaEmDestaque =
     listaDeArtistas.find((a) => a.id === "racionais-mcs") || listaDeArtistas[0];
 
-  const termo = termoBusca.trim().toLowerCase();
+  const termo = normalizarTexto(termoBusca.trim());
 
   // -----------------------------------------------------------
   // BUSCA UNIFICADA: gera uma lista de resultados com 3 tipos
@@ -97,9 +106,9 @@ export function PaginaInicial({ aoSelecionarArtista }) {
     listaDeArtistas.forEach((artista) => {
       // 1. Verifica se o artista bate com o termo
       if (
-        artista.nome.toLowerCase().includes(termo) ||
-        artista.genero.toLowerCase().includes(termo) ||
-        artista.categoria.toLowerCase().includes(termo)
+        normalizarTexto(artista.nome).includes(termo) ||
+        normalizarTexto(artista.genero).includes(termo) ||
+        normalizarTexto(artista.categoria).includes(termo)
       ) {
         resultados.push({
           tipo: "artista",
@@ -114,7 +123,7 @@ export function PaginaInicial({ aoSelecionarArtista }) {
 
       // 2. Verifica músicas do artista
       artista.musicas.forEach((musica, idx) => {
-        if (musica.titulo.toLowerCase().includes(termo)) {
+        if (normalizarTexto(musica.titulo).includes(termo)) {
           resultados.push({
             tipo: "musica",
             chave: `musica-${artista.id}-${idx}`,
@@ -129,7 +138,7 @@ export function PaginaInicial({ aoSelecionarArtista }) {
 
       // 3. Verifica álbuns do artista
       artista.albuns.forEach((album, idx) => {
-        if (album.titulo.toLowerCase().includes(termo)) {
+        if (normalizarTexto(album.titulo).includes(termo)) {
           resultados.push({
             tipo: "album",
             chave: `album-${artista.id}-${idx}`,
@@ -150,11 +159,11 @@ export function PaginaInicial({ aoSelecionarArtista }) {
   const artistasFiltradosCatalogo = listaDeArtistas.filter((artista) => {
     const correspondeBusca =
       !termo ||
-      artista.nome.toLowerCase().includes(termo) ||
-      artista.categoria.toLowerCase().includes(termo) ||
-      artista.genero.toLowerCase().includes(termo) ||
-      artista.musicas.some((m) => m.titulo.toLowerCase().includes(termo)) ||
-      artista.albuns.some((a) => a.titulo.toLowerCase().includes(termo));
+      normalizarTexto(artista.nome).includes(termo) ||
+      normalizarTexto(artista.categoria).includes(termo) ||
+      normalizarTexto(artista.genero).includes(termo) ||
+      artista.musicas.some((m) => normalizarTexto(m.titulo).includes(termo)) ||
+      artista.albuns.some((a) => normalizarTexto(a.titulo).includes(termo));
 
     const correspondeCategoria =
       categoriaAtiva === "Todos" || artista.categoria === categoriaAtiva;
@@ -178,7 +187,7 @@ export function PaginaInicial({ aoSelecionarArtista }) {
             Toda música tem uma história.
           </h1>
           <p className="hero-copy">
-            Mister aura.
+            Arquivo definitivo da música. Explore discografias essenciais, descubra trajetórias históricas e monte sua coleção de críticas em vinil.
           </p>
 
           <form className="search-box" onSubmit={lidarComEnvio}>
@@ -339,7 +348,7 @@ export function PaginaInicial({ aoSelecionarArtista }) {
                 onClick={() => setCategoriaAtiva(cat)}
                 style={{
                   padding: "8px 16px",
-                  borderRadius: "20px",
+                  borderRadius: "0px",
                   border:
                     categoriaAtiva === cat
                       ? "2px solid #191525"
@@ -372,9 +381,9 @@ export function PaginaInicial({ aoSelecionarArtista }) {
               onClick={() => aoSelecionarArtista(artista)}
               style={{
                 background: "#ffffff",
-                borderRadius: "12px",
+                borderRadius: "0px",
                 overflow: "hidden",
-                border: "1px solid #e7e2d7",
+                border: "1px solid #191525",
                 cursor: "pointer",
                 transition: "transform 0.2s, box-shadow 0.2s",
               }}
