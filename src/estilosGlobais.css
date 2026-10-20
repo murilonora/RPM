@@ -2300,118 +2300,309 @@ button {
   color: #888;
 }
 
-/* 2. BANNER FAVORITO ABSOLUTO */
-.colecao-destaque-banner {
+/* 2. O TEMPLO DO VINIL / DISCO DE OURO NA PAREDE */
+.templo-vinil-secao {
   margin: 36px 48px 0;
-  background: #191525;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-left: 4px solid #ff0004;
-  border-radius: 12px;
-  padding: 24px 32px;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
 }
 
-.destaque-tag-linha {
+.templo-vinil-quadro {
+  background: radial-gradient(circle at 15% 20%, #201d2c 0%, #111019 70%, #0a0910 100%);
+  border: 1px solid rgba(255, 215, 0, 0.28);
+  border-radius: 16px;
+  padding: 32px 36px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 40px rgba(255, 215, 0, 0.05);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.templo-vinil-quadro:hover {
+  border-color: rgba(255, 215, 0, 0.5);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 50px rgba(255, 215, 0, 0.1);
+}
+
+.templo-header-linha {
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding-bottom: 12px;
-  margin-bottom: 18px;
+  padding-bottom: 16px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
-.destaque-tag-badge {
+.templo-selo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.templo-estrela-ouro {
+  color: #ffd700;
+  font-size: 1.1rem;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+}
+
+.templo-selo-texto {
   font-family: "DM Sans:Bold", monospace, sans-serif;
   font-size: 0.75rem;
   font-weight: 800;
-  color: #ff0004;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.14em;
+  background: linear-gradient(90deg, #ffd700, #ffae00, #ffffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.destaque-tag-nota {
-  font-family: "DM Sans:Bold", sans-serif;
-  font-size: 0.8rem;
-  color: #f7f4ed;
-  letter-spacing: 0.08em;
-}
-
-.destaque-corpo {
+.templo-acoes-topo {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 16px;
+}
+
+.templo-nota-ouro {
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #ffd700;
+  letter-spacing: 0.06em;
+}
+
+.templo-btn-trocar {
+  background: rgba(255, 215, 0, 0.12);
+  border: 1px solid rgba(255, 215, 0, 0.35);
+  color: #ffd700;
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 6px 14px;
+  border-radius: 99px;
   cursor: pointer;
-  transition: transform 0.25s ease;
+  letter-spacing: 0.06em;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.destaque-corpo:hover {
-  transform: translateX(4px);
+.templo-btn-trocar:hover {
+  background: #ffd700;
+  color: #14121c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(255, 215, 0, 0.4);
 }
 
-.destaque-capa-wrap {
-  width: 110px;
-  height: 110px;
+/* Grid de Conteúdo */
+.templo-conteudo-grid {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  align-items: center;
+  gap: 48px;
+  cursor: pointer;
+}
+
+/* Moldura e Disco de Ouro Físico saindo */
+.templo-moldura-vinil {
+  position: relative;
+  width: 140px;
+  height: 140px;
+}
+
+.templo-disco-ouro {
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffe066 0%, #d4af37 40%, #aa8c2c 70%, #554411 100%);
+  border: 2px solid #fff3a8;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), 0 0 25px rgba(212, 175, 55, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.disco-ouro-groove {
+  position: absolute;
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: inset 0 0 0 6px rgba(0, 0, 0, 0.3), inset 0 0 0 12px rgba(255, 255, 255, 0.15);
+}
+
+.disco-ouro-groove-inner {
+  position: absolute;
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  border: 1px dashed rgba(0, 0, 0, 0.35);
+}
+
+.disco-ouro-selo {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #ff0004;
+  border: 2px solid #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.disco-ouro-furo {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #14121c;
+  border: 1px solid #ffffff;
+}
+
+.templo-capa-cover {
+  position: relative;
+  width: 140px;
+  height: 140px;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-  flex-shrink: 0;
-  position: relative;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+  z-index: 2;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
 
-.destaque-capa-img {
+.templo-capa-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-.destaque-capa-placeholder {
+.templo-capa-placeholder {
   width: 100%;
   height: 100%;
   background: #252233;
   display: grid;
   place-items: center;
   font-weight: 800;
-  font-size: 1.5rem;
+  font-size: 2rem;
 }
 
-.destaque-texto {
+.templo-tipo-badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background: rgba(14, 13, 21, 0.85);
+  font-family: monospace;
+  font-size: 0.6rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #ffd700;
+}
+
+/* Efeito ao passar o mouse: disco de ouro desliza para fora e brilha */
+.templo-conteudo-grid:hover .templo-disco-ouro {
+  transform: translateX(65px) rotate(180deg);
+  filter: drop-shadow(0 10px 20px rgba(255, 215, 0, 0.5));
+}
+
+.templo-conteudo-grid:hover .templo-capa-cover {
+  transform: scale(1.04);
+}
+
+/* Textos da Coluna */
+.templo-info-col {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.destaque-artista-nome {
-  font-family: "DM Sans:Bold", sans-serif;
+.templo-artista-eyebrow {
+  font-family: "DM Sans:Bold", monospace, sans-serif;
   font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
   color: #ff0004;
+  text-transform: uppercase;
+}
+
+.templo-obra-titulo {
+  margin: 0;
+  font-family: "DM Serif Display:Regular", serif;
+  font-size: clamp(2rem, 3.4vw, 3rem);
+  font-weight: 400;
+  line-height: 1;
+  color: #f7f4ed;
+}
+
+.templo-obra-desc {
+  margin: 4px 0 0;
+  font-size: 0.9rem;
+  color: #8c877d;
+}
+
+.templo-placa-comentario {
+  margin-top: 14px;
+  padding: 14px 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border-left: 3px solid #ffd700;
+  border-radius: 0 10px 10px 0;
+  position: relative;
+}
+
+.placa-aspas {
+  position: absolute;
+  top: -8px;
+  left: 8px;
+  font-family: serif;
+  font-size: 2.2rem;
+  color: #ffd700;
+  opacity: 0.4;
+  line-height: 1;
+}
+
+.placa-texto {
+  margin: 0 0 6px 0;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: #f7f4ed;
+  line-height: 1.5;
+}
+
+.placa-assinatura {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #ffd700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
 
-.destaque-obra-titulo {
-  margin: 0;
-  font-family: "DM Serif Display:Regular", serif;
-  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
-  font-weight: 400;
+.templo-placa-vazia {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: #888;
+  font-size: 0.85rem;
+}
+
+.templo-btn-escrever {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   color: #f7f4ed;
-  line-height: 1.1;
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-.destaque-detalhe {
-  margin: 4px 0 0;
-  font-size: 0.8rem;
-  color: #8c877d;
-}
-
-.destaque-citacao {
-  margin: 10px 0 0;
-  padding: 8px 14px;
-  background: rgba(255, 255, 255, 0.04);
-  border-left: 2px solid #ff0004;
-  font-style: italic;
-  font-size: 0.9rem;
-  color: #d8d4dc;
-  border-radius: 0 6px 6px 0;
+.templo-btn-escrever:hover {
+  background: #ff0004;
+  border-color: #ff0004;
 }
 
 /* 3. BARRA DE CONTROLE / ABAS */
@@ -2520,6 +2711,51 @@ button {
 .colecao-linha-item:hover .colecao-btn-editar {
   background: #14121c;
   color: #f7f4ed;
+}
+
+.colecao-linha-item.linha-favorito-destaque {
+  border-left: 4px solid #ffd700;
+  background: linear-gradient(90deg, rgba(255, 215, 0, 0.05) 0%, rgba(20, 18, 28, 1) 40%);
+}
+
+.badge-mini-favorito {
+  font-family: "DM Sans:Bold", monospace, sans-serif;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  background: #ffd700;
+  color: #14121c;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.btn-coroar-favorito {
+  background: transparent;
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  color: #ffd700;
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 99px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-coroar-favorito:hover {
+  background: rgba(255, 215, 0, 0.15);
+  border-color: #ffd700;
+  transform: scale(1.05);
+}
+
+.btn-coroar-favorito.coroado {
+  background: #ffd700;
+  color: #14121c;
+  border-color: #ffd700;
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.35);
 }
 
 .colecao-item-numero {
@@ -2782,4 +3018,105 @@ button {
     width: 50px;
     height: 50px;
   }
+}
+
+
+/* MODAL SELETOR DO FAVORITO SUPREMO */
+.modal-seletor-favorito {
+  max-width: 520px;
+}
+
+.modal-seletor-tag {
+  display: inline-block;
+  font-family: "DM Sans:Bold", monospace, sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  color: #ffd700;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.seletor-lista-itens {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 380px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.seletor-card-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.seletor-card-item:hover {
+  background: rgba(255, 215, 0, 0.08);
+  border-color: rgba(255, 215, 0, 0.35);
+  transform: translateX(4px);
+}
+
+.seletor-card-item.selecionado {
+  border-color: #ffd700;
+  background: rgba(255, 215, 0, 0.12);
+}
+
+.seletor-item-capa {
+  width: 46px;
+  height: 46px;
+  border-radius: 6px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.seletor-item-textos {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.seletor-item-textos strong {
+  font-size: 0.95rem;
+  color: #f7f4ed;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.seletor-item-textos span {
+  font-size: 0.78rem;
+  color: #8c877d;
+}
+
+.seletor-check-badge {
+  font-family: "DM Sans:Bold", monospace, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #ffd700;
+  letter-spacing: 0.08em;
+}
+
+.seletor-btn-escolher {
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #aaa;
+  padding: 4px 10px;
+  border-radius: 99px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.2s ease;
+}
+
+.seletor-card-item:hover .seletor-btn-escolher {
+  color: #ffd700;
+  border-color: #ffd700;
+  background: rgba(255, 215, 0, 0.1);
 }

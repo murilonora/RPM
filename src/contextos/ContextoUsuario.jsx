@@ -26,15 +26,18 @@ export function ProvedorUsuario({ children }) {
   const [usuarios, setUsuarios] = useState(() => obterDoStorage(CHAVE_USUARIOS, []));
   const [idSessao, setIdSessao] = useState(() => obterDoStorage(CHAVE_SESSAO, null));
   const [avaliacoes, setAvaliacoes] = useState({});
+  const [chaveFavoritoManual, setChaveFavoritoManual] = useState(null);
 
   const usuarioLogado = usuarios.find((u) => u.id === idSessao) || null;
 
-  // Carrega as avaliacoes do usuario logado ao trocar de sessao
+  // Carrega as avaliações e favorito manual do usuário logado ao trocar de sessão
   useEffect(() => {
     if (idSessao) {
       setAvaliacoes(obterDoStorage(`rpm_avaliacoes_${idSessao}`, {}));
+      setChaveFavoritoManual(obterDoStorage(`rpm_favorito_${idSessao}`, null));
     } else {
       setAvaliacoes({});
+      setChaveFavoritoManual(null);
     }
   }, [idSessao]);
 
@@ -71,6 +74,14 @@ export function ProvedorUsuario({ children }) {
   function sairDaConta() {
     setIdSessao(null);
     setAvaliacoes({});
+    setChaveFavoritoManual(null);
+  }
+
+  // Define manualmente qual item é o favorito absoluto
+  function definirFavorito(chaveItem) {
+    if (!idSessao) return;
+    setChaveFavoritoManual(chaveItem);
+    salvarNoStorage(`rpm_favorito_${idSessao}`, chaveItem);
   }
 
   // Salva ou atualiza a nota e o comentario de um item (musica ou album)
@@ -103,6 +114,8 @@ export function ProvedorUsuario({ children }) {
     avaliacoes,
     totalAvaliacoes,
     mediaAvaliacoes,
+    chaveFavoritoManual,
+    definirFavorito,
     registrarUsuario,
     entrarComEmail,
     sairDaConta,
