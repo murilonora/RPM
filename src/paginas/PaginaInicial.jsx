@@ -156,7 +156,7 @@ export function PaginaInicial({ aoSelecionarArtista }) {
   return (
     <main>
       <section className="home-hero">
-        <FundoMosaicoHero aoSelecionarArtista={aoSelecionarArtista} />
+        <FundoMosaicoHero />
         <div className="hero-content">
           <h1>
             Toda música tem uma história.

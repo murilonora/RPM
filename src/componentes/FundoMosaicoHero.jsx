@@ -6,7 +6,7 @@ import { listaDeArtistas } from "../dados/dadosMusicais";
  * deslizantes (vertical ticker / infinite marquee) com fotos de artistas
  * e capas de álbuns emblemáticas do acervo musical.
  */
-export function FundoMosaicoHero({ aoSelecionarArtista }) {
+export function FundoMosaicoHero() {
   // Monta itens ricos (fotos de artistas + capas de álbuns icônicos)
   const colunas = useMemo(() => {
     // Lista de artistas com foto
@@ -77,7 +77,6 @@ export function FundoMosaicoHero({ aoSelecionarArtista }) {
                 <div
                   key={`${item.id}-${idx}`}
                   className="hero-mosaic-card"
-                  onClick={() => aoSelecionarArtista && aoSelecionarArtista(item.artistaRef)}
                 >
                   <img
                     src={item.imagem}
@@ -85,13 +84,6 @@ export function FundoMosaicoHero({ aoSelecionarArtista }) {
                     className="hero-mosaic-img"
                     loading="lazy"
                   />
-                  <div className="hero-mosaic-card-info">
-                    <span className="hero-mosaic-badge">
-                      {item.tipo === "artista" ? "ARTISTA" : "ÁLBUM"}
-                    </span>
-                    <strong className="hero-mosaic-nome">{item.nome}</strong>
-                    <span className="hero-mosaic-sub">{item.sub}</span>
-                  </div>
                 </div>
               ))}
             </div>
