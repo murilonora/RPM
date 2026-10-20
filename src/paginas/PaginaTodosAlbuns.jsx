@@ -143,6 +143,10 @@ export function PaginaTodosAlbuns({ aoSelecionarArtista, aoAvaliar }) {
                         alt={album.titulo}
                         className="album-capa-img"
                         loading="lazy"
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = "/assets/rpm-mark.svg";
+                        }}
                       />
                     ) : (
                       <div className="album-capa-vazia">

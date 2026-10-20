@@ -167,7 +167,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2021",
         "reproducoes": "190 mi",
         "streams": 190000000,
-        "capa": "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?auto=format&fit=crop&w=800&q=80"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/dfc53733c6052b14e79ed7e3c9a0ff3c/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Neurotico de Guerra",
@@ -245,7 +245,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2022",
         "reproducoes": "180 mi",
         "streams": 180000000,
-        "capa": "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?auto=format&fit=crop&w=800&q=80"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/dfc53733c6052b14e79ed7e3c9a0ff3c/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "SETE",
@@ -317,7 +317,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "faixas": "7 faixas",
         "reproducoes": "510 mi",
         "streams": 510000000,
-        "capa": "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?auto=format&fit=crop&w=800&q=80"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/a1b65f4014a915f6ed24f51c48b940b8/1000x1000-000000-80-0-0.jpg"
       }
     ]
   },
@@ -345,7 +345,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2016",
         "reproducoes": "120 mi",
         "streams": 120000000,
-        "capa": "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?auto=format&fit=crop&w=800&q=80"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/7a7d0e06035ecdd04d5ff32cca7be8ad/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Grana",
@@ -361,7 +361,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2016",
         "reproducoes": "85 mi",
         "streams": 85000000,
-        "capa": "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?auto=format&fit=crop&w=800&q=80"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/7a7d0e06035ecdd04d5ff32cca7be8ad/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
@@ -371,7 +371,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "faixas": "11 faixas",
         "reproducoes": "290 mi",
         "streams": 290000000,
-        "capa": "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?auto=format&fit=crop&w=800&q=80"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/7a7d0e06035ecdd04d5ff32cca7be8ad/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Tardes de Versailles",
@@ -379,7 +379,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "faixas": "13 faixas",
         "reproducoes": "220 mi",
         "streams": 220000000,
-        "capa": "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?auto=format&fit=crop&w=800&q=80"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/1f4e65cee0a2387fe619f7f1168f16c0/1000x1000-000000-80-0-0.jpg"
       }
     ]
   },
@@ -493,7 +493,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2015",
         "reproducoes": "145 mi",
         "streams": 145000000,
-        "capa": "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?auto=format&fit=crop&w=800&q=80"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/29bc56fed2db3f7dd584c1a5a995383c/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "AmarElo com Pabllo Vittar e Majur",
@@ -501,7 +501,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2019",
         "reproducoes": "130 mi",
         "streams": 130000000,
-        "capa": "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?auto=format&fit=crop&w=800&q=80"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/7a7d0e06035ecdd04d5ff32cca7be8ad/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Principia",
@@ -1311,7 +1311,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "1997",
         "reproducoes": "950 mi",
         "streams": 950000000,
-        "capa": "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?auto=format&fit=crop&w=800&q=80"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/1f4e65cee0a2387fe619f7f1168f16c0/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Big Poppa",
@@ -1327,7 +1327,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "1997",
         "reproducoes": "680 mi",
         "streams": 680000000,
-        "capa": "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?auto=format&fit=crop&w=800&q=80"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/7a7d0e06035ecdd04d5ff32cca7be8ad/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
@@ -1389,7 +1389,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2001",
         "reproducoes": "900 mi",
         "streams": 900000000,
-        "capa": "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?auto=format&fit=crop&w=800&q=80"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/7a7d0e06035ecdd04d5ff32cca7be8ad/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
@@ -2025,7 +2025,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2012",
         "reproducoes": "680 mi",
         "streams": 680000000,
-        "capa": "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?auto=format&fit=crop&w=800&q=80"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/f2adc853cc80f4b2b9ce1dda70b4c9fd/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "22",
@@ -2087,7 +2087,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2022",
         "reproducoes": "920 mi",
         "streams": 920000000,
-        "capa": "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?auto=format&fit=crop&w=800&q=80"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/52298dc3fe7fdd6fd1c2bc80227c3a52/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Nosso Quadro",
@@ -2121,7 +2121,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "faixas": "14 faixas",
         "reproducoes": "1.8 bi",
         "streams": 1800000000,
-        "capa": "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?auto=format&fit=crop&w=800&q=80"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/86c4042327cc8b52def640f6532f9368/1000x1000-000000-80-0-0.jpg"
       }
     ]
   },
@@ -2165,7 +2165,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2021",
         "reproducoes": "480 mi",
         "streams": 480000000,
-        "capa": "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?auto=format&fit=crop&w=800&q=80"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/3069fdf7a3805cf21b0e3b1c51fc87a3/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
@@ -2175,7 +2175,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "faixas": "15 faixas",
         "reproducoes": "1.3 bi",
         "streams": 1300000000,
-        "capa": "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?auto=format&fit=crop&w=800&q=80"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/afdd5948ddd12dbcc35cdf759dc6fe63/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Ao Vivo em Campo Grande",
@@ -3629,7 +3629,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2017",
         "reproducoes": "540 mi",
         "streams": 540000000,
-        "capa": "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?auto=format&fit=crop&w=800&q=80"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/1077fa021b9b9d93cb9e66564ffc4446/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
@@ -3729,7 +3729,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2020",
         "reproducoes": "2.1 bi",
         "streams": 2100000000,
-        "capa": "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?auto=format&fit=crop&w=800&q=80"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/78af18fc11e9d880befd78777baffd9e/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Titi Me Pregunto",
@@ -3807,7 +3807,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2017",
         "reproducoes": "2.4 bi",
         "streams": 2400000000,
-        "capa": "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?auto=format&fit=crop&w=800&q=80"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/c1a74b7fa8de503d015f37ab85b1ad1c/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Con Altura feat. Rosalia",
@@ -3869,7 +3869,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2017",
         "reproducoes": "8.1 bi",
         "streams": 8100000000,
-        "capa": "https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?auto=format&fit=crop&w=800&q=80"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/c705bb2d42ed280b87294e55356f0ebc/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Con Calma com Snow",
@@ -3909,8 +3909,34 @@ const bancoDeDadosArtistas: Artista[] = [
   }
 ];
 
-export const listaDeArtistas: Artista[] = bancoDeDadosArtistas.map((artista) => ({
-  ...artista,
-  albuns: [...artista.albuns].sort((a, b) => b.streams - a.streams),
-  musicas: [...artista.musicas].sort((a, b) => b.streams - a.streams),
-}));
+// ==========================================
+// FUNÇÃO DE NORMALIZAÇÃO, HERANÇA EM CASCATA E ORDENAÇÃO
+// ==========================================
+export const listaDeArtistas: Artista[] = bancoDeDadosArtistas.map((artista) => {
+  // 1. Garante que todo álbum tenha capa (ou herda o retrato do artista)
+  const albunsMapeados = [...artista.albuns]
+    .map((alb) => ({
+      ...alb,
+      capa: alb.capa || artista.foto,
+    }))
+    .sort((a, b) => b.streams - a.streams);
+
+  // 2. Garante que toda faixa tenha capa (se não for single próprio, herda do seu álbum)
+  const musicasMapeadas = [...artista.musicas]
+    .map((musica) => {
+      const albumPai = albunsMapeados.find(
+        (alb) => alb.titulo.toLowerCase() === (musica.album || '').toLowerCase()
+      );
+      return {
+        ...musica,
+        capa: musica.capa || (albumPai ? albumPai.capa : artista.foto),
+      };
+    })
+    .sort((a, b) => b.streams - a.streams);
+
+  return {
+    ...artista,
+    albuns: albunsMapeados,
+    musicas: musicasMapeadas,
+  };
+});

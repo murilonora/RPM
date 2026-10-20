@@ -30,6 +30,10 @@ export function PaginaArtista({ artista, aoVoltarAoInicio, aoAvaliar }) {
         <img
           src={artista.foto}
           alt={`Foto de ${artista.nome}`}
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = "/assets/rpm-mark.svg";
+          }}
           style={{ width: "100%", height: "900px", objectFit: "cover", objectPosition: "top", borderRadius: "0px" }}
         />
         <div className="photo-caption">

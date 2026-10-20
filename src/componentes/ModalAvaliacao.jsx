@@ -61,7 +61,15 @@ export function ModalAvaliacao({ visivel, aoFechar, item }) {
 
             <div style={{ display: "flex", gap: "16px", alignItems: "center", marginBottom: "24px", padding: "16px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "0px" }}>
               {item.capa ? (
-                <img src={item.capa} alt={item.titulo} style={{ width: "64px", height: "64px", borderRadius: "0px", objectFit: "cover" }} />
+                <img
+                  src={item.capa}
+                  alt={item.titulo}
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = "/assets/rpm-mark.svg";
+                  }}
+                  style={{ width: "64px", height: "64px", borderRadius: "0px", objectFit: "cover" }}
+                />
               ) : (
                 <div style={{ width: "64px", height: "64px", borderRadius: "0px", background: "#333", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px", fontWeight: "bold" }}>
                   {item.titulo.slice(0, 2).toUpperCase()}

@@ -83,6 +83,10 @@ export function FundoMosaicoHero() {
                     alt={item.nome}
                     className="hero-mosaic-img"
                     loading="lazy"
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = "/assets/rpm-mark.svg";
+                    }}
                   />
                 </div>
               ))}

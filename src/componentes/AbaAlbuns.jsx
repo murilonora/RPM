@@ -35,6 +35,10 @@ export function AbaAlbuns({ albuns = [], nomeArtista = "", artistaId = "", aoAva
               <img
                 src={album.capa}
                 alt={album.titulo}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = "/assets/rpm-mark.svg";
+                }}
                 style={{ width: "100%", height: "100%", objectFit: "cover" }}
               />
             ) : (

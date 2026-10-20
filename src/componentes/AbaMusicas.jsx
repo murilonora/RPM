@@ -28,18 +28,20 @@ export function AbaMusicas({ musicas = [], artistaId = "", aoAvaliar }) {
             className="track-title"
             style={{ display: "flex", alignItems: "center", gap: "10px" }}
           >
-            {musica.capa && (
-              <img
-                src={musica.capa}
-                alt={musica.titulo}
-                style={{
-                  width: "36px",
-                  height: "36px",
-                  borderRadius: "0px",
-                  objectFit: "cover",
-                }}
-              />
-            )}
+            <img
+              src={musica.capa || "/assets/rpm-mark.svg"}
+              alt={musica.titulo}
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = "/assets/rpm-mark.svg";
+              }}
+              style={{
+                width: "36px",
+                height: "36px",
+                borderRadius: "0px",
+                objectFit: "cover",
+              }}
+            />
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "20px", height: "20px", borderRadius: "50%", background: "#191525", border: "1px solid #333" }}>
               <div style={{ width: "6px", height: "6px", background: "#f7f4ed", borderRadius: "50%" }} />
             </div>

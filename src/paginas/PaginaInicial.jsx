@@ -255,6 +255,10 @@ export function PaginaInicial({ aoSelecionarArtista }) {
                                 src={resultado.foto}
                                 alt={resultado.titulo}
                                 style={estiloFoto}
+                                onError={(e) => {
+                                  e.currentTarget.onerror = null;
+                                  e.currentTarget.src = "/assets/rpm-mark.svg";
+                                }}
                               />
                               <span style={{ flex: 1, minWidth: 0 }}>
                                 {/* Badge colorido indicando o tipo */}
@@ -400,6 +404,10 @@ export function PaginaInicial({ aoSelecionarArtista }) {
                 src={artista.foto}
                 alt={artista.nome}
                 style={{ width: "100%", height: "180px", objectFit: "cover" }}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = "/assets/rpm-mark.svg";
+                }}
               />
               <div style={{ padding: "16px" }}>
                 <span

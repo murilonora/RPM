@@ -117,6 +117,10 @@ export function PaginaTodosArtistas({ aoSelecionarArtista }) {
                     alt={artista.nome}
                     className="artista-foto-img"
                     loading="lazy"
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = "/assets/rpm-mark.svg";
+                    }}
                   />
                   <div className="artista-foto-filtro-sombra" />
                   <span className="artista-etiqueta-categoria">{artista.categoria}</span>
