@@ -2154,3 +2154,632 @@ button {
     min-width: 120px;
   }
 }
+
+
+/* ========================================================
+   PAGINA COLECAO — ESTILO EDITORIAL / PASSAPORTE DO CRÍTICO
+   ======================================================== */
+.colecao-editorial-root {
+  min-height: calc(100vh - 76px);
+  background: #14121c;
+  color: #f7f4ed;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 80px;
+}
+
+/* 1. PASSAPORTE / FICHA DO CRÍTICO */
+.passaporte-critico {
+  background: #f7f4ed;
+  color: #191525;
+  border-bottom: 2px solid #191525;
+  padding: 36px 48px 24px;
+}
+
+.passaporte-top {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin-bottom: 28px;
+}
+
+.passaporte-avatar {
+  position: relative;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: #14121c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(25, 21, 37, 0.25);
+  border: 3px solid #ff0004;
+  flex-shrink: 0;
+}
+
+.passaporte-avatar-inicial {
+  font-family: "DM Serif Display:Regular", serif;
+  font-size: 2.4rem;
+  color: #f7f4ed;
+  line-height: 1;
+}
+
+.passaporte-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.passaporte-meta-selo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.selo-rpm {
+  background: #14121c;
+  color: #f7f4ed;
+  font-family: "DM Sans:Bold", monospace, sans-serif;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.selo-status {
+  color: #ff0004;
+  font-family: "DM Sans:Bold", monospace, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.passaporte-nome {
+  margin: 2px 0 0;
+  font-family: "DM Serif Display:Regular", serif;
+  font-size: clamp(2rem, 3.8vw, 3.2rem);
+  font-weight: 400;
+  line-height: 1;
+  color: #191525;
+  letter-spacing: -0.02em;
+}
+
+.passaporte-id {
+  margin: 4px 0 0;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.passaporte-id code {
+  background: rgba(25, 21, 37, 0.08);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-weight: 600;
+  color: #191525;
+}
+
+/* Fita Métrica / Indicadores Técnicos */
+.passaporte-metricas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  border-top: 1px solid rgba(25, 21, 37, 0.12);
+  padding-top: 20px;
+}
+
+.metrica-bloco {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metrica-rotulo {
+  font-family: "DM Sans:Bold", monospace, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #777;
+}
+
+.metrica-valor {
+  font-family: "DM Serif Display:Regular", serif;
+  font-size: 2.6rem;
+  line-height: 1;
+  color: #191525;
+}
+
+.metrica-valor.destaque-vermelho {
+  color: #ff0004;
+}
+
+.metrica-desc {
+  font-size: 0.72rem;
+  color: #888;
+}
+
+/* 2. BANNER FAVORITO ABSOLUTO */
+.colecao-destaque-banner {
+  margin: 36px 48px 0;
+  background: #191525;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-left: 4px solid #ff0004;
+  border-radius: 12px;
+  padding: 24px 32px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+}
+
+.destaque-tag-linha {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 12px;
+  margin-bottom: 18px;
+}
+
+.destaque-tag-badge {
+  font-family: "DM Sans:Bold", monospace, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #ff0004;
+  letter-spacing: 0.1em;
+}
+
+.destaque-tag-nota {
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 0.8rem;
+  color: #f7f4ed;
+  letter-spacing: 0.08em;
+}
+
+.destaque-corpo {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  cursor: pointer;
+  transition: transform 0.25s ease;
+}
+
+.destaque-corpo:hover {
+  transform: translateX(4px);
+}
+
+.destaque-capa-wrap {
+  width: 110px;
+  height: 110px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  flex-shrink: 0;
+  position: relative;
+}
+
+.destaque-capa-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.destaque-capa-placeholder {
+  width: 100%;
+  height: 100%;
+  background: #252233;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 1.5rem;
+}
+
+.destaque-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.destaque-artista-nome {
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 0.85rem;
+  color: #ff0004;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.destaque-obra-titulo {
+  margin: 0;
+  font-family: "DM Serif Display:Regular", serif;
+  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+  font-weight: 400;
+  color: #f7f4ed;
+  line-height: 1.1;
+}
+
+.destaque-detalhe {
+  margin: 4px 0 0;
+  font-size: 0.8rem;
+  color: #8c877d;
+}
+
+.destaque-citacao {
+  margin: 10px 0 0;
+  padding: 8px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border-left: 2px solid #ff0004;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: #d8d4dc;
+  border-radius: 0 6px 6px 0;
+}
+
+/* 3. BARRA DE CONTROLE / ABAS */
+.colecao-controle-secao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 32px 48px 16px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.colecao-abas-filtro {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.aba-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #8c877d;
+  padding: 8px 18px;
+  border-radius: 99px;
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.aba-btn:hover {
+  border-color: #f7f4ed;
+  color: #f7f4ed;
+}
+
+.aba-btn.ativa {
+  background: #f7f4ed;
+  color: #14121c;
+  border-color: #f7f4ed;
+  box-shadow: 0 4px 14px rgba(247, 244, 237, 0.15);
+}
+
+.colecao-btn-adicionar {
+  background: transparent;
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+  color: #c8c4cf;
+  padding: 8px 18px;
+  border-radius: 99px;
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.colecao-btn-adicionar:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f7f4ed;
+  border-color: #f7f4ed;
+}
+
+/* 4. LISTA EDITORIAL DE ITENS */
+.colecao-lista-editorial {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.colecao-linha-item {
+  display: grid;
+  grid-template-columns: 70px 90px 1fr auto;
+  align-items: center;
+  gap: 24px;
+  padding: 20px 48px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  background: #14121c;
+  color: #f7f4ed;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.colecao-linha-item:hover {
+  background: #f7f4ed !important;
+  color: #14121c !important;
+  transform: scale(1.008);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+  z-index: 5;
+}
+
+.colecao-linha-item:hover .colecao-item-numero {
+  color: #e0261f !important;
+}
+
+.colecao-linha-item:hover .colecao-obra-nome {
+  color: #14121c !important;
+  transform: translateX(6px);
+}
+
+.colecao-linha-item:hover .colecao-comentario-texto {
+  color: #3f3b47 !important;
+  border-left-color: #ff0004;
+}
+
+.colecao-linha-item:hover .colecao-btn-editar {
+  background: #14121c;
+  color: #f7f4ed;
+}
+
+.colecao-item-numero {
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #ff0004;
+  letter-spacing: 0.04em;
+}
+
+.colecao-capa-box {
+  width: 72px;
+  height: 72px;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  background: #252233;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  flex-shrink: 0;
+}
+
+.colecao-capa-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.colecao-capa-placeholder {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  color: #777;
+}
+
+.colecao-tag-tipo {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgba(14, 13, 21, 0.85);
+  font-family: monospace;
+  font-size: 0.55rem;
+  font-weight: 800;
+  padding: 1px 4px;
+  border-radius: 3px;
+  color: #f7f4ed;
+}
+
+.colecao-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.colecao-item-titulos {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.colecao-obra-nome {
+  margin: 0;
+  font-family: "DM Sans:Bold", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #f7f4ed;
+  transition: transform 0.25s ease, color 0.2s ease;
+}
+
+.colecao-artista-sub {
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 0.85rem;
+  color: #ff0004;
+}
+
+.colecao-comentario-texto {
+  margin: 4px 0 0;
+  font-size: 0.82rem;
+  font-style: italic;
+  color: #aaa;
+  border-left: 2px solid rgba(255, 0, 4, 0.4);
+  padding-left: 10px;
+}
+
+.colecao-item-direita {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.colecao-btn-editar {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #c8c4cf;
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 99px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.colecao-btn-editar:hover {
+  background: #ff0004;
+  color: #ffffff;
+  border-color: #ff0004;
+}
+
+/* ESTADO VAZIO / SEM AVALIAÇÕES */
+.colecao-vazio-card {
+  margin: 48px auto;
+  max-width: 600px;
+  padding: 48px 32px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+}
+
+.vazio-vinil-icone {
+  width: 140px;
+  margin: 0 auto 20px;
+  display: block;
+}
+
+.vazio-titulo {
+  font-family: "DM Serif Display:Regular", serif;
+  font-size: 1.8rem;
+  margin: 0 0 10px;
+  color: #f7f4ed;
+}
+
+.vazio-subtitulo {
+  color: #8c877d;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0 0 28px;
+}
+
+.vazio-btn-cta {
+  background: #ff0004;
+  color: #ffffff;
+  border: none;
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 800;
+  padding: 12px 28px;
+  border-radius: 99px;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 6px 20px rgba(255, 0, 4, 0.35);
+}
+
+.vazio-btn-cta:hover {
+  background: #cc0003;
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 10px 28px rgba(255, 0, 4, 0.5);
+}
+
+.colecao-sem-filtro {
+  text-align: center;
+  padding: 60px 20px;
+  color: #666;
+  font-size: 1rem;
+}
+
+/* ESTADO DESLOGADO */
+.colecao-deslogado-box {
+  margin: 60px auto;
+  max-width: 520px;
+  text-align: center;
+  padding: 30px 20px;
+}
+
+.colecao-deslogado-img {
+  width: 180px;
+  margin: 0 auto 20px;
+  display: block;
+}
+
+.colecao-tag-aviso {
+  display: inline-block;
+  background: rgba(255, 0, 4, 0.15);
+  color: #ff0004;
+  border: 1px solid #ff0004;
+  font-family: monospace;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  padding: 3px 10px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+.colecao-deslogado-titulo {
+  font-family: "DM Serif Display:Regular", serif;
+  font-size: 2.2rem;
+  margin: 0 0 12px;
+}
+
+.colecao-deslogado-sub {
+  color: #8c877d;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 980px) {
+  .passaporte-critico {
+    padding: 24px;
+  }
+  .colecao-destaque-banner {
+    margin: 24px 24px 0;
+    padding: 20px;
+  }
+  .colecao-controle-secao {
+    padding: 24px 24px 12px;
+  }
+  .colecao-linha-item {
+    padding: 16px 24px;
+    grid-template-columns: 40px 60px 1fr;
+    gap: 16px;
+  }
+  .colecao-item-direita {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .passaporte-top {
+    flex-direction: column;
+    text-align: center;
+    gap: 16px;
+  }
+  .passaporte-meta-selo {
+    justify-content: center;
+  }
+  .passaporte-metricas {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    text-align: center;
+  }
+  .destaque-corpo {
+    flex-direction: column;
+    text-align: center;
+  }
+  .colecao-linha-item {
+    padding: 14px 16px;
+    grid-template-columns: 30px 50px 1fr;
+    gap: 12px;
+  }
+  .colecao-capa-box {
+    width: 50px;
+    height: 50px;
+  }
+}

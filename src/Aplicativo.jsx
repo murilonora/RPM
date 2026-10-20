@@ -97,7 +97,11 @@ export default function Aplicativo() {
         )}
 
         {paginaAtual === "colecao" && (
-          <PaginaColecao aoSelecionarArtista={selecionarArtista} />
+          <PaginaColecao
+            aoSelecionarArtista={selecionarArtista}
+            aoNavegarParaAlbuns={navegarParaPaginaDeTodosAlbuns}
+            aoAvaliar={abrirAvaliacao}
+          />
         )}
 
         <ModalAutenticacao
