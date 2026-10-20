@@ -127,7 +127,7 @@ export function PaginaInicial({ aoSelecionarArtista }) {
           resultados.push({
             tipo: "musica",
             chave: `musica-${artista.id}-${idx}`,
-            foto: artista.foto,
+            foto: musica.capa || artista.foto,
             titulo: musica.titulo,
             subtitulo: `Música · ${musica.album} · ${artista.nome}`,
             artista: artista,
@@ -142,7 +142,7 @@ export function PaginaInicial({ aoSelecionarArtista }) {
           resultados.push({
             tipo: "album",
             chave: `album-${artista.id}-${idx}`,
-            foto: artista.foto,
+            foto: album.capa || artista.foto,
             titulo: album.titulo,
             subtitulo: `Álbum · ${album.ano} · ${album.faixas} · ${artista.nome}`,
             artista: artista,
