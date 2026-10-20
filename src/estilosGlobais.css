@@ -1417,360 +1417,354 @@ button {
 
 
 /* ========================================================
-   PAGINA ARTISTAS — ESTILO EDITORIAL / LISTA INTERATIVA
+   PAGINA ARTISTAS — ARQUIVO MECÂNICO / GALERIA RETRATO
    ======================================================== */
-.pagina-artistas-editorial {
+.artistas-catalogo-root {
   min-height: calc(100vh - 76px);
-  background: #14121c;
+  background: #08080a;
   color: #f7f4ed;
   display: flex;
   flex-direction: column;
 }
 
-/* Barra superior fixa de controle editorial */
-.artistas-topo-editorial {
+/* 1. Barra Superior de Controle */
+.artistas-barra-controle,
+.albuns-barra-controle {
   background: #f7f4ed;
-  color: #191525;
-  padding: 18px 48px;
+  color: #08080a;
+  padding: 16px 48px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  border-bottom: 1px solid rgba(25, 21, 37, 0.15);
+  border-bottom: 2px solid #08080a;
   position: sticky;
   top: 76px;
   z-index: 20;
 }
 
-.artistas-busca-box {
+.artistas-busca-box,
+.albuns-busca-box {
   display: flex;
   align-items: center;
   gap: 12px;
   flex: 1;
-  max-width: 420px;
-  border-bottom: 2px solid #191525;
-  padding-bottom: 6px;
+  max-width: 460px;
+  border-bottom: 2px solid #08080a;
+  padding-bottom: 4px;
 }
 
-.artistas-busca-icone {
-  color: #191525;
-  opacity: 0.7;
+.busca-prefix-mono {
+  font-family: monospace;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #ff0004;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
 }
 
-.artistas-busca-input {
+.artistas-busca-input,
+.albuns-busca-input {
   border: none;
   background: transparent;
   width: 100%;
-  font-family: "DM Sans:Bold", sans-serif;
+  font-family: monospace, sans-serif;
   font-size: 0.85rem;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   font-weight: 700;
   text-transform: uppercase;
-  color: #191525;
+  color: #08080a;
   outline: none;
 }
-.artistas-busca-input::placeholder {
+.artistas-busca-input::placeholder,
+.albuns-busca-input::placeholder {
   color: #8c877d;
-  font-weight: 600;
 }
 
-/* Filtro por letras */
-.artistas-letras-filtro {
+/* Filtro por Letras Reto e Geométrico */
+.artistas-letras-bloco,
+.albuns-letras-bloco {
+  display: flex;
+  align-items: center;
+  border: 1px solid #08080a;
+  background: #ffffff;
+  overflow-x: auto;
+}
+
+.letra-reta-btn {
+  background: transparent;
+  border: none;
+  border-right: 1px solid #08080a;
+  color: #08080a;
+  cursor: pointer;
+  font-family: monospace;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 8px 11px;
+  transition: all 0.15s ease;
+}
+
+.letra-reta-btn:last-child {
+  border-right: none;
+}
+
+.letra-reta-btn:hover {
+  background: rgba(8, 8, 10, 0.08);
+}
+
+.letra-reta-btn.ativo {
+  background: #08080a;
+  color: #f7f4ed;
+}
+
+/* 2. Header de Status */
+.artistas-header-indice,
+.albuns-header-indice {
+  padding: 24px 48px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.indice-tag-wrap {
   display: flex;
   align-items: center;
   gap: 8px;
-  overflow-x: auto;
-  padding: 4px 0;
 }
 
-.artistas-letra-btn {
-  background: transparent;
-  border: 1px solid #d4cfc4;
-  color: #191525;
-  cursor: pointer;
-  font-family: "DM Sans:Bold", sans-serif;
-  font-size: 0.8rem;
-  font-weight: 700;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.indice-ponto-red {
+  width: 8px;
+  height: 8px;
+  background: #ff0004;
+  display: inline-block;
 }
 
-.artistas-letra-btn.circle {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  padding: 0;
-}
-
-.artistas-letra-btn.pill {
-  padding: 0 16px;
-  height: 34px;
-  border-radius: 99px;
-  text-transform: capitalize;
-}
-
-.artistas-letra-btn:hover {
-  background: rgba(25, 21, 37, 0.08);
-  border-color: #191525;
-  transform: translateY(-2px);
-}
-
-.artistas-letra-btn.ativo {
-  background: #191525;
+.indice-titulo-mono {
+  font-family: monospace;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
   color: #f7f4ed;
-  border-color: #191525;
-  box-shadow: 0 4px 12px rgba(25, 21, 37, 0.25);
 }
 
-/* Lista de artistas em linhas horizontais */
-.artistas-lista-editorial {
+.indice-rotulo-sub {
+  font-family: monospace;
+  font-size: 0.68rem;
+  color: #777;
+}
+
+/* 3. Galeria de Artistas (Grade Retangular de Retratos) */
+.artistas-galeria-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 24px;
+  padding: 32px 48px 60px;
+}
+
+.artista-quadro-card {
+  background: #0f0e14;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
   display: flex;
   flex-direction: column;
-  width: 100%;
-}
-
-.artistas-linha-item {
-  display: grid;
-  grid-template-columns: 80px 100px 1fr auto;
-  align-items: center;
-  gap: 28px;
-  padding: 24px 48px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: #14121c;
-  color: #f7f4ed;
-  cursor: pointer;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.25s ease;
   position: relative;
 }
 
-/* EFEITO AO PASSAR O MOUSE (INVERSÃO EDITORIAL IGUAL À IMAGEM) */
-.artistas-linha-item:hover {
-  background: #f7f4ed !important;
-  color: #14121c !important;
-  transform: scale(1.008);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-  z-index: 5;
+.artista-quadro-card:hover {
+  border-color: #f7f4ed;
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7);
 }
 
-.artistas-linha-item:hover .artistas-item-nome {
-  color: #14121c !important;
-  transform: translateX(10px);
-}
-
-.artistas-linha-item:hover .artistas-item-numero {
-  color: #e0261f !important;
-  font-weight: 800;
-}
-
-.artistas-linha-item:hover .artistas-meta-genero,
-.artistas-linha-item:hover .artistas-meta-origem,
-.artistas-linha-item:hover .artistas-meta-status {
-  color: #555047 !important;
-}
-
-.artistas-linha-item:hover .artistas-item-foto-wrap {
-  transform: scale(1.08) rotate(-1.5deg);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
-  border-color: #14121c;
-}
-
-/* Número do artista */
-.artistas-item-numero {
-  font-family: "DM Sans:Bold", sans-serif;
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #ff0004;
-  letter-spacing: 0.04em;
-  transition: all 0.25s ease;
-}
-
-/* Moldura e foto do artista */
-.artistas-item-foto-wrap {
-  width: 76px;
-  height: 94px;
-  border-radius: 4px;
+.artista-moldura-foto {
+  width: 100%;
+  aspect-ratio: 1 / 1.15;
+  position: relative;
   overflow: hidden;
-  background: #252233;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  flex-shrink: 0;
+  background: #14121c;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.artistas-item-foto {
+.artista-foto-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: top;
   display: block;
+  transition: transform 0.35s ease;
 }
 
-/* Nome do artista */
-.artistas-item-nome {
-  font-family: "DM Sans:Bold", -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: clamp(1.8rem, 3.4vw, 2.8rem);
+.artista-quadro-card:hover .artista-foto-img {
+  transform: scale(1.05);
+}
+
+.artista-foto-filtro-sombra {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(8, 8, 10, 0.85) 100%);
+}
+
+.artista-etiqueta-categoria {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #08080a;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  color: #f7f4ed;
+  font-family: monospace;
+  font-size: 0.6rem;
   font-weight: 800;
-  margin: 0;
-  letter-spacing: -0.04em;
+  padding: 3px 8px;
+  letter-spacing: 0.06em;
+}
+
+.artista-dados-bloco {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.artista-head-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: monospace;
+  font-size: 0.68rem;
+}
+
+.artista-cidade-mono {
+  color: #ff0004;
+  font-weight: 800;
+}
+
+.artista-ouvintes-tag {
+  color: #666;
+}
+
+.artista-nome-editorial {
+  margin: 4px 0 0;
+  font-family: "DM Serif Display:Regular", serif;
+  font-size: 1.6rem;
   line-height: 1.1;
   color: #f7f4ed;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s ease;
+  letter-spacing: -0.02em;
 }
 
-/* Metadados à direita */
-.artistas-item-metas {
+.artista-genero-desc {
+  margin: 2px 0 0;
+  font-size: 0.8rem;
+  color: #8c877d;
+}
+
+.artista-card-footer {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 40px;
-  font-family: "DM Sans:Bold", monospace, sans-serif;
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  font-weight: 700;
-  text-transform: uppercase;
+  font-family: monospace;
+  font-size: 0.68rem;
 }
 
-.artistas-meta-genero {
-  color: #8c877d;
-  min-width: 150px;
-  text-align: left;
-  transition: color 0.25s ease;
+.artista-contagem-albuns {
+  color: #777;
 }
 
-.artistas-meta-origem {
-  color: #8c877d;
-  min-width: 120px;
-  text-align: left;
-  transition: color 0.25s ease;
+.artista-btn-ver {
+  color: #ff0004;
+  font-weight: 800;
 }
 
-.artistas-meta-status {
-  color: #555047;
-  letter-spacing: 0.15em;
-  transition: color 0.25s ease;
+.artista-quadro-card:hover .artista-btn-ver {
+  color: #f7f4ed;
 }
 
-/* Vazio */
-.artistas-vazio {
-  text-align: center;
+.artistas-vazio-box,
+.albuns-vazio-box {
   padding: 80px 20px;
-  color: #8c877d;
-  font-size: 1.1rem;
-}
-
-/* Responsividade */
-@media (max-width: 980px) {
-  .artistas-topo-editorial {
-    padding: 14px 24px;
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .artistas-busca-box {
-    max-width: 100%;
-  }
-  .artistas-linha-item {
-    padding: 18px 24px;
-    grid-template-columns: 50px 70px 1fr;
-    gap: 16px;
-  }
-  .artistas-item-metas {
-    display: none;
-  }
-  .artistas-item-foto-wrap {
-    width: 60px;
-    height: 74px;
-  }
-}
-
-@media (max-width: 640px) {
-  .artistas-topo-editorial {
-    padding: 12px 16px;
-  }
-  .artistas-linha-item {
-    padding: 14px 16px;
-    grid-template-columns: 40px 54px 1fr;
-    gap: 12px;
-  }
-  .artistas-item-foto-wrap {
-    width: 50px;
-    height: 64px;
-  }
-  .artistas-item-numero {
-    font-size: 0.95rem;
-  }
+  text-align: center;
+  grid-column: 1 / -1;
+  font-family: monospace;
+  color: #666;
 }
 
 /* ========================================================
-   PAGINA ALBUNS — ESTILO EDITORIAL COM DISCO DE VINIL SAINDO
+   PAGINA ÁLBUNS — ESTANTE FÍSICA DE VINIL (CRATE DIGGING)
    ======================================================== */
-.albuns-lista-editorial {
+.albuns-catalogo-root {
+  min-height: calc(100vh - 76px);
+  background: #08080a;
+  color: #f7f4ed;
   display: flex;
   flex-direction: column;
-  width: 100%;
 }
 
-.album-linha-item {
+.albuns-crate-grid {
   display: grid;
-  grid-template-columns: 80px 140px 1fr auto;
-  align-items: center;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 28px;
-  padding: 24px 48px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: #14121c;
-  color: #f7f4ed;
+  padding: 32px 48px 60px;
+}
+
+.album-crate-card {
+  background: #0f0e14;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 18px;
   cursor: pointer;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s ease;
   position: relative;
-  overflow: visible;
 }
 
-/* Efeito Hover na linha do álbum: Inversão de cor */
-.album-linha-item:hover {
-  background: #f7f4ed !important;
-  color: #14121c !important;
-  transform: scale(1.008);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-  z-index: 5;
+.album-crate-card:hover {
+  border-color: #ff0004;
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7);
 }
 
-.album-linha-item:hover .artistas-item-numero {
-  color: #e0261f !important;
+.album-crate-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 10px;
+  margin-bottom: 16px;
+  font-family: monospace;
+  font-size: 0.68rem;
   font-weight: 800;
 }
 
-.album-linha-item:hover .album-item-nome {
-  color: #14121c !important;
-  transform: translateX(10px);
+.album-tipo-etiqueta {
+  color: #8c877d;
 }
 
-.album-linha-item:hover .album-item-artista {
-  color: #e0261f !important;
-  transform: translateX(10px);
+.album-ano-etiqueta {
+  color: #ff0004;
 }
 
-.album-linha-item:hover .album-meta-ano,
-.album-linha-item:hover .album-meta-faixas,
-.album-linha-item:hover .album-meta-reproducoes {
-  color: #555047 !important;
-}
-
-/* ----------------------------------------------------
-   CONTAINER DA CAPA + DISCO DE VINIL DESLIZANTE
-   ---------------------------------------------------- */
-.album-sleeve-container {
+/* Efeito Físico do Vinil saindo para cima */
+.album-fisico-container {
   position: relative;
-  width: 90px;
-  height: 90px;
-  flex-shrink: 0;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  margin-bottom: 16px;
 }
 
-/* O Disco de Vinil que fica por trás da capa */
-.album-vinyl-disc {
+.album-disco-vinil-fisico {
   position: absolute;
-  top: 3px;
-  left: 6px;
-  width: 84px;
-  height: 84px;
+  top: 5px;
+  left: 5%;
+  width: 90%;
+  aspect-ratio: 1 / 1;
   border-radius: 50%;
   background: radial-gradient(circle, #242424 0%, #111111 60%, #050505 100%);
   border: 1px solid #333333;
@@ -1779,255 +1773,180 @@ button {
   align-items: center;
   justify-content: center;
   z-index: 1;
-  transition: transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
-  pointer-events: none;
+  transition: transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Sulcos concêntricos do disco */
-.vinyl-grooves {
+.vinyl-grooves-fisico {
   position: absolute;
-  width: 70px;
-  height: 70px;
+  width: 75%;
+  height: 75%;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 0 0 4px rgba(0, 0, 0, 0.8), inset 0 0 0 8px rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 0 0 5px rgba(0, 0, 0, 0.8), inset 0 0 0 10px rgba(255, 255, 255, 0.04);
 }
 
-.vinyl-grooves-inner {
-  position: absolute;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: 1px dashed rgba(255, 255, 255, 0.06);
-}
-
-/* Rótulo / Selo Central do Vinil */
-.vinyl-center-label {
+.vinyl-center-red {
   position: relative;
-  width: 30px;
-  height: 30px;
+  width: 32%;
+  height: 32%;
   border-radius: 50%;
   background: #ff0004;
   border: 2px solid #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
-.vinyl-center-hole {
-  width: 8px;
-  height: 8px;
+.vinyl-furo-preto {
+  width: 25%;
+  height: 25%;
   border-radius: 50%;
-  background: #14121c;
+  background: #08080a;
   border: 1px solid #555;
 }
 
-/* Capa física do álbum que fica por cima do disco */
-.album-jacket-cover {
+.album-capa-quadrada {
   position: relative;
-  width: 90px;
-  height: 90px;
-  border-radius: 6px;
-  overflow: hidden;
-  background: #252233;
+  width: 100%;
+  height: 100%;
   border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
+  background: #14121c;
   z-index: 2;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  transition: transform 0.35s ease;
 }
 
-.album-jacket-img {
+.album-capa-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-.album-jacket-placeholder {
+.album-capa-vazia {
   width: 100%;
   height: 100%;
+  background: #14121c;
+  display: grid;
+  place-items: center;
+  font-family: monospace;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #555;
+}
+
+/* Hover: Vinil sobe em diagonal girando */
+.album-crate-card:hover .album-disco-vinil-fisico {
+  transform: translateY(-28px) translateX(20px) rotate(140deg);
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.6));
+}
+
+.album-crate-card:hover .album-capa-quadrada {
+  transform: scale(1.02);
+}
+
+/* Dados da Obra */
+.album-dados-painel {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.album-artista-nome {
+  font-family: monospace;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #ff0004;
+  text-transform: uppercase;
+}
+
+.album-titulo-obra {
+  margin: 2px 0 0;
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #f7f4ed;
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.album-meta-tecnica {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-family: monospace;
+  font-size: 0.68rem;
+  color: #777;
+}
+
+.album-btn-avaliar-disco {
+  margin-top: 14px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #f7f4ed;
+  font-family: monospace;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 8px 12px;
+  cursor: pointer;
+  letter-spacing: 0.06em;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "DM Sans:Bold", sans-serif;
-  font-size: 1.4rem;
-  color: #777;
-  background: linear-gradient(135deg, #2a2740, #14121c);
-}
-
-/* ANIMAÇÃO AO PASSAR O MOUSE: DISCO SAI DA CAPA E GIRA! */
-.album-linha-item:hover .album-vinyl-disc {
-  transform: translateX(45px) rotate(160deg);
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5));
-}
-
-.album-linha-item:hover .album-jacket-cover {
-  transform: scale(1.05);
-  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.35);
-  border-color: #14121c;
-}
-
-/* Nomes e títulos */
-.album-item-titulos {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.album-item-nome {
-  font-family: "DM Sans:Bold", -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: clamp(1.6rem, 3.2vw, 2.5rem);
-  font-weight: 800;
-  margin: 0;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
-  color: #f7f4ed;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s ease;
-}
-
-.album-item-artista {
-  font-family: "DM Sans:Bold", sans-serif;
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: #8c877d;
-  letter-spacing: 0.05em;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s ease;
-}
-
-/* Metadados */
-.album-item-metas {
-  display: flex;
-  align-items: center;
-  gap: 32px;
-  font-family: "DM Sans:Bold", monospace, sans-serif;
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.album-meta-ano {
-  color: #8c877d;
-  min-width: 50px;
-}
-
-.album-meta-faixas {
-  color: #8c877d;
-  min-width: 80px;
-}
-
-.album-meta-reproducoes {
-  color: #8c877d;
-  min-width: 120px;
-}
-
-/* Botão Avaliar Disco no final da linha */
-.album-btn-avaliar {
-  display: flex;
-  align-items: center;
   gap: 8px;
-  padding: 8px 14px;
-  border-radius: 99px;
-  background: #ff0004;
-  color: #ffffff;
-  border: none;
-  font-family: "DM Sans:Bold", sans-serif;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 10px rgba(255, 0, 4, 0.3);
+  transition: all 0.2s ease;
 }
 
-.album-btn-avaliar:hover {
-  background: #cc0003;
-  transform: translateY(-2px) scale(1.04);
-  box-shadow: 0 6px 16px rgba(255, 0, 4, 0.45);
-}
-
-.album-linha-item:hover .album-btn-avaliar {
-  background: #14121c;
-  color: #f7f4ed;
-  box-shadow: 0 4px 12px rgba(20, 18, 28, 0.25);
-}
-
-.album-linha-item:hover .album-btn-avaliar:hover {
-  background: #ff0004;
-  color: #ffffff;
-}
-
-.btn-vinil-mini {
-  width: 12px;
-  height: 12px;
+.disco-ponto-icon {
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  background: #14121c;
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: #ff0004;
   display: inline-block;
-  position: relative;
 }
 
-.btn-vinil-mini::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
+.album-btn-avaliar-disco:hover {
+  background: #ff0004;
+  border-color: #ff0004;
+  color: #ffffff;
+}
+
+.album-btn-avaliar-disco:hover .disco-ponto-icon {
   background: #ffffff;
 }
 
-/* Responsividade da Lista de Álbuns */
+/* Responsividade das telas de Artistas e Álbuns */
 @media (max-width: 980px) {
-  .album-linha-item {
-    padding: 18px 24px;
-    grid-template-columns: 50px 110px 1fr;
-    gap: 16px;
+  .artistas-barra-controle,
+  .albuns-barra-controle {
+    padding: 14px 24px;
+    flex-direction: column;
+    align-items: stretch;
   }
-  .album-item-metas {
-    display: none;
-  }
-  .album-sleeve-container {
-    width: 76px;
-    height: 76px;
-  }
-  .album-jacket-cover {
-    width: 76px;
-    height: 76px;
-  }
-  .album-vinyl-disc {
-    width: 70px;
-    height: 70px;
-  }
-  .album-linha-item:hover .album-vinyl-disc {
-    transform: translateX(30px) rotate(140deg);
+  .artistas-header-indice,
+  .albuns-header-indice,
+  .artistas-galeria-grid,
+  .albuns-crate-grid {
+    padding-left: 24px;
+    padding-right: 24px;
   }
 }
 
 @media (max-width: 640px) {
-  .album-linha-item {
-    padding: 14px 16px;
-    grid-template-columns: 40px 80px 1fr;
-    gap: 12px;
+  .artistas-galeria-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
   }
-  .album-sleeve-container {
-    width: 60px;
-    height: 60px;
+  .albuns-crate-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
-  .album-jacket-cover {
-    width: 60px;
-    height: 60px;
-  }
-  .album-vinyl-disc {
-    width: 56px;
-    height: 56px;
-  }
-  .album-linha-item:hover .album-vinyl-disc {
-    transform: translateX(20px) rotate(120deg);
+  .artistas-letras-bloco,
+  .albuns-letras-bloco {
+    width: 100%;
   }
 }
 

@@ -10,7 +10,7 @@ export function PaginaTodosArtistas({ aoSelecionarArtista }) {
     return [...listaDeArtistas].sort((a, b) => a.nome.localeCompare(b.nome));
   }, []);
 
-  // Extrai as letras iniciais únicas presentes nos artistas
+  // Letras iniciais únicas presentes no acervo
   const letrasDisponiveis = useMemo(() => {
     const letras = new Set();
     artistasOrdenados.forEach((a) => {
@@ -41,45 +41,32 @@ export function PaginaTodosArtistas({ aoSelecionarArtista }) {
   }, [artistasOrdenados, termoBusca, letraFiltro]);
 
   return (
-    <main className="pagina-artistas-editorial">
-      {/* Barra superior de controle estilo editorial */}
-      <div className="artistas-topo-editorial">
+    <main className="artistas-catalogo-root">
+      {/* 1. BARRA SUPERIOR MECÂNICA & TÉCNICA */}
+      <div className="artistas-barra-controle">
         <div className="artistas-busca-box">
-          <svg
-            className="artistas-busca-icone"
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <circle cx="11" cy="11" r="8" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-          </svg>
+          <span className="busca-prefix-mono">// BUSCA_ARTISTA:</span>
           <input
             type="text"
             className="artistas-busca-input"
-            placeholder="DIGITE NOME / GÊNERO"
+            placeholder="DIGITE NOME, CIDADE OU GÊNERO..."
             value={termoBusca}
             onChange={(e) => setTermoBusca(e.target.value)}
           />
         </div>
 
-        {/* Filtro por Letras Alfabéticas / TODOS */}
-        <div className="artistas-letras-filtro">
+        {/* Filtro por Letras Reto e Geométrico */}
+        <div className="artistas-letras-bloco">
           <button
-            className={`artistas-letra-btn pill ${letraFiltro === "TODOS" ? "ativo" : ""}`}
+            className={`letra-reta-btn ${letraFiltro === "TODOS" ? "ativo" : ""}`}
             onClick={() => setLetraFiltro("TODOS")}
           >
-            Todos
+            TODOS
           </button>
           {letrasDisponiveis.map((letra) => (
             <button
               key={letra}
-              className={`artistas-letra-btn circle ${letraFiltro === letra ? "ativo" : ""}`}
+              className={`letra-reta-btn ${letraFiltro === letra ? "ativo" : ""}`}
               onClick={() => setLetraFiltro(letra)}
             >
               {letra}
@@ -88,49 +75,64 @@ export function PaginaTodosArtistas({ aoSelecionarArtista }) {
         </div>
       </div>
 
-      {/* Lista Editorial Interativa */}
-      <div className="artistas-lista-editorial">
+      {/* 2. HEADER DE STATUS DO ACERVO */}
+      <div className="artistas-header-indice">
+        <div className="indice-tag-wrap">
+          <span className="indice-ponto-red" />
+          <span className="indice-titulo-mono">
+            CATÁLOGO OFICIAL DE ARTISTAS // EXIBINDO {artistasFiltrados.length} DE {artistasOrdenados.length} ARTISTAS
+          </span>
+        </div>
+        <span className="indice-rotulo-sub">ARQUIVO MUSICAL RPM · CLIQUE PARA ACESSAR DISCOGRAFIA</span>
+      </div>
+
+      {/* 3. GALERIA DE RETRATOS EDITORIAIS (GRID DE QUADROS RETOS) */}
+      <div className="artistas-galeria-grid">
         {artistasFiltrados.length === 0 ? (
-          <div className="artistas-vazio">
-            <p>Nenhum artista encontrado para o filtro selecionado.</p>
+          <div className="artistas-vazio-box">
+            <span className="vazio-mono">// NENHUM ARTISTA CORRESPONDE AO FILTRO PESQUISADO</span>
           </div>
         ) : (
-          artistasFiltrados.map((artista, index) => {
-            const numeroFormatado = String(index + 1).padStart(2, "0");
+          artistasFiltrados.map((artista) => {
+            const totalAlbuns = artista.albuns ? artista.albuns.length : 0;
+            const totalFaixas = artista.musicas ? artista.musicas.length : 0;
 
             return (
-              <div
+              <article
                 key={artista.id}
-                className="artistas-linha-item"
+                className="artista-quadro-card"
                 onClick={() => aoSelecionarArtista(artista)}
               >
-                {/* Índice numérico vermelho */}
-                <span className="artistas-item-numero">{numeroFormatado}</span>
-
-                {/* Foto / Miniatura com moldura editorial */}
-                <div className="artistas-item-foto-wrap">
+                {/* Imagem do Artista em Moldura Reta com Aspecto Retrato */}
+                <div className="artista-moldura-foto">
                   <img
                     src={artista.foto}
                     alt={artista.nome}
-                    className="artistas-item-foto"
+                    className="artista-foto-img"
                     loading="lazy"
                   />
+                  <div className="artista-foto-filtro-sombra" />
+                  <span className="artista-etiqueta-categoria">{artista.categoria}</span>
                 </div>
 
-                {/* Nome do Artista em destaque */}
-                <h2 className="artistas-item-nome">{artista.nome}</h2>
+                {/* Bloco de Informações Tipográficas */}
+                <div className="artista-dados-bloco">
+                  <div className="artista-head-meta">
+                    <span className="artista-cidade-mono">{artista.origem.split(",")[0].toUpperCase()}</span>
+                    <span className="artista-ouvintes-tag">{artista.ouvintesMensais} OUVINTES</span>
+                  </div>
 
-                {/* Metadados à direita estilo editorial com fonte técnica */}
-                <div className="artistas-item-metas">
-                  <span className="artistas-meta-genero">
-                    {artista.genero.replace(/\s*\/\s*/g, " • ").toUpperCase()}
-                  </span>
-                  <span className="artistas-meta-origem">
-                    {artista.origem.split(",")[0].trim().toUpperCase()}
-                  </span>
-                  <span className="artistas-meta-status">INDEXADO</span>
+                  <h2 className="artista-nome-editorial">{artista.nome}</h2>
+                  <p className="artista-genero-desc">{artista.genero}</p>
+
+                  <div className="artista-card-footer">
+                    <span className="artista-contagem-albuns">
+                      {totalAlbuns} {totalAlbuns === 1 ? "ÁLBUM" : "ÁLBUNS"} · {totalFaixas} FAIXAS
+                    </span>
+                    <span className="artista-btn-ver">EXPLORAR →</span>
+                  </div>
                 </div>
-              </div>
+              </article>
             );
           })
         )}

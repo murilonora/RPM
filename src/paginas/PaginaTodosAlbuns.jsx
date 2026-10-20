@@ -17,7 +17,6 @@ export function PaginaTodosAlbuns({ aoSelecionarArtista, aoAvaliar }) {
         });
       });
     });
-    // Ordem alfabética pelo título do álbum
     return albuns.sort((a, b) => a.titulo.localeCompare(b.titulo));
   }, []);
 
@@ -52,45 +51,32 @@ export function PaginaTodosAlbuns({ aoSelecionarArtista, aoAvaliar }) {
   }, [todosAlbuns, termoBusca, letraFiltro]);
 
   return (
-    <main className="pagina-artistas-editorial">
-      {/* Barra superior de controle editorial */}
-      <div className="artistas-topo-editorial">
-        <div className="artistas-busca-box">
-          <svg
-            className="artistas-busca-icone"
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <circle cx="11" cy="11" r="8" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-          </svg>
+    <main className="albuns-catalogo-root">
+      {/* 1. BARRA SUPERIOR MECÂNICA & TÉCNICA */}
+      <div className="albuns-barra-controle">
+        <div className="albuns-busca-box">
+          <span className="busca-prefix-mono">// BUSCA_DISCOGRAFIA:</span>
           <input
             type="text"
-            className="artistas-busca-input"
-            placeholder="DIGITE ÁLBUM / ARTISTA"
+            className="albuns-busca-input"
+            placeholder="DIGITE ÁLBUM, ARTISTA OU ANO..."
             value={termoBusca}
             onChange={(e) => setTermoBusca(e.target.value)}
           />
         </div>
 
-        {/* Filtro por Letras Alfabéticas / TODOS */}
-        <div className="artistas-letras-filtro">
+        {/* Filtro por Letras Reto e Geométrico */}
+        <div className="albuns-letras-bloco">
           <button
-            className={`artistas-letra-btn pill ${letraFiltro === "TODOS" ? "ativo" : ""}`}
+            className={`letra-reta-btn ${letraFiltro === "TODOS" ? "ativo" : ""}`}
             onClick={() => setLetraFiltro("TODOS")}
           >
-            Todos
+            TODOS
           </button>
           {letrasDisponiveis.map((letra) => (
             <button
               key={letra}
-              className={`artistas-letra-btn circle ${letraFiltro === letra ? "ativo" : ""}`}
+              className={`letra-reta-btn ${letraFiltro === letra ? "ativo" : ""}`}
               onClick={() => setLetraFiltro(letra)}
             >
               {letra}
@@ -99,86 +85,97 @@ export function PaginaTodosAlbuns({ aoSelecionarArtista, aoAvaliar }) {
         </div>
       </div>
 
-      {/* Lista Editorial Interativa de Álbuns */}
-      <div className="albuns-lista-editorial">
+      {/* 2. HEADER DE STATUS DA DISCOGRAFIA */}
+      <div className="albuns-header-indice">
+        <div className="indice-tag-wrap">
+          <span className="indice-ponto-red" />
+          <span className="indice-titulo-mono">
+            DISCOGRAFIA OFICIAL // EXIBINDO {albunsFiltrados.length} DE {todosAlbuns.length} ÁLBUNS
+          </span>
+        </div>
+        <span className="indice-rotulo-sub">PASSE O MOUSE SOBRE O DISCO PARA LIBERAR O VINIL</span>
+      </div>
+
+      {/* 3. ESTANTE DE VINIS EM FORMATO CRATE DIGGING (GRID DE CAPAS DE VINIL) */}
+      <div className="albuns-crate-grid">
         {albunsFiltrados.length === 0 ? (
-          <div className="artistas-vazio">
-            <p>Nenhum álbum encontrado para o filtro selecionado.</p>
+          <div className="albuns-vazio-box">
+            <span className="vazio-mono">// NENHUM ÁLBUM ENCONTRADO NO CATÁLOGO</span>
           </div>
         ) : (
-          albunsFiltrados.map((album, index) => {
-            const numeroFormatado = String(index + 1).padStart(2, "0");
+          albunsFiltrados.map((album) => {
+            const chaveItem = `album-${album.artistaRef.id}-${album.indiceOriginal}`;
 
             return (
-              <div
-                key={`${album.titulo}-${album.artistaRef.id}-${album.indiceOriginal}`}
-                className="album-linha-item"
+              <article
+                key={chaveItem}
+                className="album-crate-card"
                 onClick={() => aoSelecionarArtista(album.artistaRef)}
               >
-                {/* Índice numérico vermelho */}
-                <span className="artistas-item-numero">{numeroFormatado}</span>
+                {/* Cabeçalho da Capa com Carimbo Técnico */}
+                <div className="album-crate-header">
+                  <span className="album-tipo-etiqueta">LP // 12-INCH</span>
+                  <span className="album-ano-etiqueta">{album.ano}</span>
+                </div>
 
-                {/* Efeito da Capa do Álbum com o Disco de Vinil saindo */}
-                <div className="album-sleeve-container">
-                  {/* O Disco de Vinil que desliza para fora e gira */}
-                  <div className="album-vinyl-disc" aria-hidden="true">
-                    <div className="vinyl-grooves" />
-                    <div className="vinyl-grooves-inner" />
-                    <div className="vinyl-center-label">
-                      <div className="vinyl-center-hole" />
+                {/* Efeito Físico: Vinil Saindo da Capa no Hover */}
+                <div className="album-fisico-container">
+                  {/* O Disco de Vinil que desliza para cima/fora e gira */}
+                  <div className="album-disco-vinil-fisico" aria-hidden="true">
+                    <div className="vinyl-grooves-fisico" />
+                    <div className="vinyl-center-red">
+                      <div className="vinyl-furo-preto" />
                     </div>
                   </div>
 
-                  {/* A Capa do Álbum (Sleeve) na frente */}
-                  <div className="album-jacket-cover">
+                  {/* A Capa Quadrada do Disco (Jacket) */}
+                  <div className="album-capa-quadrada">
                     {album.capa ? (
                       <img
                         src={album.capa}
                         alt={album.titulo}
-                        className="album-jacket-img"
+                        className="album-capa-img"
                         loading="lazy"
                       />
                     ) : (
-                      <div className="album-jacket-placeholder">
-                        {album.titulo.slice(0, 2).toUpperCase()}
+                      <div className="album-capa-vazia">
+                        <span>{album.titulo.slice(0, 2).toUpperCase()}</span>
                       </div>
                     )}
                   </div>
                 </div>
 
-                {/* Título do Álbum e Artista */}
-                <div className="album-item-titulos">
-                  <h2 className="album-item-nome">{album.titulo}</h2>
-                  <span className="album-item-artista">{album.artistaRef.nome}</span>
-                </div>
+                {/* Dados da Obra */}
+                <div className="album-dados-painel">
+                  <span className="album-artista-nome">{album.artistaRef.nome}</span>
+                  <h2 className="album-titulo-obra">{album.titulo}</h2>
+                  <div className="album-meta-tecnica">
+                    <span>{album.faixas}</span>
+                    <span>{album.reproducoes} STREAMS</span>
+                  </div>
 
-                {/* Metadados e Ação de Avaliar à direita */}
-                <div className="album-item-metas">
-                  <span className="album-meta-ano">{album.ano}</span>
-                  <span className="album-meta-faixas">{album.faixas}</span>
-                  <span className="album-meta-reproducoes">{album.reproducoes} STREAMS</span>
-
-                  {/* Botão de Avaliar com Ícone de Vinil */}
+                  {/* Botão de Avaliar Direto */}
                   {aoAvaliar && (
                     <button
-                      className="album-btn-avaliar"
+                      type="button"
+                      className="album-btn-avaliar-disco"
                       onClick={(e) => {
                         e.stopPropagation();
                         aoAvaliar({
-                          chave: `album-${album.artistaRef.id}-${album.indiceOriginal}`,
+                          chave: chaveItem,
                           titulo: album.titulo,
                           subtitulo: `Álbum • ${album.artistaRef.nome}`,
                           capa: album.capa,
                         });
                       }}
-                      title="Avaliar este álbum"
+                      title="Avaliar este disco em vinis"
                     >
-                      <span className="btn-vinil-mini" />
-                      Avaliar
+                      <span className="disco-ponto-icon" />
+                      [ AVALIAR DISCO ]
                     </button>
                   )}
                 </div>
-              </div>
+              </article>
             );
           })
         )}
