@@ -85,7 +85,8 @@ POST http://localhost:8080/api/avaliacoes/musicas
 Content-Type: application/json
 
 {
-  "musicaId": "anos-luz",
+  "artistaId": "matue",
+  "tituloMusica": "Anos Luz",
   "nota": 5
 }
 
@@ -94,7 +95,8 @@ POST http://localhost:8080/api/avaliacoes/musicas
 Content-Type: application/json
 
 {
-  "musicaId": "anos-luz",
+  "artistaId": "matue",
+  "tituloMusica": "Anos Luz",
   "nota": 7
 }
 
@@ -103,7 +105,8 @@ POST http://localhost:8080/api/avaliacoes/musicas
 Content-Type: application/json
 
 {
-  "musicaId": "anos-luz",
+  "artistaId": "matue",
+  "tituloMusica": "Anos Luz",
   "nota": 0
 }
 
@@ -112,14 +115,25 @@ POST http://localhost:8080/api/avaliacoes/musicas
 Content-Type: application/json
 
 {
-  "musicaId": "anos-luz"
+  "artistaId": "matue",
+  "tituloMusica": "Anos Luz"
 }
 
-### [AVAL MUSICA] Sem musicaId → esperado 400 "Musica obrigatoria"
+### [AVAL MUSICA] Sem tituloMusica → esperado 400 "Musica obrigatoria"
 POST http://localhost:8080/api/avaliacoes/musicas
 Content-Type: application/json
 
 {
+  "artistaId": "matue",
+  "nota": 4
+}
+
+### [AVAL MUSICA] Sem artistaId → esperado 400 "Artista obrigatorio"
+POST http://localhost:8080/api/avaliacoes/musicas
+Content-Type: application/json
+
+{
+  "tituloMusica": "Anos Luz",
   "nota": 4
 }
 
@@ -128,7 +142,8 @@ POST http://localhost:8080/api/avaliacoes/musicas
 Content-Type: application/json
 
 {
-  "musicaId": "anos-luz",
+  "artistaId": "matue",
+  "tituloMusica": "Anos Luz",
   "nota": 5,
   "dataAvaliacao": "2000-01-01T00:00:00"
 }
@@ -144,15 +159,17 @@ POST http://localhost:8080/api/avaliacoes/albuns
 Content-Type: application/json
 
 {
-  "albumId": "333",
+  "artistaId": "matue",
+  "tituloAlbum": "333",
   "nota": 4
 }
 
-### [AVAL ALBUM] Sem albumId → esperado 400 "Album obrigatorio"
+### [AVAL ALBUM] Sem tituloAlbum → esperado 400 "Album obrigatorio"
 POST http://localhost:8080/api/avaliacoes/albuns
 Content-Type: application/json
 
 {
+  "artistaId": "matue",
   "nota": 4
 }
 
@@ -162,12 +179,13 @@ Content-Type: application/json
 #  COMENTÁRIO DE MÚSICA  —  POST /api/avaliacoes/musicas/comentarios
 # =====================================================================
 
-### [COMENT MUSICA] Válido → esperado 201 com texto, nota e musicaId
+### [COMENT MUSICA] Válido → esperado 201 com texto, nota, artistaId e tituloMusica
 POST http://localhost:8080/api/avaliacoes/musicas/comentarios
 Content-Type: application/json
 
 {
-  "musicaId": "anos-luz",
+  "artistaId": "matue",
+  "tituloMusica": "Anos Luz",
   "nota": 5,
   "texto": "Melhor faixa do album"
 }
@@ -177,16 +195,18 @@ POST http://localhost:8080/api/avaliacoes/musicas/comentarios
 Content-Type: application/json
 
 {
-  "musicaId": "anos-luz",
+  "artistaId": "matue",
+  "tituloMusica": "Anos Luz",
   "nota": 5
 }
 
-### [COMENT MUSICA] Tudo errado → esperado 400 com 3 erros (texto, musicaId, nota) — testa a herança
+### [COMENT MUSICA] Tudo errado → esperado 400 com 4 erros (texto, artistaId, tituloMusica, nota) — testa a herança
 POST http://localhost:8080/api/avaliacoes/musicas/comentarios
 Content-Type: application/json
 
 {
-  "musicaId": "",
+  "artistaId": "",
+  "tituloMusica": "",
   "nota": 9,
   "texto": ""
 }
@@ -202,7 +222,8 @@ POST http://localhost:8080/api/avaliacoes/albuns/comentarios
 Content-Type: application/json
 
 {
-  "albumId": "333",
+  "artistaId": "matue",
+  "tituloAlbum": "333",
   "nota": 4,
   "texto": "Matue no auge"
 }
@@ -212,6 +233,7 @@ POST http://localhost:8080/api/avaliacoes/albuns/comentarios
 Content-Type: application/json
 
 {
-  "albumId": "333",
+  "artistaId": "matue",
+  "tituloAlbum": "333",
   "nota": 4
 }

@@ -5,11 +5,15 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public abstract class Avaliacao {
     private Long id;
     private Usuario usuario;
+
+    @NotBlank(message="Artista obrigatorio")
+    private String artistaId;
 
     @NotNull(message="Nota obrigatoria")
     @Min(value=1,message="Nota minima é 1")
@@ -28,6 +32,14 @@ public abstract class Avaliacao {
 
     public void setUsuario(Usuario usuario){
         this.usuario=usuario;
+    }
+
+    public String getArtistaId(){
+        return this.artistaId;
+    }
+
+    public void setArtistaId(String artistaId){
+        this.artistaId=artistaId;
     }
 
     public Long getId(){

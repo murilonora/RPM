@@ -3,13 +3,13 @@ import jakarta.validation.constraints.NotBlank;
 
 public class AvaliacaoAlbum extends Avaliacao {
     @NotBlank(message="Album obrigatorio")
-    private String albumId;
+    private String tituloAlbum;
 
-    public String getAlbumId(){
-        return this.albumId;
+    public String getTituloAlbum(){
+        return this.tituloAlbum;
     }
 
-    public void setAlbumId(String albumId){
-        this.albumId=albumId;
+    public void setTituloAlbum(String tituloAlbum){
+        this.tituloAlbum=tituloAlbum;
     }
 }

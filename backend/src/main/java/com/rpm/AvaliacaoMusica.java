@@ -3,14 +3,14 @@ import jakarta.validation.constraints.NotBlank;
 
 public class AvaliacaoMusica extends Avaliacao {
     @NotBlank(message="Musica obrigatoria")
-    private String musicaId;
+    private String tituloMusica;
 
-    public String getMusicaId(){
-        return this.musicaId;
+    public String getTituloMusica(){
+        return this.tituloMusica;
     }
 
-    public void setMusicaId(String musicaId){
-        this.musicaId=musicaId;
+    public void setTituloMusica(String tituloMusica){
+        this.tituloMusica=tituloMusica;
     }
 
 }
