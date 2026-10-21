@@ -1,17 +1,12 @@
+import { tratarErroImagem, extrairSiglas } from "../utilitarios/comuns";
+
 // Grid de exibição dos álbuns lançados pelo artista
 export function AbaAlbuns({ albuns = [], nomeArtista = "", artistaId = "", aoAvaliar }) {
   if (!albuns || albuns.length === 0) {
     return <p className="p-4 text-center">Nenhum álbum encontrado.</p>;
   }
 
-  const siglas = nomeArtista
-    ? nomeArtista
-        .split(" ")
-        .slice(0, 2)
-        .map((p) => p[0])
-        .join("")
-        .toUpperCase()
-    : "LP";
+  const siglas = extrairSiglas(nomeArtista);
 
   return (
     <div className="album-grid">
@@ -35,10 +30,7 @@ export function AbaAlbuns({ albuns = [], nomeArtista = "", artistaId = "", aoAva
               <img
                 src={album.capa}
                 alt={album.titulo}
-                onError={(e) => {
-                  e.currentTarget.onerror = null;
-                  e.currentTarget.src = "/assets/rpm-mark.svg";
-                }}
+                onError={tratarErroImagem}
                 style={{ width: "100%", height: "100%", objectFit: "cover" }}
               />
             ) : (

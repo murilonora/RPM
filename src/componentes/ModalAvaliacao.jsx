@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useUsuario } from "../contextos/ContextoUsuario";
 import { AvaliacaoVinil } from "./AvaliacaoVinil";
+import { tratarErroImagem } from "../utilitarios/comuns";
 
 export function ModalAvaliacao({ visivel, aoFechar, item }) {
   const { estaLogado, obterAvaliacao, avaliarItem } = useUsuario();
@@ -64,10 +65,7 @@ export function ModalAvaliacao({ visivel, aoFechar, item }) {
                 <img
                   src={item.capa}
                   alt={item.titulo}
-                  onError={(e) => {
-                    e.currentTarget.onerror = null;
-                    e.currentTarget.src = "/assets/rpm-mark.svg";
-                  }}
+                  onError={tratarErroImagem}
                   style={{ width: "64px", height: "64px", borderRadius: "0px", objectFit: "cover" }}
                 />
               ) : (

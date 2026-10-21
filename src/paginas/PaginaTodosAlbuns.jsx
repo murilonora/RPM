@@ -1,12 +1,7 @@
 import { useState, useMemo } from "react";
 import { listaDeArtistas } from "../dados/dadosMusicais";
-
-function normalizarTexto(texto = "") {
-  return texto
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase();
-}
+import { normalizarTexto, tratarErroImagem } from "../utilitarios/comuns";
+import { FiltroAlfabetico } from "../componentes/FiltroAlfabetico";
 
 export function PaginaTodosAlbuns({ aoSelecionarArtista, aoAvaliar }) {
   const [termoBusca, setTermoBusca] = useState("");
@@ -41,7 +36,7 @@ export function PaginaTodosAlbuns({ aoSelecionarArtista, aoAvaliar }) {
 
   // Filtro por texto e letra
   const albunsFiltrados = useMemo(() => {
-    const termo = normalizarTexto(termoBusca.trim());
+    const termo = normalizarTexto(termoBusca);
     return todosAlbuns.filter((album) => {
       const bateTexto =
         !termo ||
@@ -72,24 +67,13 @@ export function PaginaTodosAlbuns({ aoSelecionarArtista, aoAvaliar }) {
           />
         </div>
 
-        {/* Filtro por Letras Reto e Geométrico */}
-        <div className="albuns-letras-bloco">
-          <button
-            className={`letra-reta-btn ${letraFiltro === "TODOS" ? "ativo" : ""}`}
-            onClick={() => setLetraFiltro("TODOS")}
-          >
-            TODOS
-          </button>
-          {letrasDisponiveis.map((letra) => (
-            <button
-              key={letra}
-              className={`letra-reta-btn ${letraFiltro === letra ? "ativo" : ""}`}
-              onClick={() => setLetraFiltro(letra)}
-            >
-              {letra}
-            </button>
-          ))}
-        </div>
+        {/* Filtro por Letras Unificado */}
+        <FiltroAlfabetico
+          letrasDisponiveis={letrasDisponiveis}
+          letraAtiva={letraFiltro}
+          aoSelecionarLetra={setLetraFiltro}
+          classeContainer="albuns-letras-bloco"
+        />
       </div>
 
       {/* 2. HEADER DE STATUS DA DISCOGRAFIA */}
@@ -143,10 +127,7 @@ export function PaginaTodosAlbuns({ aoSelecionarArtista, aoAvaliar }) {
                         alt={album.titulo}
                         className="album-capa-img"
                         loading="lazy"
-                        onError={(e) => {
-                          e.currentTarget.onerror = null;
-                          e.currentTarget.src = "/assets/rpm-mark.svg";
-                        }}
+                        onError={tratarErroImagem}
                       />
                     ) : (
                       <div className="album-capa-vazia">

@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import { useUsuario } from "../contextos/ContextoUsuario";
 import { listaDeArtistas } from "../dados/dadosMusicais";
 import { AvaliacaoVinil } from "../componentes/AvaliacaoVinil";
+import { tratarErroImagem } from "../utilitarios/comuns";
 
 export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAvaliar }) {
   const {
@@ -260,10 +261,7 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
                       src={favoritoAbsoluto.capa}
                       alt={favoritoAbsoluto.titulo}
                       className="placa-capa-img"
-                      onError={(e) => {
-                        e.currentTarget.onerror = null;
-                        e.currentTarget.src = "/assets/rpm-mark.svg";
-                      }}
+                      onError={tratarErroImagem}
                     />
                   ) : (
                     <div className="placa-capa-placeholder">LP</div>
@@ -406,10 +404,7 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
                           src={item.capa}
                           alt={item.titulo}
                           className="ficha-capa-img"
-                          onError={(e) => {
-                            e.currentTarget.onerror = null;
-                            e.currentTarget.src = "/assets/rpm-mark.svg";
-                          }}
+                          onError={tratarErroImagem}
                         />
                       ) : (
                         <div className="ficha-capa-vazia">LP</div>
@@ -511,10 +506,7 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
                       src={item.capa || "/assets/rpm-mark.svg"}
                       alt={item.titulo}
                       className="seletor-item-capa"
-                      onError={(e) => {
-                        e.currentTarget.onerror = null;
-                        e.currentTarget.src = "/assets/rpm-mark.svg";
-                      }}
+                      onError={tratarErroImagem}
                     />
                     <div className="seletor-item-textos">
                       <strong>{item.titulo}</strong>

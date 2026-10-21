@@ -1,3 +1,5 @@
+import { tratarErroImagem } from "../utilitarios/comuns";
+
 // Lista com as musicas mais reproduzidas do artista selecionado
 export function AbaMusicas({ musicas = [], artistaId = "", aoAvaliar }) {
   if (!musicas || musicas.length === 0) {
@@ -31,10 +33,7 @@ export function AbaMusicas({ musicas = [], artistaId = "", aoAvaliar }) {
             <img
               src={musica.capa || "/assets/rpm-mark.svg"}
               alt={musica.titulo}
-              onError={(e) => {
-                e.currentTarget.onerror = null;
-                e.currentTarget.src = "/assets/rpm-mark.svg";
-              }}
+              onError={tratarErroImagem}
               style={{
                 width: "36px",
                 height: "36px",

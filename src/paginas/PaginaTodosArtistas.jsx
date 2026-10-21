@@ -1,12 +1,7 @@
 import { useState, useMemo } from "react";
 import { listaDeArtistas } from "../dados/dadosMusicais";
-
-function normalizarTexto(texto = "") {
-  return texto
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase();
-}
+import { normalizarTexto, tratarErroImagem } from "../utilitarios/comuns";
+import { FiltroAlfabetico } from "../componentes/FiltroAlfabetico";
 
 export function PaginaTodosArtistas({ aoSelecionarArtista }) {
   const [termoBusca, setTermoBusca] = useState("");
@@ -31,7 +26,7 @@ export function PaginaTodosArtistas({ aoSelecionarArtista }) {
 
   // Filtra por termo de busca e letra selecionada
   const artistasFiltrados = useMemo(() => {
-    const termo = normalizarTexto(termoBusca.trim());
+    const termo = normalizarTexto(termoBusca);
     return artistasOrdenados.filter((artista) => {
       const bateTexto =
         !termo ||
@@ -62,24 +57,13 @@ export function PaginaTodosArtistas({ aoSelecionarArtista }) {
           />
         </div>
 
-        {/* Filtro por Letras Reto e Geométrico */}
-        <div className="artistas-letras-bloco">
-          <button
-            className={`letra-reta-btn ${letraFiltro === "TODOS" ? "ativo" : ""}`}
-            onClick={() => setLetraFiltro("TODOS")}
-          >
-            TODOS
-          </button>
-          {letrasDisponiveis.map((letra) => (
-            <button
-              key={letra}
-              className={`letra-reta-btn ${letraFiltro === letra ? "ativo" : ""}`}
-              onClick={() => setLetraFiltro(letra)}
-            >
-              {letra}
-            </button>
-          ))}
-        </div>
+        {/* Filtro por Letras Unificado */}
+        <FiltroAlfabetico
+          letrasDisponiveis={letrasDisponiveis}
+          letraAtiva={letraFiltro}
+          aoSelecionarLetra={setLetraFiltro}
+          classeContainer="artistas-letras-bloco"
+        />
       </div>
 
       {/* 2. HEADER DE STATUS DO ACERVO */}
@@ -117,10 +101,7 @@ export function PaginaTodosArtistas({ aoSelecionarArtista }) {
                     alt={artista.nome}
                     className="artista-foto-img"
                     loading="lazy"
-                    onError={(e) => {
-                      e.currentTarget.onerror = null;
-                      e.currentTarget.src = "/assets/rpm-mark.svg";
-                    }}
+                    onError={tratarErroImagem}
                   />
                   <div className="artista-foto-filtro-sombra" />
                   <span className="artista-etiqueta-categoria">{artista.categoria}</span>

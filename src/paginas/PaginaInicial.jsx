@@ -1,14 +1,7 @@
 import { useState, useEffect } from "react";
 import { listaDeArtistas, categoriasMusicais } from "../dados/dadosMusicais";
 import { FundoMosaicoHero } from "../componentes/FundoMosaicoHero";
-
-// Função para normalizar texto removendo acentos e convertendo para minúsculas
-function normalizarTexto(texto = "") {
-  return texto
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase();
-}
+import { normalizarTexto, tratarErroImagem } from "../utilitarios/comuns";
 
 // Estilos reutilizáveis para o dropdown de busca
 const estiloDropdown = {
@@ -255,10 +248,7 @@ export function PaginaInicial({ aoSelecionarArtista }) {
                                 src={resultado.foto}
                                 alt={resultado.titulo}
                                 style={estiloFoto}
-                                onError={(e) => {
-                                  e.currentTarget.onerror = null;
-                                  e.currentTarget.src = "/assets/rpm-mark.svg";
-                                }}
+                                onError={tratarErroImagem}
                               />
                               <span style={{ flex: 1, minWidth: 0 }}>
                                 {/* Badge colorido indicando o tipo */}
@@ -404,10 +394,7 @@ export function PaginaInicial({ aoSelecionarArtista }) {
                 src={artista.foto}
                 alt={artista.nome}
                 style={{ width: "100%", height: "180px", objectFit: "cover" }}
-                onError={(e) => {
-                  e.currentTarget.onerror = null;
-                  e.currentTarget.src = "/assets/rpm-mark.svg";
-                }}
+                onError={tratarErroImagem}
               />
               <div style={{ padding: "16px" }}>
                 <span

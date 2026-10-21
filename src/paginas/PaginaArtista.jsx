@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AbaMusicas } from "../componentes/AbaMusicas";
 import { AbaAlbuns } from "../componentes/AbaAlbuns";
 import { AbaHistoria } from "../componentes/AbaHistoria";
+import { tratarErroImagem } from "../utilitarios/comuns";
 
 // Página de detalhes, músicas, álbuns e história do artista selecionado
 export function PaginaArtista({ artista, aoVoltarAoInicio, aoAvaliar }) {
@@ -30,10 +31,7 @@ export function PaginaArtista({ artista, aoVoltarAoInicio, aoAvaliar }) {
         <img
           src={artista.foto}
           alt={`Foto de ${artista.nome}`}
-          onError={(e) => {
-            e.currentTarget.onerror = null;
-            e.currentTarget.src = "/assets/rpm-mark.svg";
-          }}
+          onError={tratarErroImagem}
           style={{ width: "100%", height: "900px", objectFit: "cover", objectPosition: "top", borderRadius: "0px" }}
         />
         <div className="photo-caption">
