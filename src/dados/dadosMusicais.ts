@@ -157,33 +157,33 @@ const bancoDeDadosArtistas: Artista[] = [
         "titulo": "Melhor Agora",
         "album": "LUME",
         "ano": "2022",
-        "reproducoes": "270 mi",
-        "streams": 270000000,
+        "reproducoes": "190 mi",
+        "streams": 190000000,
         "capa": "https://cdn-images.dzcdn.net/images/cover/966c622d2a432a7bffff340ef36836c7/1000x1000-000000-80-0-0.jpg"
       },
       {
-        "titulo": "Incondicional",
-        "album": "Imersao",
+        "titulo": "Corte Americano",
+        "album": "Imaterial",
         "ano": "2021",
-        "reproducoes": "190 mi",
-        "streams": 190000000,
+        "reproducoes": "230 mi",
+        "streams": 230000000,
         "capa": "https://cdn-images.dzcdn.net/images/cover/dfc53733c6052b14e79ed7e3c9a0ff3c/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Neurotico de Guerra",
         "album": "Vivaz",
         "ano": "2012",
-        "reproducoes": "180 mi",
-        "streams": 180000000,
+        "reproducoes": "160 mi",
+        "streams": 160000000,
         "capa": "https://cdn-images.dzcdn.net/images/cover/f6de5201719a7fda618910faed3055fb/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Me Sinto Abencoado",
         "album": "LUME",
         "ano": "2022",
-        "reproducoes": "175 mi",
-        "streams": 175000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/702faa242e4eaf839e4062ecf43c9cf6/1000x1000-000000-80-0-0.jpg"
+        "reproducoes": "145 mi",
+        "streams": 145000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/966c622d2a432a7bffff340ef36836c7/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
@@ -191,24 +191,32 @@ const bancoDeDadosArtistas: Artista[] = [
         "titulo": "LUME",
         "ano": "2022",
         "faixas": "11 faixas",
-        "reproducoes": "680 mi",
-        "streams": 680000000,
+        "reproducoes": "410 mi",
+        "streams": 410000000,
         "capa": "https://cdn-images.dzcdn.net/images/cover/966c622d2a432a7bffff340ef36836c7/1000x1000-000000-80-0-0.jpg"
+      },
+      {
+        "titulo": "Imaterial",
+        "ano": "2021",
+        "faixas": "5 faixas",
+        "reproducoes": "350 mi",
+        "streams": 350000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/dfc53733c6052b14e79ed7e3c9a0ff3c/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Audaz",
         "ano": "2018",
         "faixas": "13 faixas",
-        "reproducoes": "410 mi",
-        "streams": 410000000,
+        "reproducoes": "290 mi",
+        "streams": 290000000,
         "capa": "https://cdn-images.dzcdn.net/images/cover/5c41a84e71b95f6d8b26dfebff70f934/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Vivaz",
         "ano": "2012",
         "faixas": "10 faixas",
-        "reproducoes": "340 mi",
-        "streams": 340000000,
+        "reproducoes": "180 mi",
+        "streams": 180000000,
         "capa": "https://cdn-images.dzcdn.net/images/cover/f6de5201719a7fda618910faed3055fb/1000x1000-000000-80-0-0.jpg"
       }
     ]
@@ -232,38 +240,46 @@ const bancoDeDadosArtistas: Artista[] = [
     "citacao": "Eu sou o caos organizado.",
     "musicas": [
       {
-        "titulo": "Pandora",
+        "titulo": "Perdição",
+        "album": "Single",
+        "ano": "2020",
+        "reproducoes": "260 mi",
+        "streams": 260000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/b274c35e9f899e43679805908221bce4/1000x1000-000000-80-0-0.jpg"
+      },
+      {
+        "titulo": "Freio da Blazer",
         "album": "Single",
         "ano": "2021",
         "reproducoes": "210 mi",
         "streams": 210000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/cd36a6f157d8c4126c950680de0922a2/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/055d28b0dd64ff89bb73a38fa160868f/1000x1000-000000-80-0-0.jpg"
       },
       {
-        "titulo": "Amor e Facas",
-        "album": "SETE",
-        "ano": "2022",
-        "reproducoes": "180 mi",
-        "streams": 180000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/dfc53733c6052b14e79ed7e3c9a0ff3c/1000x1000-000000-80-0-0.jpg"
-      },
-      {
-        "titulo": "SETE",
-        "album": "SETE",
-        "ano": "2022",
-        "reproducoes": "150 mi",
-        "streams": 150000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/191d8090ab5fe166cb18394490d11fc7/1000x1000-000000-80-0-0.jpg"
+        "titulo": "Gratidão",
+        "album": "Hip Hop Rare",
+        "ano": "2020",
+        "reproducoes": "185 mi",
+        "streams": 185000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/2281a1a5b8e974e64ba2468d6b631165/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
       {
-        "titulo": "SETE",
-        "ano": "2022",
-        "faixas": "9 faixas",
-        "reproducoes": "480 mi",
-        "streams": 480000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/4b6002fbe68fbfd001ecf1b716c78c93/1000x1000-000000-80-0-0.jpg"
+        "titulo": "Hip Hop Rare",
+        "ano": "2020",
+        "faixas": "15 faixas",
+        "reproducoes": "380 mi",
+        "streams": 380000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/2281a1a5b8e974e64ba2468d6b631165/1000x1000-000000-80-0-0.jpg"
+      },
+      {
+        "titulo": "IRRASTREÁVEL",
+        "ano": "2024",
+        "faixas": "31 faixas",
+        "reproducoes": "290 mi",
+        "streams": 290000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/c70c0c2707f45778a8764030616b3f9b/1000x1000-000000-80-0-0.jpg"
       }
     ]
   },
@@ -287,7 +303,7 @@ const bancoDeDadosArtistas: Artista[] = [
     "musicas": [
       {
         "titulo": "Segredo",
-        "album": "Contraditorio",
+        "album": "Contradições",
         "ano": "2023",
         "reproducoes": "220 mi",
         "streams": 220000000,
@@ -295,29 +311,29 @@ const bancoDeDadosArtistas: Artista[] = [
       },
       {
         "titulo": "Preferida",
-        "album": "Contraditorio",
+        "album": "Contradições",
         "ano": "2023",
         "reproducoes": "185 mi",
         "streams": 185000000,
         "capa": "https://cdn-images.dzcdn.net/images/cover/29bc56fed2db3f7dd584c1a5a995383c/1000x1000-000000-80-0-0.jpg"
       },
       {
-        "titulo": "Cartier",
-        "album": "Single",
+        "titulo": "Melhor Só",
+        "album": "Contradições",
         "ano": "2023",
-        "reproducoes": "140 mi",
-        "streams": 140000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/8cb6b57c0e84cebb3930be5b57fee257/1000x1000-000000-80-0-0.jpg"
+        "reproducoes": "260 mi",
+        "streams": 260000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/29bc56fed2db3f7dd584c1a5a995383c/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
       {
-        "titulo": "Contraditorio",
+        "titulo": "Contradições",
         "ano": "2023",
         "faixas": "7 faixas",
         "reproducoes": "510 mi",
         "streams": 510000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/a1b65f4014a915f6ed24f51c48b940b8/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/29bc56fed2db3f7dd584c1a5a995383c/1000x1000-000000-80-0-0.jpg"
       }
     ]
   },
@@ -332,51 +348,51 @@ const bancoDeDadosArtistas: Artista[] = [
     "ouvintesMensaisNum": 5100000,
     "foto": "https://cdn-images.dzcdn.net/images/artist/35c37e074b1ac875a1a3303f08385b2c/1000x1000-000000-80-0-0.jpg",
     "legendaFoto": "Costa Gold em show",
-    "resumo": "Um dos artistas mais respeitados do underground brasileiro, referencia em flow e tecnica.",
+    "resumo": "Um dos grupos mais influentes do rap e trap nacional, formado por Predella e Nog.",
     "biografia": [
-      "Jonas Costa, o Costa Gold, nasceu em Santos e construiu uma carreira solida no rap underground antes de estourar no mainstream.",
-      "Conhecido por textos densos e referencias literarias, seus albuns sao considerados classicos da nova era do rap nacional."
+      "Costa Gold é um conceituado grupo de rap paulistano formado por Lucas Predella e Caio Nog, que marcou a transição do rap underground para as paradas nacionais.",
+      "Com álbuns emblemáticos como '.155' e sucessos de grande repercussão como 'The Cypher Deffect' e 'Se Essa Bunda', o grupo estabeleceu novos padrões de técnica, flow e métrica."
     ],
     "citacao": "Rap e compromisso, nao e entretenimento.",
     "musicas": [
       {
-        "titulo": "Gringo",
-        "album": "Condominio B",
-        "ano": "2016",
-        "reproducoes": "120 mi",
-        "streams": 120000000,
+        "titulo": "155",
+        "album": ".155",
+        "ano": "2015",
+        "reproducoes": "140 mi",
+        "streams": 140000000,
         "capa": "https://cdn-images.dzcdn.net/images/cover/7a7d0e06035ecdd04d5ff32cca7be8ad/1000x1000-000000-80-0-0.jpg"
       },
       {
-        "titulo": "Grana",
+        "titulo": "The Cypher Deffect 3",
         "album": "Single",
-        "ano": "2019",
-        "reproducoes": "95 mi",
-        "streams": 95000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/778dbeccdf04fdad4e718df4fc8e00c8/1000x1000-000000-80-0-0.jpg"
+        "ano": "2021",
+        "reproducoes": "160 mi",
+        "streams": 160000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/c7a6e3c91e0b286b60b10b742f63e9f4/1000x1000-000000-80-0-0.jpg"
       },
       {
-        "titulo": "Efeito Placebo",
-        "album": "Condominio B",
-        "ano": "2016",
-        "reproducoes": "85 mi",
-        "streams": 85000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/7a7d0e06035ecdd04d5ff32cca7be8ad/1000x1000-000000-80-0-0.jpg"
+        "titulo": "Se Essa Bunda",
+        "album": "Single",
+        "ano": "2021",
+        "reproducoes": "110 mi",
+        "streams": 110000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/86b3b9d441c4b9456029e1c9a44a21da/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
       {
-        "titulo": "Condominio B",
-        "ano": "2016",
-        "faixas": "11 faixas",
+        "titulo": ".155",
+        "ano": "2015",
+        "faixas": "10 faixas",
         "reproducoes": "290 mi",
         "streams": 290000000,
         "capa": "https://cdn-images.dzcdn.net/images/cover/7a7d0e06035ecdd04d5ff32cca7be8ad/1000x1000-000000-80-0-0.jpg"
       },
       {
-        "titulo": "Tardes de Versailles",
-        "ano": "2018",
-        "faixas": "13 faixas",
+        "titulo": "AUGE",
+        "ano": "2021",
+        "faixas": "14 faixas",
         "reproducoes": "220 mi",
         "streams": 220000000,
         "capa": "https://cdn-images.dzcdn.net/images/cover/1f4e65cee0a2387fe619f7f1168f16c0/1000x1000-000000-80-0-0.jpg"
@@ -415,7 +431,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2002",
         "reproducoes": "195 mi",
         "streams": 195000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/34f84b78a86decd432b12a3ff714ca22/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/e04b68c5a1aa7a29128d05e7ff9e3084/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Jesus Chorou",
@@ -489,27 +505,27 @@ const bancoDeDadosArtistas: Artista[] = [
     "musicas": [
       {
         "titulo": "Passarinhos com Vanessa da Mata",
-        "album": "Sobre Criancas",
+        "album": "Sobre Criancas Quadris Pesadelos e Licoes de Casa",
         "ano": "2015",
-        "reproducoes": "145 mi",
-        "streams": 145000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/29bc56fed2db3f7dd584c1a5a995383c/1000x1000-000000-80-0-0.jpg"
+        "reproducoes": "190 mi",
+        "streams": 190000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/0aa17e3f8f791278f76e688a8411b13b/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "AmarElo com Pabllo Vittar e Majur",
         "album": "AmarElo",
         "ano": "2019",
-        "reproducoes": "130 mi",
-        "streams": 130000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/7a7d0e06035ecdd04d5ff32cca7be8ad/1000x1000-000000-80-0-0.jpg"
+        "reproducoes": "160 mi",
+        "streams": 160000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/1077fa021b9b9d93cb9e66564ffc4446/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Principia",
         "album": "AmarElo",
         "ano": "2019",
-        "reproducoes": "95 mi",
-        "streams": 95000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/0dc76623cb84df4b6b082ed103b67084/1000x1000-000000-80-0-0.jpg"
+        "reproducoes": "120 mi",
+        "streams": 120000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/1077fa021b9b9d93cb9e66564ffc4446/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
@@ -641,7 +657,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2000",
         "reproducoes": "72 mi",
         "streams": 72000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/12bd074df5e5f22621b55153f0fc14ad/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/d9801848020a195308a0b2de9da074ff/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "No Brooklin",
@@ -683,37 +699,37 @@ const bancoDeDadosArtistas: Artista[] = [
     "musicas": [
       {
         "titulo": "Nao Existe Amor em SP",
-        "album": "Nao Existe Amor em SP",
+        "album": "Nó na Orelha",
         "ano": "2011",
-        "reproducoes": "75 mi",
-        "streams": 75000000,
+        "reproducoes": "180 mi",
+        "streams": 180000000,
         "capa": "https://cdn-images.dzcdn.net/images/cover/756d8d0262d22eb39099448293dfe323/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Linha de Frente",
-        "album": "Criolo",
-        "ano": "2006",
-        "reproducoes": "58 mi",
-        "streams": 58000000,
+        "album": "Nó na Orelha",
+        "ano": "2011",
+        "reproducoes": "110 mi",
+        "streams": 110000000,
         "capa": "https://cdn-images.dzcdn.net/images/cover/756d8d0262d22eb39099448293dfe323/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
       {
-        "titulo": "Nao Existe Amor em SP",
+        "titulo": "Nó na Orelha",
         "ano": "2011",
-        "faixas": "13 faixas",
-        "reproducoes": "180 mi",
-        "streams": 180000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/3f97f7f3f2be3d270b01878f8be54e26/1000x1000-000000-80-0-0.jpg"
+        "faixas": "10 faixas",
+        "reproducoes": "380 mi",
+        "streams": 380000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/756d8d0262d22eb39099448293dfe323/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Convoque Seu Buda",
         "ano": "2014",
-        "faixas": "12 faixas",
-        "reproducoes": "140 mi",
-        "streams": 140000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/6eff0230958231ee7ffb1c53b98e82c1/1000x1000-000000-80-0-0.jpg"
+        "faixas": "10 faixas",
+        "reproducoes": "210 mi",
+        "streams": 210000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/89c4d9fa24e8e19e73fb2c8fe95a2efb/1000x1000-000000-80-0-0.jpg"
       }
     ]
   },
@@ -1067,41 +1083,41 @@ const bancoDeDadosArtistas: Artista[] = [
         "titulo": "Lose Yourself",
         "album": "8 Mile",
         "ano": "2002",
-        "reproducoes": "2.3 bi",
-        "streams": 2300000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/e2b36a9fda865cb2e9ed1476b6291a7d/1000x1000-000000-80-0-0.jpg"
+        "reproducoes": "1.9 bi",
+        "streams": 1900000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/6fa1402225904c274083a73f6618cdcf/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Without Me",
         "album": "The Eminem Show",
         "ano": "2002",
-        "reproducoes": "2.1 bi",
-        "streams": 2100000000,
+        "reproducoes": "1.6 bi",
+        "streams": 1600000000,
         "capa": "https://cdn-images.dzcdn.net/images/cover/ec3c8ed67427064c70f67e5815b74cef/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "The Real Slim Shady",
         "album": "The Marshall Mathers LP",
         "ano": "2000",
-        "reproducoes": "1.9 bi",
-        "streams": 1900000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/e2b36a9fda865cb2e9ed1476b6291a7d/1000x1000-000000-80-0-0.jpg"
+        "reproducoes": "1.4 bi",
+        "streams": 1400000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/941c2d3c366affdc662956559e078a4e/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Mockingbird",
         "album": "Encore",
         "ano": "2004",
-        "reproducoes": "1.7 bi",
-        "streams": 1700000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/e2b36a9fda865cb2e9ed1476b6291a7d/1000x1000-000000-80-0-0.jpg"
+        "reproducoes": "1.3 bi",
+        "streams": 1300000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/c70c68f2f8aa376093774b931e04d018/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Stan feat. Dido",
         "album": "The Marshall Mathers LP",
         "ano": "2000",
-        "reproducoes": "1.3 bi",
-        "streams": 1300000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/e2b36a9fda865cb2e9ed1476b6291a7d/1000x1000-000000-80-0-0.jpg"
+        "reproducoes": "950 mi",
+        "streams": 950000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/941c2d3c366affdc662956559e078a4e/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
@@ -1163,7 +1179,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2010",
         "reproducoes": "1.8 bi",
         "streams": 1800000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/f3f28eaf22f4aa1382b1fe83c6723961/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/93c7ca2b54d614843dfe7658106eed69/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Anaconda",
@@ -1171,7 +1187,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2014",
         "reproducoes": "1.4 bi",
         "streams": 1400000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/9c7a83a79ec78cfa0e4d93839d065557/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/ebbcc26be4391b139475aed5ce6a6c3e/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Starships",
@@ -1223,24 +1239,24 @@ const bancoDeDadosArtistas: Artista[] = [
         "titulo": "California Love",
         "album": "All Eyez on Me",
         "ano": "1996",
-        "reproducoes": "820 mi",
-        "streams": 820000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/924830874f01bb19bfa6153f0e428e15/1000x1000-000000-80-0-0.jpg"
+        "reproducoes": "890 mi",
+        "streams": 890000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/7856515f9e28265943f125fad02f63b1/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Changes",
         "album": "Greatest Hits",
         "ano": "1998",
-        "reproducoes": "740 mi",
-        "streams": 740000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/924830874f01bb19bfa6153f0e428e15/1000x1000-000000-80-0-0.jpg"
+        "reproducoes": "720 mi",
+        "streams": 720000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/7a0d1efa5902af92d7f33abc1a8a487e/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "All Eyez on Me",
         "album": "All Eyez on Me",
         "ano": "1996",
-        "reproducoes": "630 mi",
-        "streams": 630000000,
+        "reproducoes": "560 mi",
+        "streams": 560000000,
         "capa": "https://cdn-images.dzcdn.net/images/cover/7856515f9e28265943f125fad02f63b1/1000x1000-000000-80-0-0.jpg"
       },
       {
@@ -1249,7 +1265,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "1995",
         "reproducoes": "510 mi",
         "streams": 510000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/817725b26f5103a79dcad9aff93f3fbc/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/cc46ce618d538896071b62abd104cae9/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
@@ -1301,33 +1317,33 @@ const bancoDeDadosArtistas: Artista[] = [
         "titulo": "Juicy",
         "album": "Ready to Die",
         "ano": "1994",
-        "reproducoes": "1.1 bi",
-        "streams": 1100000000,
+        "reproducoes": "720 mi",
+        "streams": 720000000,
         "capa": "https://cdn-images.dzcdn.net/images/cover/7143c2cd04a78c9c969d230c69465a03/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Hypnotize",
         "album": "Life After Death",
         "ano": "1997",
-        "reproducoes": "950 mi",
-        "streams": 950000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/1f4e65cee0a2387fe619f7f1168f16c0/1000x1000-000000-80-0-0.jpg"
+        "reproducoes": "680 mi",
+        "streams": 680000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/0ff6906b2c4f089e10388e74692ff576/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Big Poppa",
         "album": "Ready to Die",
         "ano": "1994",
-        "reproducoes": "890 mi",
-        "streams": 890000000,
+        "reproducoes": "610 mi",
+        "streams": 610000000,
         "capa": "https://cdn-images.dzcdn.net/images/cover/7143c2cd04a78c9c969d230c69465a03/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Mo Money Mo Problems",
         "album": "Life After Death",
         "ano": "1997",
-        "reproducoes": "680 mi",
-        "streams": 680000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/7a7d0e06035ecdd04d5ff32cca7be8ad/1000x1000-000000-80-0-0.jpg"
+        "reproducoes": "540 mi",
+        "streams": 540000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/0ff6906b2c4f089e10388e74692ff576/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
@@ -1371,25 +1387,25 @@ const bancoDeDadosArtistas: Artista[] = [
         "titulo": "Empire State of Mind",
         "album": "The Blueprint 3",
         "ano": "2009",
-        "reproducoes": "1.4 bi",
-        "streams": 1400000000,
+        "reproducoes": "950 mi",
+        "streams": 950000000,
         "capa": "https://cdn-images.dzcdn.net/images/cover/e0edb930ad843bb002c04956a81ce7de/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "99 Problems",
         "album": "The Black Album",
         "ano": "2003",
-        "reproducoes": "1.1 bi",
-        "streams": 1100000000,
+        "reproducoes": "580 mi",
+        "streams": 580000000,
         "capa": "https://cdn-images.dzcdn.net/images/cover/0e59c737cf636f442fe599ec5a7fc78d/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Izzo H.O.V.A.",
         "album": "The Blueprint",
         "ano": "2001",
-        "reproducoes": "900 mi",
-        "streams": 900000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/7a7d0e06035ecdd04d5ff32cca7be8ad/1000x1000-000000-80-0-0.jpg"
+        "reproducoes": "420 mi",
+        "streams": 420000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/27a4b0d7294fb555d1d23d666f8fb8fe/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
@@ -1591,7 +1607,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2022",
         "reproducoes": "850 mi",
         "streams": 850000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/d4057cde2b30078608ff0b71c63f23e6/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/5e9b628a9d65aaa3e919d19e83e42c35/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Vai Malandra",
@@ -1615,7 +1631,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2021",
         "reproducoes": "580 mi",
         "streams": 580000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/cf643b027333c0d90e61ca1db1378000/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/5e9b628a9d65aaa3e919d19e83e42c35/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
@@ -1718,30 +1734,30 @@ const bancoDeDadosArtistas: Artista[] = [
     "citacao": "O funk e a nossa identidade.",
     "musicas": [
       {
-        "titulo": "Tava em Casa",
+        "titulo": "Casei Com a Putaria",
         "album": "Single",
-        "ano": "2021",
+        "ano": "2022",
         "reproducoes": "320 mi",
         "streams": 320000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/899b8d9585ef2c432fbf98fa41b2ae06/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/90797e88b8fa8b776a394ecb66cbdfd5/1000x1000-000000-80-0-0.jpg"
       },
       {
-        "titulo": "Mega Rolo",
+        "titulo": "Let's Go 4",
         "album": "Single",
-        "ano": "2020",
-        "reproducoes": "250 mi",
-        "streams": 250000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/beefafaf80cf3625537b72cc2e9aadce/1000x1000-000000-80-0-0.jpg"
+        "ano": "2023",
+        "reproducoes": "280 mi",
+        "streams": 280000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/36a928baeb1b8ea83492576b5cf8ff2f/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
       {
-        "titulo": "Volume 1",
-        "ano": "2021",
+        "titulo": "Um Toque de Malandragem",
+        "ano": "2023",
         "faixas": "10 faixas",
-        "reproducoes": "580 mi",
-        "streams": 580000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/080cb30730fb569b9eb9b8530f26cafc/1000x1000-000000-80-0-0.jpg"
+        "reproducoes": "410 mi",
+        "streams": 410000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/448d3db3bebe7b28271705ec92f033a5/1000x1000-000000-80-0-0.jpg"
       }
     ]
   },
@@ -1831,7 +1847,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "1997",
         "reproducoes": "95 mi",
         "streams": 95000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/2a0f6ac6bc05458fb072275653f01dd2/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/28e816ec5eca8617a7fa8578bc41d9ca/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Voce e Linda",
@@ -1839,7 +1855,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "1997",
         "reproducoes": "80 mi",
         "streams": 80000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/741dcea3bb48a5b572fd5919e4dff061/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/28e816ec5eca8617a7fa8578bc41d9ca/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Tropicalia",
@@ -1901,7 +1917,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "1975",
         "reproducoes": "58 mi",
         "streams": 58000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/dd3c4aec6e9b1645b7ba9fa7b34977ed/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/29eef0b587e65ad408320e177ce0ee00/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Esperando na Janela",
@@ -1909,7 +1925,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "1979",
         "reproducoes": "48 mi",
         "streams": 48000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/f5672b0f4094ca608aae68ab3bd9bc1a/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/9c46be73edd66cbf9cd32e551e4ab651/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
@@ -1955,7 +1971,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2016",
         "reproducoes": "760 mi",
         "streams": 760000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/a0c4f57a668317be63b598a60ce615cd/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/c9896c339e4a7372de21c011985077bb/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Graveto",
@@ -1979,7 +1995,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2021",
         "reproducoes": "480 mi",
         "streams": 480000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/4f2c052b28e10908cc02d67e6a113d9c/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/b23db4c5329ea5c6b3f8a1d1d310ddfe/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
@@ -2020,28 +2036,28 @@ const bancoDeDadosArtistas: Artista[] = [
     "citacao": "Balada, tche tche tche.",
     "musicas": [
       {
-        "titulo": "Balada Tche Tche Re Re",
+        "titulo": "Balada Boa",
         "album": "Gusttavo Lima e Voce",
-        "ano": "2012",
-        "reproducoes": "680 mi",
-        "streams": 680000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/f2adc853cc80f4b2b9ce1dda70b4c9fd/1000x1000-000000-80-0-0.jpg"
+        "ano": "2011",
+        "reproducoes": "380 mi",
+        "streams": 380000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/466fa2df1ff64328baa8ef4d7ac6a74f/1000x1000-000000-80-0-0.jpg"
       },
       {
-        "titulo": "22",
+        "titulo": "Cem Mil",
         "album": "O Embaixador",
-        "ano": "2021",
-        "reproducoes": "520 mi",
-        "streams": 520000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/9b54ff3231725243c1833706dbcfc462/1000x1000-000000-80-0-0.jpg"
+        "ano": "2018",
+        "reproducoes": "420 mi",
+        "streams": 420000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/b1b5db6a19d522a8405ec0efd155dfc2/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Bloqueado",
         "album": "Buteco do Gusttavo Lima",
-        "ano": "2020",
-        "reproducoes": "490 mi",
-        "streams": 490000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/403d532b92585bfb810e122f47d33dc9/1000x1000-000000-80-0-0.jpg"
+        "ano": "2021",
+        "reproducoes": "360 mi",
+        "streams": 360000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/4908387d04843b184b3fd1c40156b4e0/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
@@ -2091,33 +2107,33 @@ const bancoDeDadosArtistas: Artista[] = [
       },
       {
         "titulo": "Nosso Quadro",
-        "album": "Boiadeira",
+        "album": "Boiadeira Internacional",
         "ano": "2023",
         "reproducoes": "730 mi",
         "streams": 730000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/1066b42c6c8535dc1530592db59d9ccc/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/86e99c642e9fe6f0e22e698fd511b704/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Boiadeira",
-        "album": "Boiadeira",
+        "album": "Boiadeira Internacional",
         "ano": "2022",
         "reproducoes": "650 mi",
         "streams": 650000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/6e28e89fa877f49e0121e139ab1fa4c1/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/86e99c642e9fe6f0e22e698fd511b704/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
       {
-        "titulo": "Boiadeira",
-        "ano": "2022",
-        "faixas": "12 faixas",
+        "titulo": "Boiadeira Internacional",
+        "ano": "2023",
+        "faixas": "15 faixas",
         "reproducoes": "2.1 bi",
         "streams": 2100000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/4517d40dcc7fcc643bc5e0ef63284285/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/86e99c642e9fe6f0e22e698fd511b704/1000x1000-000000-80-0-0.jpg"
       },
       {
-        "titulo": "Ta Rocheda",
-        "ano": "2023",
+        "titulo": "Herança Boiadeira",
+        "ano": "2024",
         "faixas": "14 faixas",
         "reproducoes": "1.8 bi",
         "streams": 1800000000,
@@ -2145,45 +2161,45 @@ const bancoDeDadosArtistas: Artista[] = [
     "musicas": [
       {
         "titulo": "Cuida Bem Dela",
-        "album": "Na Praia 2",
-        "ano": "2018",
-        "reproducoes": "580 mi",
-        "streams": 580000000,
+        "album": "Ao Vivo Em Brasília",
+        "ano": "2014",
+        "reproducoes": "710 mi",
+        "streams": 710000000,
         "capa": "https://cdn-images.dzcdn.net/images/cover/afdd5948ddd12dbcc35cdf759dc6fe63/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Liberdade Provisoria",
         "album": "Single",
         "ano": "2019",
-        "reproducoes": "520 mi",
-        "streams": 520000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/6edd2eccd336e17a566e299d35950a1b/1000x1000-000000-80-0-0.jpg"
+        "reproducoes": "680 mi",
+        "streams": 680000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/a8144d340fcf37bb2801d31e29d9ce99/1000x1000-000000-80-0-0.jpg"
       },
       {
-        "titulo": "Tao Improvavel",
-        "album": "Single",
-        "ano": "2021",
-        "reproducoes": "480 mi",
-        "streams": 480000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/3069fdf7a3805cf21b0e3b1c51fc87a3/1000x1000-000000-80-0-0.jpg"
+        "titulo": "Até Você Voltar",
+        "album": "Ao Vivo Em Brasília",
+        "ano": "2014",
+        "reproducoes": "590 mi",
+        "streams": 590000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/afdd5948ddd12dbcc35cdf759dc6fe63/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
       {
-        "titulo": "Na Praia 2",
-        "ano": "2018",
-        "faixas": "15 faixas",
-        "reproducoes": "1.3 bi",
-        "streams": 1300000000,
+        "titulo": "Ao Vivo Em Brasília",
+        "ano": "2014",
+        "faixas": "22 faixas",
+        "reproducoes": "1.9 bi",
+        "streams": 1900000000,
         "capa": "https://cdn-images.dzcdn.net/images/cover/afdd5948ddd12dbcc35cdf759dc6fe63/1000x1000-000000-80-0-0.jpg"
       },
       {
-        "titulo": "Ao Vivo em Campo Grande",
-        "ano": "2020",
+        "titulo": "O Céu Explica Tudo",
+        "ano": "2017",
         "faixas": "18 faixas",
-        "reproducoes": "1.1 bi",
-        "streams": 1100000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/d2f27d2973c6bdfe601fb4e68b6d4785/1000x1000-000000-80-0-0.jpg"
+        "reproducoes": "1.5 bi",
+        "streams": 1500000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/3069fdf7a3805cf21b0e3b1c51fc87a3/1000x1000-000000-80-0-0.jpg"
       }
     ]
   },
@@ -2211,7 +2227,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "1982",
         "reproducoes": "1.9 bi",
         "streams": 1900000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/a0ad67d1beb761f2cb9f8b60e5bcf07a/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/f01e09ceb8ad1e96707c1b4aadb5911b/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Thriller",
@@ -2219,7 +2235,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "1982",
         "reproducoes": "1.4 bi",
         "streams": 1400000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/92a024220a9532489c75c9d994835697/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/f01e09ceb8ad1e96707c1b4aadb5911b/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Beat It",
@@ -2227,7 +2243,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "1982",
         "reproducoes": "1.3 bi",
         "streams": 1300000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/a0ad67d1beb761f2cb9f8b60e5bcf07a/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/f01e09ceb8ad1e96707c1b4aadb5911b/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Man in the Mirror",
@@ -2235,7 +2251,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "1987",
         "reproducoes": "1.1 bi",
         "streams": 1100000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/a0ad67d1beb761f2cb9f8b60e5bcf07a/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/cad261eafd0c6c15811200d5039b5b50/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Smooth Criminal",
@@ -2243,7 +2259,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "1987",
         "reproducoes": "980 mi",
         "streams": 980000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/a0ad67d1beb761f2cb9f8b60e5bcf07a/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/cad261eafd0c6c15811200d5039b5b50/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
@@ -2305,7 +2321,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2008",
         "reproducoes": "1.4 bi",
         "streams": 1400000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/7cf0bdc409e7a7898c745bf0244df312/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/1f0450a010b5a825194d7ca00b3067ab/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Single Ladies",
@@ -2407,7 +2423,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2022",
         "reproducoes": "2.3 bi",
         "streams": 2300000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/f571cb780b339ec087201b1cea53c3d9/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/5cd9afe3078d7916dcbc566dbb979b97/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
@@ -2485,7 +2501,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2021",
         "reproducoes": "1.2 bi",
         "streams": 1200000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/bb2880548dd3bc71fb97def2eedec130/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/9955047483278bd0f93420951226ac44/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
@@ -2531,7 +2547,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2017",
         "reproducoes": "3.8 bi",
         "streams": 3800000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/107c2b43f10c249077c1f7618563bb63/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/000a9228cecfcc7c2093d9cd7bb66447/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Perfect",
@@ -2555,7 +2571,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2021",
         "reproducoes": "2.1 bi",
         "streams": 2100000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/63af28b4e046c59293eaf313be13f8f7/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/863e1ceb019dede99269c3b774a773fe/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
@@ -2625,7 +2641,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "1989",
         "reproducoes": "165 mi",
         "streams": 165000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/b3d9bb7414d5bf1056aa699e66293230/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/8ae997a8e86cb6db47f1d042955e98fe/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Sera",
@@ -2687,7 +2703,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "1988",
         "reproducoes": "145 mi",
         "streams": 145000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/0f61ba029f3a14618b64e32bc0fd1559/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/086ea08802b896d04843a94e76b9f48a/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Ideologia",
@@ -2703,7 +2719,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "1988",
         "reproducoes": "110 mi",
         "streams": 110000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/cb922e3ecb4f4b3110357001073a23f9/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/b3421c83bafa3634fa7ce3475cb895e0/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
@@ -2757,7 +2773,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "1986",
         "reproducoes": "110 mi",
         "streams": 110000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/46fb31d4829324be0cbc9fce8befc6c8/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/554a180b12cb7bea68c64eed3836c921/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Familia",
@@ -2913,7 +2929,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "1977",
         "reproducoes": "1.2 bi",
         "streams": 1200000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/3856be3ba91c7009c6e469d9e57c7ea9/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/7a423dd31a478954f492c560ae90559d/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Somebody to Love",
@@ -2975,7 +2991,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "1971",
         "reproducoes": "1.2 bi",
         "streams": 1200000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/460a0edd96f743be03b7405eac38c633/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/2047754dc07232def42ec26a9a854544/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Whole Lotta Love",
@@ -2983,7 +2999,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "1969",
         "reproducoes": "890 mi",
         "streams": 890000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/a5fdd04471cb7d6ec8a663621bdd9bee/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/a035427bb18a7a99bb7f0e531e8598d8/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Black Dog",
@@ -2991,7 +3007,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "1971",
         "reproducoes": "720 mi",
         "streams": 720000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/460a0edd96f743be03b7405eac38c633/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/2047754dc07232def42ec26a9a854544/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
@@ -3045,7 +3061,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "1991",
         "reproducoes": "1.4 bi",
         "streams": 1400000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/e3f1bee87b1d5d1313641762f375a3fb/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/5d7af03204d679ef877b9033d279d8bd/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Scar Tissue",
@@ -3201,7 +3217,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "1993",
         "reproducoes": "145 mi",
         "streams": 145000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/663f4d160ef18fe81a31947d0b5aa85b/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/1c173a07e63874e392b7d99314b61b71/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Territory",
@@ -3209,7 +3225,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "1993",
         "reproducoes": "120 mi",
         "streams": 120000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/663f4d160ef18fe81a31947d0b5aa85b/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/1c173a07e63874e392b7d99314b61b71/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
@@ -3263,7 +3279,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "1983",
         "reproducoes": "680 mi",
         "streams": 680000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/f4df1d0cc2d586cefd98dde8da717acd/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/3f606b39b6ef26c7dbcf69efaebc8f97/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Run to the Hills",
@@ -3271,7 +3287,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "1982",
         "reproducoes": "620 mi",
         "streams": 620000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/ca87a7fc5b10f79866925db083d99ef0/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/7ed7d6130119c3a0afa60499ae8e9599/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Fear of the Dark",
@@ -3333,7 +3349,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2019",
         "reproducoes": "4.2 bi",
         "streams": 4200000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/fd00ebd6d30d7253f813dba3bb1c66a9/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/f520bf0be2e3cfc476824e75d20a164a/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Starboy feat. Daft Punk",
@@ -3349,7 +3365,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2020",
         "reproducoes": "2.8 bi",
         "streams": 2800000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/fd00ebd6d30d7253f813dba3bb1c66a9/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/f520bf0be2e3cfc476824e75d20a164a/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "The Hills",
@@ -3411,7 +3427,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2012",
         "reproducoes": "980 mi",
         "streams": 980000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/e545e4c96ae929e8cce56808afd7756f/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/519400e29d268f449cf00af879e71af6/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Nights",
@@ -3419,7 +3435,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2016",
         "reproducoes": "780 mi",
         "streams": 780000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/f798a866107715dd6dc1049e498ce21f/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/aa7e6de00b0810f5051aa60b489f58d8/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Pink + White",
@@ -3427,7 +3443,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2016",
         "reproducoes": "710 mi",
         "streams": 710000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/f798a866107715dd6dc1049e498ce21f/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/aa7e6de00b0810f5051aa60b489f58d8/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
@@ -3535,7 +3551,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2013",
         "reproducoes": "2.1 bi",
         "streams": 2100000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/bc49adb87758e0c8c4e508a9c5cce85d/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/311bba0fc112d15f72c8b5a65f0456c1/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "One More Time",
@@ -3611,25 +3627,25 @@ const bancoDeDadosArtistas: Artista[] = [
         "titulo": "Hear Me Now",
         "album": "Single",
         "ano": "2016",
-        "reproducoes": "810 mi",
-        "streams": 810000000,
+        "reproducoes": "840 mi",
+        "streams": 840000000,
         "capa": "https://cdn-images.dzcdn.net/images/cover/666f254b772127dd8b15954d4f52af16/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Never Let Me Go",
         "album": "Single",
-        "ano": "2019",
-        "reproducoes": "650 mi",
-        "streams": 650000000,
+        "ano": "2017",
+        "reproducoes": "410 mi",
+        "streams": 410000000,
         "capa": "https://cdn-images.dzcdn.net/images/cover/33af72cf5d034401a550047993904f26/1000x1000-000000-80-0-0.jpg"
       },
       {
-        "titulo": "On and On com Zeeba e Nico e Vinz",
+        "titulo": "On & On",
         "album": "Single",
-        "ano": "2017",
-        "reproducoes": "540 mi",
-        "streams": 540000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/1077fa021b9b9d93cb9e66564ffc4446/1000x1000-000000-80-0-0.jpg"
+        "ano": "2019",
+        "reproducoes": "360 mi",
+        "streams": 360000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/751f206f98e0d4fb5b313d7cb893d101/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
@@ -3683,7 +3699,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2009",
         "reproducoes": "1.2 bi",
         "streams": 1200000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/ee1ea209237b95cf27a1427ac5ecdec0/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/c335e48e42697df84efaac76fc2538dc/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
@@ -3727,32 +3743,32 @@ const bancoDeDadosArtistas: Artista[] = [
         "titulo": "DAKITI com Jhay Cortez",
         "album": "El Ultimo Tour Del Mundo",
         "ano": "2020",
-        "reproducoes": "2.1 bi",
-        "streams": 2100000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/78af18fc11e9d880befd78777baffd9e/1000x1000-000000-80-0-0.jpg"
+        "reproducoes": "1.7 bi",
+        "streams": 1700000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/6ea80078f0df08737a7471f3c4cf2afa/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Titi Me Pregunto",
         "album": "Un Verano Sin Ti",
         "ano": "2022",
-        "reproducoes": "1.8 bi",
-        "streams": 1800000000,
+        "reproducoes": "1.4 bi",
+        "streams": 1400000000,
         "capa": "https://cdn-images.dzcdn.net/images/cover/b29d1070377b784384c2456093f96a66/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Me Porto Bonito",
         "album": "Un Verano Sin Ti",
         "ano": "2022",
-        "reproducoes": "1.6 bi",
-        "streams": 1600000000,
+        "reproducoes": "1.3 bi",
+        "streams": 1300000000,
         "capa": "https://cdn-images.dzcdn.net/images/cover/b29d1070377b784384c2456093f96a66/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Moscow Mule",
         "album": "Un Verano Sin Ti",
         "ano": "2022",
-        "reproducoes": "1.4 bi",
-        "streams": 1400000000,
+        "reproducoes": "950 mi",
+        "streams": 950000000,
         "capa": "https://cdn-images.dzcdn.net/images/cover/b29d1070377b784384c2456093f96a66/1000x1000-000000-80-0-0.jpg"
       }
     ],
@@ -3805,24 +3821,24 @@ const bancoDeDadosArtistas: Artista[] = [
         "titulo": "Mi Gente feat. Willy William",
         "album": "Vibras",
         "ano": "2017",
-        "reproducoes": "2.4 bi",
-        "streams": 2400000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/c1a74b7fa8de503d015f37ab85b1ad1c/1000x1000-000000-80-0-0.jpg"
+        "reproducoes": "1.5 bi",
+        "streams": 1500000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/5792230036366047e5c5b16749a52048/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Con Altura feat. Rosalia",
-        "album": "Oasis",
+        "album": "Single",
         "ano": "2019",
-        "reproducoes": "1.8 bi",
-        "streams": 1800000000,
+        "reproducoes": "1.1 bi",
+        "streams": 1100000000,
         "capa": "https://cdn-images.dzcdn.net/images/cover/0a6b457530fcf0bfa2eff233cb584e29/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Safari",
-        "album": "Energia",
+        "album": "Single",
         "ano": "2016",
-        "reproducoes": "1.6 bi",
-        "streams": 1600000000,
+        "reproducoes": "680 mi",
+        "streams": 680000000,
         "capa": "https://cdn-images.dzcdn.net/images/cover/38b80954bf64148690fc6047582e98c1/1000x1000-000000-80-0-0.jpg"
       }
     ],
@@ -3867,24 +3883,24 @@ const bancoDeDadosArtistas: Artista[] = [
         "titulo": "Despacito com Luis Fonsi",
         "album": "Single",
         "ano": "2017",
-        "reproducoes": "8.1 bi",
-        "streams": 8100000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/c705bb2d42ed280b87294e55356f0ebc/1000x1000-000000-80-0-0.jpg"
+        "reproducoes": "2.8 bi",
+        "streams": 2800000000,
+        "capa": "https://cdn-images.dzcdn.net/images/cover/7985ef4cc3b9423c21c70e0a5c4cfbc9/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Con Calma com Snow",
         "album": "Single",
         "ano": "2019",
-        "reproducoes": "1.8 bi",
-        "streams": 1800000000,
+        "reproducoes": "1.6 bi",
+        "streams": 1600000000,
         "capa": "https://cdn-images.dzcdn.net/images/cover/25a6edea15aa8e093b90773ac06ceeaa/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Gasolina",
         "album": "Barrio Fino",
         "ano": "2004",
-        "reproducoes": "1.4 bi",
-        "streams": 1400000000,
+        "reproducoes": "1.2 bi",
+        "streams": 1200000000,
         "capa": "https://cdn-images.dzcdn.net/images/cover/d386e42d5c4dfb603e958371b79869f5/1000x1000-000000-80-0-0.jpg"
       }
     ],
@@ -3913,7 +3929,7 @@ const bancoDeDadosArtistas: Artista[] = [
 // FUNÇÃO DE NORMALIZAÇÃO, HERANÇA EM CASCATA E ORDENAÇÃO
 // ==========================================
 export const listaDeArtistas: Artista[] = bancoDeDadosArtistas.map((artista) => {
-  // 1. Garante que todo álbum tenha capa (ou herda o retrato do artista)
+  // 1. Garante que todo álbum tenha capa (ou herda o retrato do artista caso falte)
   const albunsMapeados = [...artista.albuns]
     .map((alb) => ({
       ...alb,
@@ -3921,11 +3937,12 @@ export const listaDeArtistas: Artista[] = bancoDeDadosArtistas.map((artista) => 
     }))
     .sort((a, b) => b.streams - a.streams);
 
-  // 2. Garante que toda faixa tenha capa (se não for single próprio, herda do seu álbum)
+  // 2. Garante que toda faixa tenha capa com a hierarquia estrita:
+  // Se a faixa não tiver capa própria de single, herda a capa oficial do seu álbum pai.
   const musicasMapeadas = [...artista.musicas]
     .map((musica) => {
       const albumPai = albunsMapeados.find(
-        (alb) => alb.titulo.toLowerCase() === (musica.album || '').toLowerCase()
+        (alb) => alb.titulo.trim().toLowerCase() === (musica.album || '').trim().toLowerCase()
       );
       return {
         ...musica,
