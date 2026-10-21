@@ -35,6 +35,12 @@ public class AvaliacaoController {
         return comentario;
     }
 
+    @PostMapping("/albuns")
+    @ResponseStatus(HttpStatus.CREATED)
+    public AvaliacaoAlbum avaliarAlbum(@Valid @RequestBody AvaliacaoAlbum avaliacao) {
+        return avaliacao;
+    }
+
     @PostMapping("/albuns/comentarios")
     @ResponseStatus(HttpStatus.CREATED)
     public ComentarioAlbum comentarioAlbum(@Valid @RequestBody ComentarioAlbum comentario){
