@@ -1,3 +1,25 @@
+# =====================================================================
+#  TESTES DA API RPM
+#  Rode o RpmApplication antes e clique no ▶ ao lado de cada requisição.
+#  Cada "###" separa uma requisição. O texto após o ### é o nome dela.
+# =====================================================================
+
+
+###
+# =====================================================================
+#  STATUS
+# =====================================================================
+
+### [STATUS] API no ar → esperado 200 {"status":"ok"}
+GET http://localhost:8080/api/status
+
+
+###
+# =====================================================================
+#  USUÁRIOS  —  POST /api/usuarios
+# =====================================================================
+
+### [USUARIO] Cadastro válido → esperado 200, sem a senha na resposta
 POST http://localhost:8080/api/usuarios
 Content-Type: application/json
 
@@ -5,4 +27,191 @@ Content-Type: application/json
   "nome": "Matheus",
   "email": "matheus@rpm.com",
   "senha": "12345678"
+}
+
+### [USUARIO] Email inválido → esperado 400 {"email":"Email invalido"}
+POST http://localhost:8080/api/usuarios
+Content-Type: application/json
+
+{
+  "nome": "Matheus",
+  "email": "papa",
+  "senha": "12345678"
+}
+
+### [USUARIO] Senha vazia → esperado 400 com erro em "senha"
+POST http://localhost:8080/api/usuarios
+Content-Type: application/json
+
+{
+  "nome": "Matheus",
+  "email": "matheus@rpm.com",
+  "senha": ""
+}
+
+### [USUARIO] Senha curta (< 8) → esperado 400 "Senha deve ter no minimo 8 caracteres"
+POST http://localhost:8080/api/usuarios
+Content-Type: application/json
+
+{
+  "nome": "Matheus",
+  "email": "matheus@rpm.com",
+  "senha": "123"
+}
+
+### [USUARIO] Sem nome → esperado 400 {"nome":"Nome obrigatorio"}
+POST http://localhost:8080/api/usuarios
+Content-Type: application/json
+
+{
+  "email": "matheus@rpm.com",
+  "senha": "12345678"
+}
+
+### [USUARIO] Tudo vazio → esperado 400 com 3 erros (nome, email, senha)
+POST http://localhost:8080/api/usuarios
+Content-Type: application/json
+
+{}
+
+
+###
+# =====================================================================
+#  AVALIAÇÃO DE MÚSICA (só nota)  —  POST /api/avaliacoes/musicas
+# =====================================================================
+
+### [AVAL MUSICA] Válida → esperado 201 com dataAvaliacao preenchida
+POST http://localhost:8080/api/avaliacoes/musicas
+Content-Type: application/json
+
+{
+  "musicaId": "anos-luz",
+  "nota": 5
+}
+
+### [AVAL MUSICA] Nota acima de 5 → esperado 400 "O maximo é 5"
+POST http://localhost:8080/api/avaliacoes/musicas
+Content-Type: application/json
+
+{
+  "musicaId": "anos-luz",
+  "nota": 7
+}
+
+### [AVAL MUSICA] Nota 0 → esperado 400 "Nota minima é 1"
+POST http://localhost:8080/api/avaliacoes/musicas
+Content-Type: application/json
+
+{
+  "musicaId": "anos-luz",
+  "nota": 0
+}
+
+### [AVAL MUSICA] Sem nota → esperado 400 "Nota obrigatoria"
+POST http://localhost:8080/api/avaliacoes/musicas
+Content-Type: application/json
+
+{
+  "musicaId": "anos-luz"
+}
+
+### [AVAL MUSICA] Sem musicaId → esperado 400 "Musica obrigatoria"
+POST http://localhost:8080/api/avaliacoes/musicas
+Content-Type: application/json
+
+{
+  "nota": 4
+}
+
+### [AVAL MUSICA] Data falsa → esperado 201 com a data de AGORA (READ_ONLY ignora a enviada)
+POST http://localhost:8080/api/avaliacoes/musicas
+Content-Type: application/json
+
+{
+  "musicaId": "anos-luz",
+  "nota": 5,
+  "dataAvaliacao": "2000-01-01T00:00:00"
+}
+
+
+###
+# =====================================================================
+#  AVALIAÇÃO DE ÁLBUM (só nota)  —  POST /api/avaliacoes/albuns
+# =====================================================================
+
+### [AVAL ALBUM] Válida → esperado 201
+POST http://localhost:8080/api/avaliacoes/albuns
+Content-Type: application/json
+
+{
+  "albumId": "333",
+  "nota": 4
+}
+
+### [AVAL ALBUM] Sem albumId → esperado 400 "Album obrigatorio"
+POST http://localhost:8080/api/avaliacoes/albuns
+Content-Type: application/json
+
+{
+  "nota": 4
+}
+
+
+###
+# =====================================================================
+#  COMENTÁRIO DE MÚSICA  —  POST /api/avaliacoes/musicas/comentarios
+# =====================================================================
+
+### [COMENT MUSICA] Válido → esperado 201 com texto, nota e musicaId
+POST http://localhost:8080/api/avaliacoes/musicas/comentarios
+Content-Type: application/json
+
+{
+  "musicaId": "anos-luz",
+  "nota": 5,
+  "texto": "Melhor faixa do album"
+}
+
+### [COMENT MUSICA] Sem texto → esperado 400 "Comentario nao pode ser vazio"
+POST http://localhost:8080/api/avaliacoes/musicas/comentarios
+Content-Type: application/json
+
+{
+  "musicaId": "anos-luz",
+  "nota": 5
+}
+
+### [COMENT MUSICA] Tudo errado → esperado 400 com 3 erros (texto, musicaId, nota) — testa a herança
+POST http://localhost:8080/api/avaliacoes/musicas/comentarios
+Content-Type: application/json
+
+{
+  "musicaId": "",
+  "nota": 9,
+  "texto": ""
+}
+
+
+###
+# =====================================================================
+#  COMENTÁRIO DE ÁLBUM  —  POST /api/avaliacoes/albuns/comentarios
+# =====================================================================
+
+### [COMENT ALBUM] Válido → esperado 201
+POST http://localhost:8080/api/avaliacoes/albuns/comentarios
+Content-Type: application/json
+
+{
+  "albumId": "333",
+  "nota": 4,
+  "texto": "Matue no auge"
+}
+
+### [COMENT ALBUM] Sem texto → esperado 400 "comentario nao pode ser vazio"
+POST http://localhost:8080/api/avaliacoes/albuns/comentarios
+Content-Type: application/json
+
+{
+  "albumId": "333",
+  "nota": 4
 }
