@@ -1522,7 +1522,7 @@ const bancoDeDadosArtistas: Artista[] = [
     "periodoAtivo": "1991 - presente",
     "ouvintesMensais": "12.4 mi",
     "ouvintesMensaisNum": 12400000,
-    "foto": "/artistas/nas.jpg",
+    "foto": "https://cdn-images.dzcdn.net/images/artist/f6e4f9d1f6be43c36339a9a96dcee725/1000x1000-000000-80-0-0.jpg",
     "legendaFoto": "Nas nos palcos",
     "resumo": "Autor de 'Illmatic', considerado o album de rap mais perfeito de todos os tempos pela critica.",
     "biografia": [
@@ -2532,7 +2532,7 @@ const bancoDeDadosArtistas: Artista[] = [
     "periodoAtivo": "2004 - presente",
     "ouvintesMensais": "82.4 mi",
     "ouvintesMensaisNum": 82400000,
-    "foto": "/artistas/ed-sheeran.jpg",
+    "foto": "https://cdn-images.dzcdn.net/images/artist/d6bb84390641d8ae9118228d9544e53d/1000x1000-000000-80-0-0.jpg",
     "legendaFoto": "Ed Sheeran em show",
     "resumo": "O compositor mais prolificado de sua geracao, com multiplos recordes de vendas e streaming.",
     "biografia": [
