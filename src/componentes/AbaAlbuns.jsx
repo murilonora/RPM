@@ -39,12 +39,7 @@ export function AbaAlbuns({ albuns = [], nomeArtista = "", artistaId = "", aoAva
                 </small>
               </>
             )}
-            <div 
-              className="absolute bottom-2 right-2 w-7 h-7 rounded-full bg-[#191525] border-2 border-[#2a2a2a] flex items-center justify-center shadow-lg pointer-events-none"
-              aria-hidden="true"
-            >
-              <div className="w-2 h-2 bg-[#f7f4ed] rounded-full" />
-            </div>
+
           </div>
           <div className="album-meta">
             <span>{album.ano}</span>

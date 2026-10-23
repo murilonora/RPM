@@ -33,9 +33,6 @@ export function AbaMusicas({ musicas = [], artistaId = "", aoAvaliar }) {
               alt={musica.titulo}
               className="w-9 h-9 shrink-0"
             />
-            <div className="flex items-center justify-center w-5 h-5 rounded-full bg-[#191525] border border-[#333] shrink-0" aria-hidden="true">
-              <div className="w-1.5 h-1.5 bg-[#f7f4ed] rounded-full" />
-            </div>
             <strong>{musica.titulo}</strong>
           </span>
           <span>{musica.album}</span>
