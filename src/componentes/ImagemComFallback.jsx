@@ -44,6 +44,8 @@ export function ImagemComFallback({
         src={src}
         alt={alt}
         loading={loading}
+        referrerPolicy="no-referrer"
+        crossOrigin="anonymous"
         onLoad={() => setCarregada(true)}
         onError={(e) => {
           setCarregada(true);
