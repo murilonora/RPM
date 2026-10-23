@@ -426,9 +426,13 @@ button {
   pointer-events: none;
 }
 
-.artist-sidebar > img {
+.artist-sidebar > img,
+.artist-sidebar > div {
   width: 100%;
   height: 100%;
+}
+
+.artist-sidebar > div img {
   object-fit: cover;
   object-position: top;
   filter: saturate(0.8) contrast(1.05);
