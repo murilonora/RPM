@@ -9,6 +9,7 @@ export function Cabecalho({
   aoClicarAlbuns,
   aoClicarColecao,
   aoClicarEntrar,
+  rotaAtual = "/",
 }) {
   const { estaLogado, usuarioLogado, sairDaConta } = useUsuario();
 
@@ -16,23 +17,45 @@ export function Cabecalho({
     <header className="site-header">
       <Logotipo aoClicar={aoIrParaInicio} />
       <nav aria-label="Navegação principal">
-        <button onClick={aoClicarDescobrir}>Descobrir</button>
-        <button onClick={aoClicarArtistas}>Artistas</button>
-        <button onClick={aoClicarAlbuns}>Álbuns</button>
+        <button
+          type="button"
+          onClick={aoClicarDescobrir}
+          title="Sortear um artista aleatório do catálogo"
+        >
+          Descobrir
+        </button>
+        <button
+          type="button"
+          className={rotaAtual === "/artistas" ? "active" : ""}
+          onClick={aoClicarArtistas}
+        >
+          Artistas
+        </button>
+        <button
+          type="button"
+          className={rotaAtual === "/albuns" ? "active" : ""}
+          onClick={aoClicarAlbuns}
+        >
+          Álbuns
+        </button>
       </nav>
       <div className="header-actions">
-        <button className="collection-button" onClick={aoClicarColecao}>
+        <button
+          type="button"
+          className={`collection-button ${rotaAtual === "/colecao" ? "active" : ""}`}
+          onClick={aoClicarColecao}
+        >
           Coleção
         </button>
         {estaLogado ? (
           <div className="usuario-logado">
             <span className="nome-usuario">{usuarioLogado.nome}</span>
-            <button className="outline-button" onClick={sairDaConta}>
+            <button type="button" className="outline-button" onClick={sairDaConta}>
               Sair
             </button>
           </div>
         ) : (
-          <button className="outline-button" onClick={aoClicarEntrar}>
+          <button type="button" className="outline-button" onClick={aoClicarEntrar}>
             Entrar
           </button>
         )}

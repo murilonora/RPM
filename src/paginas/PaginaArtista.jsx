@@ -2,7 +2,7 @@ import { useState } from "react";
 import { AbaMusicas } from "../componentes/AbaMusicas";
 import { AbaAlbuns } from "../componentes/AbaAlbuns";
 import { AbaHistoria } from "../componentes/AbaHistoria";
-import { tratarErroImagem } from "../utilitarios/comuns";
+import { ImagemComFallback } from "../componentes/ImagemComFallback";
 
 // Página de detalhes, músicas, álbuns e história do artista selecionado
 export function PaginaArtista({ artista, aoVoltarAoInicio, aoAvaliar }) {
@@ -12,7 +12,9 @@ export function PaginaArtista({ artista, aoVoltarAoInicio, aoAvaliar }) {
     return (
       <main className="artist-page">
         <section className="artist-main">
-          <button className="back-button" onClick={aoVoltarAoInicio}>← Voltar à busca</button>
+          <button className="back-button" type="button" onClick={aoVoltarAoInicio}>
+            ← Voltar à busca
+          </button>
           <h2>Artista não encontrado</h2>
         </section>
       </main>
@@ -27,12 +29,12 @@ export function PaginaArtista({ artista, aoVoltarAoInicio, aoAvaliar }) {
 
   return (
     <main className="artist-page">
-      <aside className="artist-sidebar">
-        <img
+      <aside className="artist-sidebar relative">
+        <ImagemComFallback
           src={artista.foto}
           alt={`Foto de ${artista.nome}`}
-          onError={tratarErroImagem}
-          style={{ width: "100%", height: "900px", objectFit: "cover", objectPosition: "top", borderRadius: "0px" }}
+          className="w-full h-full object-cover object-top"
+          loading="eager"
         />
         <div className="photo-caption">
           <span>{artista.legendaFoto || `${artista.nome} ao vivo`}</span>
@@ -41,7 +43,9 @@ export function PaginaArtista({ artista, aoVoltarAoInicio, aoAvaliar }) {
       </aside>
 
       <section className="artist-main">
-        <button className="back-button" onClick={aoVoltarAoInicio}>← Voltar à busca</button>
+        <button className="back-button" type="button" onClick={aoVoltarAoInicio}>
+          ← Voltar à busca
+        </button>
 
         <div className="artist-heading">
           <div>
@@ -70,6 +74,7 @@ export function PaginaArtista({ artista, aoVoltarAoInicio, aoAvaliar }) {
           {Object.keys(rotulosAbas).map((chave) => (
             <button
               key={chave}
+              type="button"
               className={abaAtiva === chave ? "active" : ""}
               onClick={() => setAbaAtiva(chave)}
               role="tab"
@@ -81,9 +86,20 @@ export function PaginaArtista({ artista, aoVoltarAoInicio, aoAvaliar }) {
         </div>
 
         <div className="tab-content">
-          {abaAtiva === "musicas" && <AbaMusicas musicas={artista.musicas} artistaId={artista.id} aoAvaliar={aoAvaliar} />}
+          {abaAtiva === "musicas" && (
+            <AbaMusicas
+              musicas={artista.musicas}
+              artistaId={artista.id}
+              aoAvaliar={aoAvaliar}
+            />
+          )}
           {abaAtiva === "albuns" && (
-            <AbaAlbuns albuns={artista.albuns} nomeArtista={artista.nome} artistaId={artista.id} aoAvaliar={aoAvaliar} />
+            <AbaAlbuns
+              albuns={artista.albuns}
+              nomeArtista={artista.nome}
+              artistaId={artista.id}
+              aoAvaliar={aoAvaliar}
+            />
           )}
           {abaAtiva === "historia" && (
             <AbaHistoria

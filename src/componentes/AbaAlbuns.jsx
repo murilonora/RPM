@@ -1,4 +1,5 @@
-import { tratarErroImagem, extrairSiglas } from "../utilitarios/comuns";
+import { extrairSiglas } from "../utilitarios/comuns";
+import { ImagemComFallback } from "./ImagemComFallback";
 
 // Grid de exibição dos álbuns lançados pelo artista
 export function AbaAlbuns({ albuns = [], nomeArtista = "", artistaId = "", aoAvaliar }) {
@@ -12,9 +13,8 @@ export function AbaAlbuns({ albuns = [], nomeArtista = "", artistaId = "", aoAva
     <div className="album-grid">
       {albuns.map((album, indice) => (
         <article 
-          className="album-card" 
+          className="album-card cursor-pointer relative" 
           key={`${album.titulo}-${indice}`} 
-          style={{ cursor: "pointer", position: "relative" }}
           onClick={() => aoAvaliar && aoAvaliar({
             chave: `album-${artistaId}-${indice}`,
             titulo: album.titulo,
@@ -22,16 +22,12 @@ export function AbaAlbuns({ albuns = [], nomeArtista = "", artistaId = "", aoAva
             capa: album.capa
           })}
         >
-          <div
-            className={`album-art album-art-${(indice % 3) + 1}`}
-            style={{ overflow: "hidden", position: "relative" }}
-          >
+          <div className={`album-art album-art-${(indice % 3) + 1} relative overflow-hidden`}>
             {album.capa ? (
-              <img
+              <ImagemComFallback
                 src={album.capa}
                 alt={album.titulo}
-                onError={tratarErroImagem}
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                className="w-full h-full"
               />
             ) : (
               <>
@@ -43,8 +39,11 @@ export function AbaAlbuns({ albuns = [], nomeArtista = "", artistaId = "", aoAva
                 </small>
               </>
             )}
-            <div style={{ position: "absolute", bottom: "8px", right: "8px", width: "28px", height: "28px", borderRadius: "50%", background: "#191525", border: "2px solid #2a2a2a", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 10px rgba(0,0,0,0.5)" }}>
-              <div style={{ width: "8px", height: "8px", background: "#f7f4ed", borderRadius: "50%" }} />
+            <div 
+              className="absolute bottom-2 right-2 w-7 h-7 rounded-full bg-[#191525] border-2 border-[#2a2a2a] flex items-center justify-center shadow-lg pointer-events-none"
+              aria-hidden="true"
+            >
+              <div className="w-2 h-2 bg-[#f7f4ed] rounded-full" />
             </div>
           </div>
           <div className="album-meta">

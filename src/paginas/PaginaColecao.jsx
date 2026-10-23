@@ -1,7 +1,9 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
+import { toPng } from "html-to-image";
 import { useUsuario } from "../contextos/ContextoUsuario";
 import { listaDeArtistas } from "../dados/dadosMusicais";
 import { AvaliacaoVinil } from "../componentes/AvaliacaoVinil";
+import { ImagemComFallback } from "../componentes/ImagemComFallback";
 import { tratarErroImagem } from "../utilitarios/comuns";
 
 export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAvaliar }) {
@@ -16,6 +18,9 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
 
   const [abaFiltro, setAbaFiltro] = useState("TODOS"); // "TODOS" | "ALBUNS" | "MUSICAS" | "OBRAS_PRIMAS"
   const [modalSeletorAberto, setModalSeletorAberto] = useState(false);
+  const [exportando, setExportando] = useState(false);
+  const [mensagemCopiado, setMensagemCopiado] = useState(false);
+  const placaRef = useRef(null);
 
   // Se não estiver logado, exibe estado empático com o mascote
   if (!usuarioLogado) {
@@ -113,6 +118,45 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
     return itensAvaliados[0];
   }, [itensAvaliados, chaveFavoritoManual]);
 
+  async function exportarCardPng() {
+    if (!placaRef.current || exportando || !favoritoAbsoluto) return;
+    try {
+      setExportando(true);
+      const dataUrl = await toPng(placaRef.current, {
+        cacheBust: true,
+        backgroundColor: "#111019",
+        pixelRatio: 2,
+      });
+      const link = document.createElement("a");
+      const nomeLimpo = favoritoAbsoluto.titulo.toLowerCase().replace(/[^a-z0-9]/g, "-");
+      link.download = `rpm-${nomeLimpo}-disco-ouro.png`;
+      link.href = dataUrl;
+      link.click();
+    } catch (err) {
+      console.error("Erro ao gerar imagem da placa:", err);
+    } finally {
+      setExportando(false);
+    }
+  }
+
+  function copiarResenhaTexto() {
+    if (!favoritoAbsoluto) return;
+    const estrelas = "★".repeat(favoritoAbsoluto.nota) + "☆".repeat(5 - favoritoAbsoluto.nota);
+    const texto = `🏆 RPM // DISCO DE OURO DO MEU ACERVO\n` +
+      `Obra: ${favoritoAbsoluto.titulo} — ${favoritoAbsoluto.artista.nome}\n` +
+      `Classificação: ${estrelas} (${favoritoAbsoluto.nota}/5 Vinis)\n` +
+      (favoritoAbsoluto.comentario ? `Resenha: "${favoritoAbsoluto.comentario}"\n` : "") +
+      `Crítico: ${usuarioLogado.nome}\n` +
+      `Catálogo Musical RPM`;
+
+    if (navigator?.clipboard?.writeText) {
+      navigator.clipboard.writeText(texto).then(() => {
+        setMensagemCopiado(true);
+        setTimeout(() => setMensagemCopiado(false), 2500);
+      });
+    }
+  }
+
   return (
     <main className="colecao-brutal-root">
       {/* 1. FICHA TÉCNICA DO CRÍTICO (ESTILO ARQUIVO GEOMÉTRICO) */}
@@ -166,7 +210,7 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
       {/* 2. O TEMPLO DO DISCO DE OURO (PLACA DE PRECISÃO GEOMÉTRICA) */}
       {favoritoAbsoluto && (
         <section className="templo-ouro-arquivo">
-          <div className="placa-ouro-moldura">
+          <div className="placa-ouro-moldura" ref={placaRef}>
             {/* Faixa superior mecânica */}
             <div className="placa-ouro-header">
               <div className="placa-ouro-badge">
@@ -257,11 +301,10 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
 
                 <div className="placa-capa-quadrada">
                   {favoritoAbsoluto.capa ? (
-                    <img
+                    <ImagemComFallback
                       src={favoritoAbsoluto.capa}
                       alt={favoritoAbsoluto.titulo}
-                      className="placa-capa-img"
-                      onError={tratarErroImagem}
+                      className="placa-capa-img w-full h-full"
                     />
                   ) : (
                     <div className="placa-capa-placeholder">LP</div>
@@ -308,6 +351,33 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
                   </div>
                 )}
               </div>
+            </div>
+
+            {/* Barra de Ações e Compartilhamento */}
+            <div className="placa-ouro-footer-acoes">
+              <button
+                type="button"
+                className="placa-btn-exportar"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  exportarCardPng();
+                }}
+                disabled={exportando}
+                title="Exportar imagem PNG em alta resolução para Instagram / Twitter"
+              >
+                {exportando ? "[ GERANDO CARD HD... ]" : "[ 📸 BAIXAR CARD (PNG) ]"}
+              </button>
+              <button
+                type="button"
+                className="placa-btn-exportar"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  copiarResenhaTexto();
+                }}
+                title="Copiar texto formatado da resenha para redes sociais"
+              >
+                {mensagemCopiado ? "[ ✓ COPIADO P/ ÁREA DE TRANSFERÊNCIA! ]" : "[ 📋 COPIAR TEXTO DA RESENHA ]"}
+              </button>
             </div>
           </div>
         </section>
@@ -400,11 +470,10 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
                   <div className="ficha-card-body">
                     <div className="ficha-capa-wrap">
                       {item.capa ? (
-                        <img
+                        <ImagemComFallback
                           src={item.capa}
                           alt={item.titulo}
-                          className="ficha-capa-img"
-                          onError={tratarErroImagem}
+                          className="ficha-capa-img w-full h-full"
                         />
                       ) : (
                         <div className="ficha-capa-vazia">LP</div>

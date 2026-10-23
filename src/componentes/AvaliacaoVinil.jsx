@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useUsuario } from "../contextos/ContextoUsuario";
+import { tocarCliqueVinil } from "../utilitarios/somVinil";
 
 // SVG de um disco de vinil individual
 function IconeVinil({ preenchido, destacado }) {
@@ -34,6 +35,7 @@ export function AvaliacaoVinil({ chaveItem, tamanho = "normal", apenasLeitura = 
 
   function aoClicarNota(nota) {
     if (!estaLogado || apenasLeitura) return;
+    tocarCliqueVinil();
     // Se clicar na mesma nota ja dada, remove a avaliacao (toggle)
     avaliarItem(chaveItem, nota === notaAtual ? 0 : nota, avaliacaoAtual.comentario);
   }

@@ -1,7 +1,8 @@
 import { useState, useMemo } from "react";
 import { listaDeArtistas } from "../dados/dadosMusicais";
-import { normalizarTexto, tratarErroImagem } from "../utilitarios/comuns";
+import { normalizarTexto } from "../utilitarios/comuns";
 import { FiltroAlfabetico } from "../componentes/FiltroAlfabetico";
+import { ImagemComFallback } from "../componentes/ImagemComFallback";
 
 export function PaginaTodosArtistas({ aoSelecionarArtista }) {
   const [termoBusca, setTermoBusca] = useState("");
@@ -96,12 +97,10 @@ export function PaginaTodosArtistas({ aoSelecionarArtista }) {
               >
                 {/* Imagem do Artista em Moldura Reta com Aspecto Retrato */}
                 <div className="artista-moldura-foto">
-                  <img
+                  <ImagemComFallback
                     src={artista.foto}
                     alt={artista.nome}
-                    className="artista-foto-img"
-                    loading="lazy"
-                    onError={tratarErroImagem}
+                    className="artista-foto-img w-full h-full"
                   />
                   <div className="artista-foto-filtro-sombra" />
                   <span className="artista-etiqueta-categoria">{artista.categoria}</span>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { listaDeArtistas, categoriasMusicais } from "../dados/dadosMusicais";
 import { FundoMosaicoHero } from "../componentes/FundoMosaicoHero";
+import { ImagemComFallback } from "../componentes/ImagemComFallback";
 import { normalizarTexto, tratarErroImagem } from "../utilitarios/comuns";
 
 // Estilos reutilizáveis para o dropdown de busca
@@ -361,87 +362,34 @@ export function PaginaInicial({ aoSelecionarArtista }) {
         </div>
 
         {/* Grade de cards */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
-            gap: "20px",
-            marginTop: "24px",
-          }}
-        >
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-5 mt-6">
           {artistasFiltradosCatalogo.map((artista) => (
-            <div
+            <article
               key={artista.id}
               onClick={() => aoSelecionarArtista(artista)}
-              style={{
-                background: "#ffffff",
-                borderRadius: "0px",
-                overflow: "hidden",
-                border: "1px solid #191525",
-                cursor: "pointer",
-                transition: "transform 0.2s, box-shadow 0.2s",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-4px)";
-                e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.08)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "none";
-              }}
+              className="bg-white border border-[#191525] cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-lg overflow-hidden group"
             >
-              <img
+              <ImagemComFallback
                 src={artista.foto}
                 alt={artista.nome}
-                style={{ width: "100%", height: "180px", objectFit: "cover" }}
-                onError={tratarErroImagem}
+                className="w-full h-44"
               />
-              <div style={{ padding: "16px" }}>
-                <span
-                  style={{
-                    fontSize: "0.75rem",
-                    textTransform: "uppercase",
-                    fontWeight: 700,
-                    letterSpacing: "0.05em",
-                    color: "#7e786b",
-                    display: "block",
-                    marginBottom: "4px",
-                  }}
-                >
+              <div className="p-4">
+                <span className="text-xs uppercase font-bold tracking-wider text-[#7e786b] block mb-1">
                   {artista.categoria}
                 </span>
-                <h3 style={{ margin: "0 0 6px 0", fontSize: "1.2rem" }}>
+                <h3 className="m-0 mb-1.5 text-lg font-bold font-serif">
                   {artista.nome}
                 </h3>
-                <p
-                  style={{
-                    margin: 0,
-                    fontSize: "0.85rem",
-                    color: "#555",
-                    lineHeight: "1.4",
-                    display: "-webkit-box",
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: "vertical",
-                    overflow: "hidden",
-                  }}
-                >
+                <p className="m-0 text-sm text-[#555] line-clamp-2 leading-relaxed">
                   {artista.resumo}
                 </p>
-                <div
-                  style={{
-                    marginTop: "12px",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    fontSize: "0.8rem",
-                    fontWeight: 600,
-                  }}
-                >
+                <div className="mt-3 flex justify-between items-center text-xs font-semibold">
                   <span>{artista.ouvintesMensais} ouvintes</span>
-                  <span style={{ color: "#d94e28" }}>Ver perfil →</span>
+                  <span className="text-[#ff0004] group-hover:translate-x-0.5 transition-transform">Ver perfil →</span>
                 </div>
               </div>
-            </div>
+            </article>
           ))}
         </div>
       </section>

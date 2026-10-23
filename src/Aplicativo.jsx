@@ -1,4 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useNavigate,
+  useLocation,
+  useParams,
+} from "react-router-dom";
 import { ProvedorUsuario } from "./contextos/ContextoUsuario";
 import { Cabecalho } from "./componentes/Cabecalho";
 import { ModalAutenticacao } from "./componentes/ModalAutenticacao";
@@ -10,42 +18,85 @@ import { PaginaColecao } from "./paginas/PaginaColecao";
 import { listaDeArtistas } from "./dados/dadosMusicais";
 import { ModalAvaliacao } from "./componentes/ModalAvaliacao";
 
-// Componente raiz da aplicacao com gerenciamento de rotas e estado global
-export default function Aplicativo() {
-  const [paginaAtual, setPaginaAtual] = useState("inicio");
-  const [artistaSelecionado, setArtistaSelecionado] = useState(listaDeArtistas[0]);
+// Rola suavemente ao topo em qualquer transição de rota
+function ScrollAoTopo() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [pathname]);
+  return null;
+}
+
+// Wrapper que resolve o artista dinamicamente pela URL /artista/:id
+function PaginaArtistaComUrl({ aoVoltarAoInicio, aoAvaliar }) {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  const artista =
+    listaDeArtistas.find((a) => a.id === id) || listaDeArtistas[0];
+
+  useEffect(() => {
+    if (artista) {
+      document.title = `${artista.nome} // RPM`;
+    }
+  }, [artista]);
+
+  return (
+    <PaginaArtista
+      artista={artista}
+      aoVoltarAoInicio={() => {
+        aoVoltarAoInicio();
+        navigate("/");
+      }}
+      aoAvaliar={aoAvaliar}
+    />
+  );
+}
+
+// Shell principal com gerenciamento de rotas e estado global
+function ShellAplicativo() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [modalAutenticacaoVisivel, setModalAutenticacaoVisivel] = useState(false);
   const [dadosAvaliacao, setDadosAvaliacao] = useState({ visivel: false, item: null });
 
+  // Sincroniza o título padrão da página nas rotas principais
+  useEffect(() => {
+    const titulos = {
+      "/": "RPM // Arquivo Musical Brasileiro",
+      "/artistas": "Catálogo de Artistas // RPM",
+      "/albuns": "Discografias Oficiais // RPM",
+      "/colecao": "Minha Coleção // RPM",
+    };
+    if (titulos[location.pathname]) {
+      document.title = titulos[location.pathname];
+    }
+  }, [location.pathname]);
+
   function navegarParaInicio() {
-    setPaginaAtual("inicio");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    navigate("/");
   }
 
   function selecionarArtista(artista) {
-    setArtistaSelecionado(artista);
-    setPaginaAtual("artista");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    navigate(`/artista/${artista.id}`);
   }
 
   function sortearArtistaAleatorioENavegar() {
     const indiceAleatorio = Math.floor(Math.random() * listaDeArtistas.length);
-    selecionarArtista(listaDeArtistas[indiceAleatorio]);
+    const sorteado = listaDeArtistas[indiceAleatorio];
+    navigate(`/artista/${sorteado.id}`);
   }
 
   function navegarParaPaginaDeTodosArtistas() {
-    setPaginaAtual("todos-artistas");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    navigate("/artistas");
   }
 
   function navegarParaPaginaDeTodosAlbuns() {
-    setPaginaAtual("todos-albuns");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    navigate("/albuns");
   }
 
   function navegarParaColecao() {
-    setPaginaAtual("colecao");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    navigate("/colecao");
   }
 
   function abrirModalDeAutenticacao() {
@@ -65,56 +116,85 @@ export default function Aplicativo() {
   }
 
   return (
+    <div className="app-shell">
+      <ScrollAoTopo />
+      <Cabecalho
+        aoIrParaInicio={navegarParaInicio}
+        aoClicarDescobrir={sortearArtistaAleatorioENavegar}
+        aoClicarArtistas={navegarParaPaginaDeTodosArtistas}
+        aoClicarAlbuns={navegarParaPaginaDeTodosAlbuns}
+        aoClicarColecao={navegarParaColecao}
+        aoClicarEntrar={abrirModalDeAutenticacao}
+        rotaAtual={location.pathname}
+      />
+
+      <Routes>
+        <Route
+          path="/"
+          element={<PaginaInicial aoSelecionarArtista={selecionarArtista} />}
+        />
+        <Route
+          path="/artistas"
+          element={
+            <PaginaTodosArtistas aoSelecionarArtista={selecionarArtista} />
+          }
+        />
+        <Route
+          path="/albuns"
+          element={
+            <PaginaTodosAlbuns
+              aoSelecionarArtista={selecionarArtista}
+              aoAvaliar={abrirAvaliacao}
+            />
+          }
+        />
+        <Route
+          path="/artista/:id"
+          element={
+            <PaginaArtistaComUrl
+              aoVoltarAoInicio={navegarParaInicio}
+              aoAvaliar={abrirAvaliacao}
+            />
+          }
+        />
+        <Route
+          path="/colecao"
+          element={
+            <PaginaColecao
+              aoSelecionarArtista={selecionarArtista}
+              aoNavegarParaAlbuns={navegarParaPaginaDeTodosAlbuns}
+              aoAvaliar={abrirAvaliacao}
+            />
+          }
+        />
+        {/* Rota coringa com redirecionamento para o início */}
+        <Route
+          path="*"
+          element={<PaginaInicial aoSelecionarArtista={selecionarArtista} />}
+        />
+      </Routes>
+
+      <ModalAutenticacao
+        visivel={modalAutenticacaoVisivel}
+        aoFechar={fecharModalDeAutenticacao}
+      />
+
+      <ModalAvaliacao
+        visivel={dadosAvaliacao.visivel}
+        item={dadosAvaliacao.item}
+        aoFechar={fecharAvaliacao}
+      />
+    </div>
+  );
+}
+
+// Componente raiz exportado com provedor de autenticação e roteador
+export default function Aplicativo() {
+  return (
     <ProvedorUsuario>
-      <div className="app-shell">
-        <Cabecalho
-          aoIrParaInicio={navegarParaInicio}
-          aoClicarDescobrir={sortearArtistaAleatorioENavegar}
-          aoClicarArtistas={navegarParaPaginaDeTodosArtistas}
-          aoClicarAlbuns={navegarParaPaginaDeTodosAlbuns}
-          aoClicarColecao={navegarParaColecao}
-          aoClicarEntrar={abrirModalDeAutenticacao}
-        />
-
-        {paginaAtual === "inicio" && (
-          <PaginaInicial aoSelecionarArtista={selecionarArtista} />
-        )}
-
-        {paginaAtual === "artista" && (
-          <PaginaArtista
-            artista={artistaSelecionado}
-            aoVoltarAoInicio={navegarParaInicio}
-            aoAvaliar={abrirAvaliacao}
-          />
-        )}
-
-        {paginaAtual === "todos-artistas" && (
-          <PaginaTodosArtistas aoSelecionarArtista={selecionarArtista} />
-        )}
-
-        {paginaAtual === "todos-albuns" && (
-          <PaginaTodosAlbuns aoSelecionarArtista={selecionarArtista} aoAvaliar={abrirAvaliacao} />
-        )}
-
-        {paginaAtual === "colecao" && (
-          <PaginaColecao
-            aoSelecionarArtista={selecionarArtista}
-            aoNavegarParaAlbuns={navegarParaPaginaDeTodosAlbuns}
-            aoAvaliar={abrirAvaliacao}
-          />
-        )}
-
-        <ModalAutenticacao
-          visivel={modalAutenticacaoVisivel}
-          aoFechar={fecharModalDeAutenticacao}
-        />
-
-        <ModalAvaliacao
-          visivel={dadosAvaliacao.visivel}
-          item={dadosAvaliacao.item}
-          aoFechar={fecharAvaliacao}
-        />
-      </div>
+      <BrowserRouter>
+        <ShellAplicativo />
+      </BrowserRouter>
     </ProvedorUsuario>
   );
 }

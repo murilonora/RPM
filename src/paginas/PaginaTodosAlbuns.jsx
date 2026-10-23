@@ -1,7 +1,8 @@
 import { useState, useMemo } from "react";
 import { listaDeArtistas } from "../dados/dadosMusicais";
-import { normalizarTexto, tratarErroImagem } from "../utilitarios/comuns";
+import { normalizarTexto } from "../utilitarios/comuns";
 import { FiltroAlfabetico } from "../componentes/FiltroAlfabetico";
+import { ImagemComFallback } from "../componentes/ImagemComFallback";
 
 export function PaginaTodosAlbuns({ aoSelecionarArtista, aoAvaliar }) {
   const [termoBusca, setTermoBusca] = useState("");
@@ -122,12 +123,10 @@ export function PaginaTodosAlbuns({ aoSelecionarArtista, aoAvaliar }) {
                   {/* A Capa Quadrada do Disco (Jacket) */}
                   <div className="album-capa-quadrada">
                     {album.capa ? (
-                      <img
+                      <ImagemComFallback
                         src={album.capa}
                         alt={album.titulo}
-                        className="album-capa-img"
-                        loading="lazy"
-                        onError={tratarErroImagem}
+                        className="album-capa-img w-full h-full"
                       />
                     ) : (
                       <div className="album-capa-vazia">
