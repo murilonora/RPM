@@ -693,6 +693,11 @@ button {
   content: "";
 }
 
+/* Sem círculo quando o álbum tem capa real */
+.album-art.tem-capa::after {
+  display: none;
+}
+
 .album-art small {
   position: absolute;
   right: 12px;
