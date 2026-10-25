@@ -1,7 +1,34 @@
 import { useState } from 'react';
 import Avaliacao from './Avaliacao';
+import faixasAlbuns from '../dados/faixasAlbuns.json';
 
-export function AbaAlbuns({ albuns = [], nomeArtista = "" }) {
+const limpar = (s) =>
+  s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+
+// Organiza o caderninho de dois jeitos: por artista+álbum e só por álbum
+const mapaFaixas = {};
+const mapaPorTitulo = {};
+const contagemTitulos = {};
+
+Object.entries(faixasAlbuns).forEach(([chave, lista]) => {
+  const [artistaId, titulo] = chave.split('|');
+  const t = limpar(titulo);
+  mapaFaixas[`${artistaId}|${t}`] = lista;
+  mapaPorTitulo[t] = lista;
+  contagemTitulos[t] = (contagemTitulos[t] || 0) + 1;
+});
+
+// Procura as faixas de um álbum no caderninho
+const acharFaixas = (artistaId, titulo) => {
+  const t = limpar(titulo);
+  if (artistaId && mapaFaixas[`${artistaId}|${t}`]) {
+    return mapaFaixas[`${artistaId}|${t}`];
+  }
+  // sem o artista, só vale se o título for único (evita misturar discos de mesmo nome)
+  return contagemTitulos[t] === 1 ? mapaPorTitulo[t] : null;
+};
+
+export function AbaAlbuns({ albuns = [], nomeArtista = "", artistaId = "" }) {
   const [albumAberto, setAlbumAberto] = useState(null);
 
   if (!albuns || albuns.length === 0) {
@@ -14,18 +41,22 @@ export function AbaAlbuns({ albuns = [], nomeArtista = "" }) {
 
   // Função inteligente que gera a lista na hora, baseada no número de faixas
   const obterFaixasDoAlbum = (album) => {
-    if (album.listaFaixas && album.listaFaixas.length > 0) {
-      return album.listaFaixas;
-    }
-    const numeroDeFaixas = parseInt(album.faixas) || 10; 
-    const idBase = album.titulo.replace(/[^a-zA-Z0-9]/g, '').toLowerCase(); 
+    const idBase = album.titulo.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
 
+    // 1º: tenta usar os nomes reais do caderninho
+    const reais = acharFaixas(artistaId, album.titulo);
+    if (reais && reais.length > 0) {
+      return reais.map((f, i) => ({
+        id: `${idBase}_faixa_${i + 1}`, // mesmo formato de antes: as notas já salvas continuam valendo
+        titulo: f.titulo,
+      }));
+    }
+
+    // 2º: se não achou, mostra "Faixa 1, 2, 3..." como antes
+    const numeroDeFaixas = parseInt(album.faixas) || 10;
     const faixasGeradas = [];
     for (let i = 1; i <= numeroDeFaixas; i++) {
-      faixasGeradas.push({
-        id: `${idBase}_faixa_${i}`,
-        titulo: `Faixa ${i}`
-      });
+      faixasGeradas.push({ id: `${idBase}_faixa_${i}`, titulo: `Faixa ${i}` });
     }
     return faixasGeradas;
   };

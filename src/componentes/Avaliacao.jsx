@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+
 // Certifique-se de que o ficheiro DiscoSVG.jsx está na mesma pasta
 import { DiscoSVG } from './DiscoSVG'; 
 

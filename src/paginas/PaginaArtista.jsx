@@ -86,7 +86,7 @@ export function PaginaArtista({ artista, aoVoltarAoInicio }) {
         <div className="tab-content">
           {abaAtiva === "musicas" && <AbaMusicas musicas={artista.musicas} />}
           {abaAtiva === "albuns" && (
-            <AbaAlbuns albuns={artista.albuns} nomeArtista={artista.nome} />
+            <AbaAlbuns albuns={artista.albuns} nomeArtista={artista.nome} artistaId={artista.id} />
           )}
           {abaAtiva === "historia" && (
             <AbaHistoria
