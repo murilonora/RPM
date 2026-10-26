@@ -597,6 +597,164 @@ button {
   outline: none;
 }
 
+/* Quando o "link" do cartão é um botão (abre a ficha do álbum em vez de navegar) */
+button.cartao-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+
+/* Ficha do álbum: disco à esquerda, faixas avaliáveis à direita */
+.modal-conteudo.modal-album {
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
+  gap: 32px;
+  max-width: 920px;
+  max-height: min(680px, 90vh);
+  padding: 32px;
+}
+
+.modal-album-disco {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.modal-album-capa {
+  width: 100%;
+  aspect-ratio: 1;
+  margin-bottom: 18px;
+}
+
+.modal-album-artista {
+  margin: 0 0 4px;
+  color: #ff0004;
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 13px;
+}
+
+.modal-album-titulo {
+  margin: 0 0 6px;
+  font-family: "DM Serif Display:Regular", serif;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1.05;
+}
+
+.modal-album-meta {
+  margin: 0 0 20px;
+  color: #8f8a99;
+  font-size: 13px;
+}
+
+.modal-album-nota {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  color: #b9b4a8;
+  font-size: 13px;
+}
+
+.modal-album-resenha {
+  margin-top: 16px;
+  padding: 12px 16px;
+  border: 1px solid #f7f4ed;
+  background: transparent;
+  color: #f7f4ed;
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.modal-album-resenha:hover {
+  background: #f7f4ed;
+  color: #0f0e14;
+}
+
+.modal-album-faixas {
+  min-width: 0;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.modal-album-aviso {
+  margin: 24px 0;
+  color: #8f8a99;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.lista-faixas {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lista-faixas-item {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.lista-faixas-numero {
+  color: #6f6876;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.lista-faixas-titulo {
+  overflow: hidden;
+  font-size: 15px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lista-faixas-duracao {
+  color: #8f8a99;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.lista-faixas-item .avaliacao-vinil .nota-texto {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .modal-conteudo.modal-album {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+    padding: 24px 18px;
+  }
+
+  .modal-album-capa {
+    width: 160px;
+  }
+
+  .modal-album-faixas {
+    overflow: visible;
+  }
+
+  .lista-faixas-item {
+    grid-template-columns: 24px minmax(0, 1fr) auto;
+  }
+
+  .lista-faixas-duracao {
+    display: none;
+  }
+}
+
 .featured-artist {
   display: grid;
   width: 100%;
@@ -1407,6 +1565,32 @@ button {
   font-size: 0.85rem;
   margin: 0;
   text-align: center;
+}
+.campo-formulario.com-erro input {
+  border-color: #ff0004;
+}
+.campo-erro,
+.campo-dica {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.8rem;
+}
+.campo-erro {
+  color: #ff5a5d;
+}
+.campo-dica {
+  color: #8f8a99;
+}
+.modal-aviso-servidor {
+  margin: 4px 0 0;
+  color: #8f8a99;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  text-align: center;
+}
+.botao-principal:disabled {
+  opacity: 0.6;
+  cursor: wait;
 }
 .botao-principal {
   background: #ff0004;

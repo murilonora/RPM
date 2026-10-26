@@ -89,7 +89,7 @@ export function PlacaDiscoOuro({ favorito, nomeCritico, aoAvaliar, aoTrocarFavor
               ) : (
                 <div className="placa-capa-placeholder">LP</div>
               )}
-              <span className="placa-tipo-etiqueta">{favorito.tipo === "album" ? "LP" : "SINGLE"}</span>
+              <span className="placa-tipo-etiqueta">{favorito.tipo === "musica" ? "SINGLE" : "LP"}</span>
             </div>
           </div>
 

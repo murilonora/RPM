@@ -26,7 +26,7 @@ export function ModalAvaliacao({ visivel, aoFechar, item }) {
 
   function aoSalvar(evento) {
     evento.preventDefault();
-    avaliarItem(item.chave, notaAtual, comentarioTemp);
+    avaliarItem(item.chave, notaAtual, comentarioTemp, item.obra);
     aoFechar();
   }
 
@@ -79,7 +79,7 @@ export function ModalAvaliacao({ visivel, aoFechar, item }) {
             
             <div className="campo-formulario flex flex-col items-center gap-3 mb-2">
               <label>Sua nota (em vinis)</label>
-              <AvaliacaoVinil chaveItem={item.chave} tamanho="grande" />
+              <AvaliacaoVinil chaveItem={item.chave} obra={item.obra} tamanho="grande" />
             </div>
 
             <div className="campo-formulario">

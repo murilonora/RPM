@@ -5,7 +5,7 @@ import { normalizarTexto } from "../utilitarios/comuns";
 import { FiltroAlfabetico } from "../componentes/FiltroAlfabetico";
 import { ImagemComFallback } from "../componentes/ImagemComFallback";
 
-export function PaginaTodosAlbuns({ aoAvaliar }) {
+export function PaginaTodosAlbuns({ aoAbrirAlbum }) {
   const [termoBusca, setTermoBusca] = useState("");
   const [letraFiltro, setLetraFiltro] = useState("TODOS");
 
@@ -147,21 +147,19 @@ export function PaginaTodosAlbuns({ aoAvaliar }) {
                     <span>{album.reproducoes} STREAMS</span>
                   </div>
 
-                  {/* Botão de Avaliar Direto */}
-                  {aoAvaliar && (
+                  {/* Abre a ficha do disco: nota do álbum e de cada faixa */}
+                  {aoAbrirAlbum && (
                     <button
                       type="button"
                       className="album-btn-avaliar-disco"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        aoAvaliar({
-                          chave: chaveItem,
-                          titulo: album.titulo,
-                          subtitulo: `Álbum • ${album.artistaRef.nome}`,
-                          capa: album.capa,
-                        });
-                      }}
-                      title="Avaliar este disco em vinis"
+                      onClick={() =>
+                        aoAbrirAlbum({
+                          artista: album.artistaRef,
+                          album,
+                          indice: album.indiceOriginal,
+                        })
+                      }
+                      title="Avaliar o disco e as faixas em vinis"
                     >
                       <span className="disco-ponto-icon" />
                       [ AVALIAR DISCO ]

@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act } from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -20,8 +20,15 @@ function renderizar() {
   );
 }
 
-beforeEach(() => localStorage.clear());
-afterEach(cleanup);
+// Sem backend nos testes: toda chamada falha como "servidor fora do ar"
+beforeEach(() => {
+  localStorage.clear();
+  vi.stubGlobal("fetch", vi.fn(() => Promise.reject(new TypeError("Failed to fetch"))));
+});
+afterEach(() => {
+  cleanup();
+  vi.unstubAllGlobals();
+});
 
 describe("AvaliacaoVinil", () => {
   it("fica desabilitada para quem não está logado", () => {
@@ -33,9 +40,7 @@ describe("AvaliacaoVinil", () => {
 
   it("dá a nota no clique e desmarca ao clicar na mesma nota", async () => {
     renderizar();
-    act(() => {
-      contexto.registrarUsuario("Duda", "duda@rpm.test");
-    });
+    await act(() => contexto.registrarUsuario("Duda", "duda@rpm.test", "12345678"));
 
     await userEvent.click(screen.getByTitle("3 vinis"));
     expect(contexto.obterAvaliacao("album-matue-0").nota).toBe(3);
