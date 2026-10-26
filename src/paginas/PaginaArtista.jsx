@@ -6,7 +6,7 @@ import { AbaHistoria } from "../componentes/AbaHistoria";
 import { ImagemComFallback } from "../componentes/ImagemComFallback";
 
 // Página de detalhes, músicas, álbuns e história do artista selecionado
-export function PaginaArtista({ artista, aoAvaliar, aoAbrirAlbum, aoAbrirLogin }) {
+export function PaginaArtista({ artista, aoAbrirAlbum, aoAbrirLogin }) {
   const [abaAtiva, setAbaAtiva] = useState("musicas");
 
   if (!artista) {
@@ -89,11 +89,7 @@ export function PaginaArtista({ artista, aoAvaliar, aoAbrirAlbum, aoAbrirLogin }
 
         <div className="tab-content">
           {abaAtiva === "musicas" && (
-            <AbaMusicas
-              musicas={artista.musicas}
-              artistaId={artista.id}
-              aoAvaliar={aoAvaliar}
-            />
+            <AbaMusicas musicas={artista.musicas} artistaId={artista.id} aoAbrirLogin={aoAbrirLogin} />
           )}
           {abaAtiva === "albuns" && (
             <AbaAlbuns artista={artista} aoAbrirAlbum={aoAbrirAlbum} aoAbrirLogin={aoAbrirLogin} />

@@ -39,7 +39,7 @@ function ScrollAoTopo() {
 }
 
 // Wrapper que resolve o artista dinamicamente pela URL /artista/:id
-function PaginaArtistaComUrl({ aoAvaliar, aoAbrirAlbum, aoAbrirLogin }) {
+function PaginaArtistaComUrl({ aoAbrirAlbum, aoAbrirLogin }) {
   const { id } = useParams();
 
   const artista =
@@ -54,7 +54,6 @@ function PaginaArtistaComUrl({ aoAvaliar, aoAbrirAlbum, aoAbrirLogin }) {
   return (
     <PaginaArtista
       artista={artista}
-      aoAvaliar={aoAvaliar}
       aoAbrirAlbum={aoAbrirAlbum}
       aoAbrirLogin={aoAbrirLogin}
     />
@@ -120,7 +119,7 @@ function ShellAplicativo() {
           <Route path="/" element={<PaginaInicial />} />
           <Route path="/artistas" element={<PaginaTodosArtistas />} />
           <Route path="/albuns" element={<PaginaTodosAlbuns aoAbrirAlbum={setAlbumAberto} aoAbrirLogin={abrirModalDeAutenticacao} />} />
-          <Route path="/artista/:id" element={<PaginaArtistaComUrl aoAvaliar={abrirAvaliacao} aoAbrirAlbum={setAlbumAberto} aoAbrirLogin={abrirModalDeAutenticacao} />} />
+          <Route path="/artista/:id" element={<PaginaArtistaComUrl aoAbrirAlbum={setAlbumAberto} aoAbrirLogin={abrirModalDeAutenticacao} />} />
           <Route
             path="/colecao"
             element={
