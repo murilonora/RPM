@@ -39,7 +39,7 @@ function ScrollAoTopo() {
 }
 
 // Wrapper que resolve o artista dinamicamente pela URL /artista/:id
-function PaginaArtistaComUrl({ aoAvaliar, aoAbrirAlbum }) {
+function PaginaArtistaComUrl({ aoAbrirAlbum, aoAbrirLogin }) {
   const { id } = useParams();
 
   const artista =
@@ -51,7 +51,13 @@ function PaginaArtistaComUrl({ aoAvaliar, aoAbrirAlbum }) {
     }
   }, [artista]);
 
-  return <PaginaArtista artista={artista} aoAvaliar={aoAvaliar} aoAbrirAlbum={aoAbrirAlbum} />;
+  return (
+    <PaginaArtista
+      artista={artista}
+      aoAbrirAlbum={aoAbrirAlbum}
+      aoAbrirLogin={aoAbrirLogin}
+    />
+  );
 }
 
 // Shell principal com gerenciamento de rotas e estado global
@@ -112,8 +118,8 @@ function ShellAplicativo() {
         <Routes>
           <Route path="/" element={<PaginaInicial />} />
           <Route path="/artistas" element={<PaginaTodosArtistas />} />
-          <Route path="/albuns" element={<PaginaTodosAlbuns aoAbrirAlbum={setAlbumAberto} />} />
-          <Route path="/artista/:id" element={<PaginaArtistaComUrl aoAvaliar={abrirAvaliacao} aoAbrirAlbum={setAlbumAberto} />} />
+          <Route path="/albuns" element={<PaginaTodosAlbuns aoAbrirAlbum={setAlbumAberto} aoAbrirLogin={abrirModalDeAutenticacao} />} />
+          <Route path="/artista/:id" element={<PaginaArtistaComUrl aoAbrirAlbum={setAlbumAberto} aoAbrirLogin={abrirModalDeAutenticacao} />} />
           <Route
             path="/colecao"
             element={
@@ -130,7 +136,6 @@ function ShellAplicativo() {
         <ModalAlbum
           dados={albumAberto}
           aoFechar={fecharAlbum}
-          aoEscreverResenha={abrirAvaliacao}
           aoAbrirLogin={abrirModalDeAutenticacao}
         />
       )}

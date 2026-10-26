@@ -1,9 +1,10 @@
 import { extrairSiglas } from "../utilitarios/comuns";
 import { ImagemComFallback } from "./ImagemComFallback";
+import { AvaliacaoDisco } from "./AvaliacaoDisco";
 
 // Grid de exibição dos álbuns lançados pelo artista.
-// Clicar no álbum abre a ficha com a avaliação do disco e de cada faixa.
-export function AbaAlbuns({ artista, aoAbrirAlbum }) {
+// Clicar no álbum abre a janela de faixas; a nota do álbum fica no próprio cartão.
+export function AbaAlbuns({ artista, aoAbrirAlbum, aoAbrirLogin }) {
   const albuns = artista.albuns || [];
   if (albuns.length === 0) {
     return <p className="p-4 text-center">Nenhum álbum encontrado.</p>;
@@ -42,6 +43,14 @@ export function AbaAlbuns({ artista, aoAbrirAlbum }) {
             </button>
           </h3>
           <p>{album.reproducoes} reproduções</p>
+
+          {/* Nota do álbum direto no cartão, como no layout da Mell */}
+          <AvaliacaoDisco
+            chaveItem={`album-${artista.id}-${indice}`}
+            obra={{ tipo: "album", artistaId: artista.id, titulo: album.titulo }}
+            rotulo={`Nota para ${album.titulo}`}
+            aoPedirLogin={aoAbrirLogin}
+          />
         </article>
       ))}
     </div>
