@@ -9,6 +9,7 @@ import { ModalSeletorFavorito } from "../componentes/colecao/ModalSeletorFavorit
 import {
   ABAS_COLECAO,
   contarDoisDigitos,
+  ehFaixa,
   escolherFavorito,
   filtrarPorAba,
   montarItensAvaliados,
@@ -33,7 +34,7 @@ export function PaginaColecao({ aoAvaliar, aoAbrirLogin }) {
   const contagens = useMemo(
     () => ({
       albuns: itensAvaliados.filter((i) => i.tipo === "album").length,
-      musicas: itensAvaliados.filter((i) => i.tipo === "musica").length,
+      musicas: itensAvaliados.filter(ehFaixa).length,
       obrasPrimas: itensAvaliados.filter((i) => i.nota === 5).length,
       resenhas: itensAvaliados.filter((i) => i.comentario?.trim()).length,
     }),

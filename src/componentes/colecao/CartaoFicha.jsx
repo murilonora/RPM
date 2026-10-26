@@ -3,13 +3,15 @@ import { AvaliacaoVinil } from "../AvaliacaoVinil";
 import { ImagemComFallback } from "../ImagemComFallback";
 import { itemParaAvaliar } from "./itensColecao";
 
+const ROTULO_TIPO = { album: "LP // ÁLBUM", musica: "FAIXA // SINGLE", faixa: "FAIXA // DO LP" };
+
 // Ficha de uma obra avaliada: capa, nota em vinis, resenha e ações
 export function CartaoFicha({ item, ehFavorito, aoTornarFavorito, aoAvaliar }) {
   return (
     <div className={`ficha-card-item cartao-com-link ${ehFavorito ? "card-favorito-ativo" : ""}`}>
       <div className="ficha-card-header">
         <span className="ficha-card-tipo">
-          {item.tipo === "album" ? "LP // ÁLBUM" : "FAIXA // SINGLE"}
+          {ROTULO_TIPO[item.tipo]}
         </span>
         {ehFavorito ? (
           <span className="ficha-card-ouro-badge">★ FAVORITO SUPREMO</span>

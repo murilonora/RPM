@@ -10,17 +10,46 @@ export const ABAS_COLECAO = {
   OBRAS_PRIMAS: "OBRAS_PRIMAS",
 };
 
+// Faixa avulsa ("musica") ou faixa de dentro de um álbum ("faixa")
+export const ehFaixa = (item) => item.tipo === "musica" || item.tipo === "faixa";
+
 /**
- * Converte as avaliações salvas ({ "album-matue-0": { nota, comentario } })
+ * Converte as avaliações salvas ({ "album-matue-0": { nota, comentario, obra } })
  * em itens completos com título, capa e artista, do maior para o menor nota.
- * A chave segue o formato "<tipo>-<id do artista>-<índice>" e o id pode ter hífens.
+ * Formatos de chave (o id do artista pode ter hífens):
+ *   album-<artista>-<índice do álbum>
+ *   musica-<artista>-<índice da música>
+ *   faixa-<artista>-<índice do álbum>-<número da faixa>
  */
 export function montarItensAvaliados(avaliacoes, artistasPorId = ARTISTAS_POR_ID) {
   return Object.entries(avaliacoes)
     .filter(([, avaliacao]) => avaliacao.nota > 0)
-    .map(([chave, { nota, comentario }]) => {
+    .map(([chave, { nota, comentario, obra: obraSalva }]) => {
       const partes = chave.split("-");
       const tipo = partes[0];
+
+      if (tipo === "faixa") {
+        const numero = parseInt(partes[partes.length - 1], 10);
+        const indice = parseInt(partes[partes.length - 2], 10);
+        const artista = artistasPorId.get(partes.slice(1, -2).join("-"));
+        const album = artista?.albuns[indice];
+        // O título da faixa vem da própria avaliação (a lista de faixas é carregada sob demanda)
+        if (!album || !obraSalva?.titulo) return null;
+        return {
+          chave,
+          tipo,
+          titulo: obraSalva.titulo,
+          subtitulo: `Faixa ${numero} de "${album.titulo}"`,
+          capa: album.capa || null,
+          ano: album.ano,
+          nota,
+          comentario,
+          artista,
+          indice,
+          obra: obraSalva,
+        };
+      }
+
       const indice = parseInt(partes[partes.length - 1], 10);
       const artista = artistasPorId.get(partes.slice(1, -1).join("-"));
       const obra = tipo === "musica" ? artista?.musicas[indice] : artista?.albuns[indice];
@@ -37,6 +66,7 @@ export function montarItensAvaliados(avaliacoes, artistasPorId = ARTISTAS_POR_ID
         comentario,
         artista,
         indice,
+        obra: { tipo, artistaId: artista.id, titulo: obra.titulo },
       };
     })
     .filter(Boolean)
@@ -45,7 +75,7 @@ export function montarItensAvaliados(avaliacoes, artistasPorId = ARTISTAS_POR_ID
 
 export function filtrarPorAba(itens, aba) {
   if (aba === ABAS_COLECAO.ALBUNS) return itens.filter((i) => i.tipo === "album");
-  if (aba === ABAS_COLECAO.MUSICAS) return itens.filter((i) => i.tipo === "musica");
+  if (aba === ABAS_COLECAO.MUSICAS) return itens.filter(ehFaixa);
   if (aba === ABAS_COLECAO.OBRAS_PRIMAS) return itens.filter((i) => i.nota === 5);
   return itens;
 }
@@ -63,6 +93,7 @@ export function itemParaAvaliar(item) {
     titulo: item.titulo,
     subtitulo: `${item.tipo === "album" ? "Álbum" : "Música"} • ${item.artista.nome}`,
     capa: item.capa,
+    obra: item.obra,
   };
 }
 

@@ -70,6 +70,7 @@ O **RPM** (Rotação Por Minuto) é uma enciclopédia interativa inspirada em ca
 - Componente dedicado (`AvaliacaoVinil.jsx`) que substitui estrelas convencionais por discos de vinil interativos com sulcos mecânicos e animação de rotação no hover.
 - Suporta leitura e escrita com toggle inteligente (clicar na nota atual desmarca).
 - Modal dedicado (`ModalAvaliacao.jsx`) permitindo redigir resenhas textuais para cada obra.
+- **Avaliação por faixa** (`ModalAlbum.jsx`, sistema da Mell): ao abrir um álbum aparecem as faixas reais do disco, cada uma com sua nota em vinis, além da nota e da resenha do álbum inteiro. A lista de faixas vem de `src/dados/faixasAlbuns.json` (104 dos 139 álbuns), levantada na API do Deezer, e só é baixada quando um álbum é aberto.
 
 ### 2. Arquivo Técnico do Crítico (`PaginaColecao.jsx`)
 - **Ficha Técnica & Credencial do Usuário**: Exibe número de série único (`ID: #...`), selo de certificação da coleção e métricas automáticas (total catalogado, média de notas, grau máximo e resenhas registradas).
@@ -100,12 +101,18 @@ RPM/
 │   │   ├── Cabecalho.jsx        # Barra de navegação e autenticação
 │   │   ├── FundoMosaicoHero.jsx # Marquee infinito de colunas verticais
 │   │   ├── Logotipo.jsx         # Marca da aplicação
-│   │   ├── ModalAutenticacao.jsx# Modal de login e cadastro local
-│   │   └── ModalAvaliacao.jsx   # Modal de nota e resenha crítica
+│   │   ├── ModalAlbum.jsx       # Ficha do álbum com nota por faixa
+│   │   ├── ModalAutenticacao.jsx# Login e cadastro (validado pelo backend)
+│   │   ├── ModalAvaliacao.jsx   # Modal de nota e resenha crítica
+│   │   └── colecao/             # Partes da página Coleção
 │   ├── contextos/
-│   │   └── ContextoUsuario.jsx  # Gerenciamento de sessão e avaliações (localStorage)
+│   │   └── ContextoUsuario.jsx  # Sessão e avaliações (backend + cópia local)
 │   ├── dados/
-│   │   └── dadosMusicais.ts     # Banco de dados musical tipado (55 artistas)
+│   │   ├── dadosMusicais.ts     # Banco de dados musical tipado (55 artistas)
+│   │   ├── faixas.js            # Carrega as faixas dos álbuns sob demanda
+│   │   └── faixasAlbuns.json    # Faixas reais de 104 álbuns (levantamento da Mell)
+│   ├── servicos/
+│   │   └── api.js               # Cliente da API do backend
 │   ├── paginas/
 │   │   ├── PaginaArtista.jsx    # Perfil aprofundado do artista
 │   │   ├── PaginaColecao.jsx    # Fichário do crítico e Disco de Ouro
@@ -117,21 +124,42 @@ RPM/
 │   └── principal.jsx            # Ponto de entrada do React DOM
 ├── index.html                   # HTML base com meta tags e favicon
 ├── package.json                 # Dependências e scripts npm
-├── vite.config.js               # Configuração do Vite e Tailwind
+├── backend/                     # API Spring Boot + MySQL (Matheus e Gabriel)
+├── vite.config.js               # Vite, Tailwind, proxy /api e testes
 └── README.md                    # Documentação do projeto
 ```
 
 ---
 
+## 🔌 Integração Front ↔ Backend
+
+O backend fica em `backend/` (Spring Boot + MySQL, por Matheus e Gabriel). Em desenvolvimento o Vite repassa tudo que começa com `/api` para `http://localhost:8080` (ver `vite.config.js`), e o front fala com ele por `src/servicos/api.js`.
+
+| Ação no site | Rota | Corpo enviado |
+| :--- | :--- | :--- |
+| Ao abrir o site | `GET /api/status` | — |
+| Criar conta | `POST /api/usuarios` | `{ nome, email, senha }` |
+| Nota de álbum | `POST /api/avaliacoes/albuns` | `{ artistaId, tituloAlbum, nota, usuario }` |
+| Nota de música ou faixa | `POST /api/avaliacoes/musicas` | `{ artistaId, tituloMusica, nota, usuario }` |
+| Resenha | `POST .../comentarios` | o mesmo corpo + `texto` |
+
+- **Validação**: as mensagens de erro do backend (400 `{ campo: "mensagem" }`) aparecem embaixo de cada campo do cadastro.
+- **Servidor desligado**: o site continua funcionando com os dados no navegador; as notas ficam marcadas como pendentes e são reenviadas quando o servidor volta.
+- **O que o backend ainda precisa** para o front deixar de depender do navegador: salvar usuários e avaliações no MySQL (hoje as rotas só validam), rota de login (`POST /api/login`), rotas de leitura (`GET` das avaliações do usuário) e atualizar a nota quando o mesmo usuário avalia a mesma obra de novo, em vez de duplicar.
+
+### Rodando os dois juntos
+1. Backend: abrir `backend/` no IntelliJ (Java 21), definir `DB_PASSWORD` (e `DB_USER`, se não for `root`) e rodar `RpmApplication`. O banco `sitemusica` precisa existir no MySQL.
+2. Front: `npm run dev` e abrir `http://localhost:5173`.
+
 ## 💾 Persistência Local (LocalStorage Schema)
 
-A aplicação funciona 100% no cliente sem dependência de um servidor de backend:
+Cópia local usada enquanto o backend não guarda os dados (e quando ele está fora do ar):
 
 | Chave LocalStorage | Tipo | Descrição |
 | :--- | :--- | :--- |
-| `rpm_usuarios` | `Array<Usuario>` | Lista de perfis cadastrados (`id`, `nome`, `email`, `criadoEm`). |
+| `rpm_usuarios` | `Array<Usuario>` | Perfis cadastrados (`id`, `nome`, `email`, `senhaHash`, `criadoEm`). A senha só é guardada como hash SHA-256. |
 | `rpm_sessao` | `string` | ID do usuário atualmente logado. |
-| `rpm_avaliacoes_<id>` | `Record<string, {nota, comentario}>` | Mapa de notas (1-5) e resenhas do usuário. |
+| `rpm_avaliacoes_<id>` | `Record<string, {nota, comentario, obra, sincronizado}>` | Notas (1-5) e resenhas; `obra` identifica o item para o backend e `sincronizado` diz se já chegou ao servidor. |
 | `rpm_favorito_<id>` | `string` | Chave do item definido manualmente como Disco de Ouro. |
 
 ---
@@ -164,4 +192,4 @@ npm run preview
 ---
 
 ## 📄 Licença & Créditos
-Projeto acadêmico de desenvolvimento frontend criado por **Murilo Nora**. As imagens de capas e artistas são utilizadas estritamente para fins educacionais e de demonstração de interface.
+Projeto acadêmico do grupo: front-end por **Murilo Nora**, backend por **Matheus Rocha** e **Gabriel Angelo**, avaliação por faixa e levantamento das faixas por **Mell Feital**. As imagens de capas e artistas são utilizadas estritamente para fins educacionais e de demonstração de interface.

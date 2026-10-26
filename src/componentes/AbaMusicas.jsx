@@ -23,7 +23,8 @@ export function AbaMusicas({ musicas = [], artistaId = "", aoAvaliar }) {
             chave: `musica-${artistaId}-${indice}`,
             titulo: musica.titulo,
             subtitulo: `Música • ${musica.album}`,
-            capa: musica.capa
+            capa: musica.capa,
+            obra: { tipo: "musica", artistaId, titulo: musica.titulo },
           })}
         >
           <span className="rank">{String(indice + 1).padStart(2, "0")}</span>

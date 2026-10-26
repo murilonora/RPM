@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense } from "react";
+import { useState, useEffect, useCallback, lazy, Suspense } from "react";
 import {
   BrowserRouter,
   Routes,
@@ -13,6 +13,7 @@ import { ModalAutenticacao } from "./componentes/ModalAutenticacao";
 import { PaginaInicial } from "./paginas/PaginaInicial";
 import { listaDeArtistas } from "./dados/dadosMusicais";
 import { ModalAvaliacao } from "./componentes/ModalAvaliacao";
+import { ModalAlbum } from "./componentes/ModalAlbum";
 
 // A página inicial vai no pacote principal; as demais só baixam quando abertas
 const PaginaArtista = lazy(() =>
@@ -38,7 +39,7 @@ function ScrollAoTopo() {
 }
 
 // Wrapper que resolve o artista dinamicamente pela URL /artista/:id
-function PaginaArtistaComUrl({ aoAvaliar }) {
+function PaginaArtistaComUrl({ aoAvaliar, aoAbrirAlbum }) {
   const { id } = useParams();
 
   const artista =
@@ -50,7 +51,7 @@ function PaginaArtistaComUrl({ aoAvaliar }) {
     }
   }, [artista]);
 
-  return <PaginaArtista artista={artista} aoAvaliar={aoAvaliar} />;
+  return <PaginaArtista artista={artista} aoAvaliar={aoAvaliar} aoAbrirAlbum={aoAbrirAlbum} />;
 }
 
 // Shell principal com gerenciamento de rotas e estado global
@@ -58,6 +59,8 @@ function ShellAplicativo() {
   const navigate = useNavigate();
   const location = useLocation();
   const [modalAutenticacaoVisivel, setModalAutenticacaoVisivel] = useState(false);
+  // Álbum aberto na ficha de faixas: { artista, album, indice }
+  const [albumAberto, setAlbumAberto] = useState(null);
   const [dadosAvaliacao, setDadosAvaliacao] = useState({ visivel: false, item: null });
 
   // Sincroniza o título padrão da página nas rotas principais
@@ -91,6 +94,8 @@ function ShellAplicativo() {
     setDadosAvaliacao({ visivel: true, item: itemProps });
   }
 
+  const fecharAlbum = useCallback(() => setAlbumAberto(null), []);
+
   function fecharAvaliacao() {
     setDadosAvaliacao({ visivel: false, item: null });
   }
@@ -107,8 +112,8 @@ function ShellAplicativo() {
         <Routes>
           <Route path="/" element={<PaginaInicial />} />
           <Route path="/artistas" element={<PaginaTodosArtistas />} />
-          <Route path="/albuns" element={<PaginaTodosAlbuns aoAvaliar={abrirAvaliacao} />} />
-          <Route path="/artista/:id" element={<PaginaArtistaComUrl aoAvaliar={abrirAvaliacao} />} />
+          <Route path="/albuns" element={<PaginaTodosAlbuns aoAbrirAlbum={setAlbumAberto} />} />
+          <Route path="/artista/:id" element={<PaginaArtistaComUrl aoAvaliar={abrirAvaliacao} aoAbrirAlbum={setAlbumAberto} />} />
           <Route
             path="/colecao"
             element={
@@ -119,6 +124,16 @@ function ShellAplicativo() {
           <Route path="*" element={<PaginaInicial />} />
         </Routes>
       </Suspense>
+
+      {/* Ordem importa: o que vem depois fica por cima (resenha e login abrem sobre a ficha do álbum) */}
+      {albumAberto && (
+        <ModalAlbum
+          dados={albumAberto}
+          aoFechar={fecharAlbum}
+          aoEscreverResenha={abrirAvaliacao}
+          aoAbrirLogin={abrirModalDeAutenticacao}
+        />
+      )}
 
       <ModalAutenticacao
         visivel={modalAutenticacaoVisivel}

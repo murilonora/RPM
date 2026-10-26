@@ -1,4 +1,11 @@
-import { createContext, useContext, useState, useEffect, useCallback, useMemo } from "react";
+import { createContext, useContext, useState, useEffect, useCallback, useMemo, useRef } from "react";
+import {
+  ErroApi,
+  ServidorIndisponivel,
+  cadastrarUsuario,
+  enviarAvaliacao,
+  verificarServidor,
+} from "../servicos/api";
 
 // Chaves usadas no localStorage do navegador
 const CHAVE_USUARIOS = "rpm_usuarios";
@@ -24,17 +31,45 @@ function salvarNoStorage(chave, valor) {
   localStorage.setItem(chave, JSON.stringify(valor));
 }
 
-// Provedor que envolve toda a aplicacao e fornece estado de usuario e avaliacoes
+// A senha nunca é guardada em texto: só o hash SHA-256 (cópia local enquanto o
+// backend não tem rota de login; quando tiver, o login passa a ser feito por ele)
+async function gerarHashSenha(senha) {
+  const bytes = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(senha));
+  return Array.from(new Uint8Array(bytes), (b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+// Provedor que envolve toda a aplicacao e fornece estado de usuario e avaliacoes.
+// O backend (servicos/api.js) valida cadastros e recebe as avaliações; o navegador
+// guarda uma cópia para o site funcionar mesmo com o servidor desligado.
 export function ProvedorUsuario({ children }) {
   const [usuarios, setUsuarios] = useState(() => obterDoStorage(CHAVE_USUARIOS, []));
   const [idSessao, setIdSessao] = useState(() => obterDoStorage(CHAVE_SESSAO, null));
   const [avaliacoes, setAvaliacoes] = useState({});
   const [chaveFavoritoManual, setChaveFavoritoManual] = useState(null);
+  // "verificando" | "online" | "offline"
+  const [statusServidor, setStatusServidor] = useState("verificando");
 
   const usuarioLogado = useMemo(
     () => usuarios.find((u) => u.id === idSessao) || null,
     [usuarios, idSessao]
   );
+
+  // Refs para as funções de envio lerem o valor atual sem precisar ser recriadas
+  const usuarioRef = useRef(usuarioLogado);
+  usuarioRef.current = usuarioLogado;
+  const avaliacoesRef = useRef(avaliacoes);
+  avaliacoesRef.current = avaliacoes;
+
+  // Descobre se o backend está no ar ao abrir o site
+  useEffect(() => {
+    let ativo = true;
+    verificarServidor().then((online) => {
+      if (ativo) setStatusServidor(online ? "online" : "offline");
+    });
+    return () => {
+      ativo = false;
+    };
+  }, []);
 
   // Carrega as avaliações e favorito manual do usuário logado ao trocar de sessão
   useEffect(() => {
@@ -57,28 +92,86 @@ export function ProvedorUsuario({ children }) {
     salvarNoStorage(CHAVE_SESSAO, idSessao);
   }, [idSessao]);
 
-  // As funções abaixo usam useCallback e o valor do contexto usa useMemo:
-  // assim os componentes só redesenham quando algo que eles leem muda de fato,
-  // e não a cada render do provedor.
-
-  // Cadastra um novo usuario e ja faz login automatico
-  const registrarUsuario = useCallback((nome, email) => {
-    const id = nome.toLowerCase().replace(/\s+/g, "-") + "-" + Date.now();
-    const novoUsuario = { id, nome, email, criadoEm: new Date().toISOString() };
-    setUsuarios((anteriores) => [...anteriores, novoUsuario]);
-    setIdSessao(id);
-    return novoUsuario;
+  // Marca no navegador se a avaliação já chegou ao backend
+  const marcarSincronizado = useCallback((idUsuario, chaveItem, sincronizado) => {
+    setAvaliacoes((anteriores) => {
+      if (!anteriores[chaveItem]) return anteriores;
+      const novas = { ...anteriores, [chaveItem]: { ...anteriores[chaveItem], sincronizado } };
+      salvarNoStorage(`rpm_avaliacoes_${idUsuario}`, novas);
+      return novas;
+    });
   }, []);
 
-  // Tenta fazer login buscando o email entre os usuarios cadastrados
-  const entrarComEmail = useCallback(
-    (email) => {
-      const usuario = usuarios.find((u) => u.email === email);
-      if (usuario) {
-        setIdSessao(usuario.id);
-        return usuario;
+  const enviarParaServidor = useCallback(
+    async (chaveItem, avaliacao) => {
+      const usuario = usuarioRef.current;
+      if (!usuario || !avaliacao.obra || avaliacao.nota < 1) return;
+      try {
+        await enviarAvaliacao({ ...avaliacao, usuario });
+        setStatusServidor("online");
+        marcarSincronizado(usuario.id, chaveItem, true);
+      } catch (erro) {
+        if (erro instanceof ServidorIndisponivel) setStatusServidor("offline");
+        else console.warn("Backend recusou a avaliação:", erro.campos || erro.message);
       }
-      return null;
+    },
+    [marcarSincronizado]
+  );
+
+  // Quando o servidor volta, reenvia o que ficou só no navegador
+  useEffect(() => {
+    if (statusServidor !== "online") return;
+    Object.entries(avaliacoes)
+      .filter(([, a]) => a.nota > 0 && a.obra && !a.sincronizado)
+      .forEach(([chave, a]) => enviarParaServidor(chave, a));
+    // só ao ficar online ou trocar de usuário, não a cada nota
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [statusServidor, idSessao]);
+
+  // Cadastra um novo usuario (validado pelo backend) e ja faz login automatico.
+  // Lança ErroApi com as mensagens por campo quando algo está inválido.
+  const registrarUsuario = useCallback(
+    async (nome, email, senha) => {
+      if (usuarios.some((u) => u.email === email)) {
+        throw new ErroApi(409, { email: "Este e-mail já tem cadastro. Use Entrar." });
+      }
+      try {
+        await cadastrarUsuario({ nome, email, senha });
+        setStatusServidor("online");
+      } catch (erro) {
+        if (!(erro instanceof ServidorIndisponivel)) throw erro;
+        // Servidor fora: aplica as mesmas regras do backend aqui para não aceitar dados inválidos
+        if (!senha || senha.length < 8) {
+          throw new ErroApi(400, { senha: "Senha deve ter no minimo 8 caracteres" });
+        }
+        setStatusServidor("offline");
+      }
+
+      const id = nome.toLowerCase().replace(/\s+/g, "-") + "-" + Date.now();
+      const novoUsuario = {
+        id,
+        nome,
+        email,
+        senhaHash: await gerarHashSenha(senha),
+        criadoEm: new Date().toISOString(),
+      };
+      setUsuarios((anteriores) => [...anteriores, novoUsuario]);
+      setIdSessao(id);
+      return novoUsuario;
+    },
+    [usuarios]
+  );
+
+  // Login com e-mail e senha. Contas antigas, criadas antes da senha existir, entram só com o e-mail.
+  const entrarComEmail = useCallback(
+    async (email, senha = "") => {
+      const usuario = usuarios.find((u) => u.email === email);
+      if (!usuario) throw new ErroApi(404, { email: "E-mail não encontrado. Cadastre-se primeiro." });
+      if (usuario.senhaHash && usuario.senhaHash !== (await gerarHashSenha(senha))) {
+        throw new ErroApi(401, { senha: "Senha incorreta." });
+      }
+      setIdSessao(usuario.id);
+      return usuario;
     },
     [usuarios]
   );
@@ -100,18 +193,27 @@ export function ProvedorUsuario({ children }) {
     [idSessao]
   );
 
-  // Salva ou atualiza a nota e o comentario de um item (musica ou album).
+  // Salva a nota e o comentário de um álbum, música ou faixa e envia ao backend.
+  // obra = { tipo, artistaId, titulo, album? } identifica o item para o servidor e a Coleção;
+  // se não vier, mantém a que já estava salva para essa chave.
   // Atualização funcional: não depende de "avaliacoes", então a função não muda a cada nota.
   const avaliarItem = useCallback(
-    (chaveItem, nota, comentario = "") => {
+    (chaveItem, nota, comentario = "", obra) => {
       if (!idSessao) return;
+      const salva = {
+        nota,
+        comentario,
+        obra: obra || avaliacoesRef.current[chaveItem]?.obra,
+        sincronizado: false,
+      };
       setAvaliacoes((anteriores) => {
-        const novasAvaliacoes = { ...anteriores, [chaveItem]: { nota, comentario } };
+        const novasAvaliacoes = { ...anteriores, [chaveItem]: salva };
         salvarNoStorage(`rpm_avaliacoes_${idSessao}`, novasAvaliacoes);
         return novasAvaliacoes;
       });
+      enviarParaServidor(chaveItem, salva);
     },
-    [idSessao]
+    [idSessao, enviarParaServidor]
   );
 
   // Retorna a nota e comentario atual de um item
@@ -132,6 +234,7 @@ export function ProvedorUsuario({ children }) {
     () => ({
       usuarioLogado,
       estaLogado: !!idSessao,
+      statusServidor,
       avaliacoes,
       totalAvaliacoes,
       mediaAvaliacoes,
@@ -146,6 +249,7 @@ export function ProvedorUsuario({ children }) {
     [
       usuarioLogado,
       idSessao,
+      statusServidor,
       avaliacoes,
       totalAvaliacoes,
       mediaAvaliacoes,

@@ -34,6 +34,32 @@ describe("montarItensAvaliados", () => {
   });
 });
 
+describe("faixas de álbum (avaliação por faixa)", () => {
+  const itens = montarItensAvaliados(
+    {
+      "faixa-red-hot-0-3": { nota: 5, comentario: "", obra: { tipo: "faixa", artistaId: "red-hot", titulo: "Scar Tissue" } },
+      "faixa-matue-0-1": { nota: 4, comentario: "" }, // sem título salvo: não dá para mostrar
+    },
+    artistas
+  );
+
+  it("usa o título salvo e a capa do álbum, mesmo com hífen no id do artista", () => {
+    expect(itens).toHaveLength(1);
+    expect(itens[0]).toMatchObject({
+      tipo: "faixa",
+      titulo: "Scar Tissue",
+      subtitulo: 'Faixa 3 de "Californication"',
+      capa: "c3",
+    });
+    expect(itens[0].artista.nome).toBe("RHCP");
+  });
+
+  it("entra na aba de faixas", () => {
+    expect(filtrarPorAba(itens, ABAS_COLECAO.MUSICAS)).toHaveLength(1);
+    expect(filtrarPorAba(itens, ABAS_COLECAO.ALBUNS)).toHaveLength(0);
+  });
+});
+
 describe("filtrarPorAba e escolherFavorito", () => {
   const itens = montarItensAvaliados(
     { "musica-matue-0": { nota: 3 }, "album-matue-0": { nota: 5 }, "album-red-hot-0": { nota: 4 } },
