@@ -4,8 +4,9 @@ import { listaDeArtistas } from "../dados/dadosMusicais";
 import { normalizarTexto } from "../utilitarios/comuns";
 import { FiltroAlfabetico } from "../componentes/FiltroAlfabetico";
 import { ImagemComFallback } from "../componentes/ImagemComFallback";
+import { AvaliacaoDisco } from "../componentes/AvaliacaoDisco";
 
-export function PaginaTodosAlbuns({ aoAbrirAlbum }) {
+export function PaginaTodosAlbuns({ aoAbrirAlbum, aoAbrirLogin }) {
   const [termoBusca, setTermoBusca] = useState("");
   const [letraFiltro, setLetraFiltro] = useState("TODOS");
 
@@ -147,7 +148,14 @@ export function PaginaTodosAlbuns({ aoAbrirAlbum }) {
                     <span>{album.reproducoes} STREAMS</span>
                   </div>
 
-                  {/* Abre a ficha do disco: nota do álbum e de cada faixa */}
+                  {/* Nota do álbum no cartão e botão para avaliar as faixas (layout da Mell) */}
+                  <AvaliacaoDisco
+                    chaveItem={chaveItem}
+                    obra={{ tipo: "album", artistaId: album.artistaRef.id, titulo: album.titulo }}
+                    rotulo={`Nota para ${album.titulo}`}
+                    aoPedirLogin={aoAbrirLogin}
+                    escuro
+                  />
                   {aoAbrirAlbum && (
                     <button
                       type="button"
@@ -159,10 +167,10 @@ export function PaginaTodosAlbuns({ aoAbrirAlbum }) {
                           indice: album.indiceOriginal,
                         })
                       }
-                      title="Avaliar o disco e as faixas em vinis"
+                      title="Abrir a lista de faixas para avaliar"
                     >
                       <span className="disco-ponto-icon" />
-                      [ AVALIAR DISCO ]
+                      [ AVALIAR FAIXAS ]
                     </button>
                   )}
                 </div>

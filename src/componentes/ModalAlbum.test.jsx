@@ -5,6 +5,7 @@ import userEvent from "@testing-library/user-event";
 import { ProvedorUsuario, useUsuario } from "../contextos/ContextoUsuario";
 import { listaDeArtistas } from "../dados/dadosMusicais";
 import { ModalAlbum } from "./ModalAlbum";
+import { AbaAlbuns } from "./AbaAlbuns";
 
 const matue = listaDeArtistas.find((a) => a.id === "matue");
 const indice333 = matue.albuns.findIndex((a) => a.titulo === "333");
@@ -16,19 +17,14 @@ function Espiao() {
 }
 
 function renderizar(album = matue.albuns[indice333], indice = indice333) {
-  const aoEscreverResenha = vi.fn();
+  const aoAbrirLogin = vi.fn();
   render(
     <ProvedorUsuario>
       <Espiao />
-      <ModalAlbum
-        dados={{ artista: matue, album, indice }}
-        aoFechar={() => {}}
-        aoEscreverResenha={aoEscreverResenha}
-        aoAbrirLogin={() => {}}
-      />
+      <ModalAlbum dados={{ artista: matue, album, indice }} aoFechar={() => {}} aoAbrirLogin={aoAbrirLogin} />
     </ProvedorUsuario>
   );
-  return { aoEscreverResenha };
+  return { aoAbrirLogin };
 }
 
 beforeEach(() => {
@@ -41,11 +37,19 @@ afterEach(() => {
 });
 
 describe("ModalAlbum (avaliação por faixa)", () => {
-  it("lista as faixas reais do álbum", async () => {
+  it("lista as faixas reais do álbum em cartões numerados", async () => {
     renderizar();
-    const lista = await screen.findByRole("list");
-    expect(within(lista).getByText("Crack com Mussilon")).toBeTruthy();
-    expect(within(lista).getAllByRole("listitem").length).toBeGreaterThan(5);
+    expect(await screen.findByText("1. Crack com Mussilon")).toBeTruthy();
+    expect(screen.getByRole("heading", { name: "Avaliar Faixas" })).toBeTruthy();
+    expect(screen.getAllByRole("group", { name: /^Nota para / }).length).toBeGreaterThan(5);
+  });
+
+  it("pede login ao clicar num disco sem estar logado", async () => {
+    const { aoAbrirLogin } = renderizar();
+    const faixa = await screen.findByRole("group", { name: "Nota para Crack com Mussilon" });
+    await userEvent.click(within(faixa).getByRole("button", { name: "3 vinis" }));
+    expect(aoAbrirLogin).toHaveBeenCalled();
+    expect(Object.keys(contexto.avaliacoes)).toHaveLength(0);
   });
 
   it("dá nota a uma faixa e guarda o título dela para a Coleção e o backend", async () => {
@@ -63,17 +67,27 @@ describe("ModalAlbum (avaliação por faixa)", () => {
     });
   });
 
-  it("avalia o disco inteiro e abre a resenha com os dados do álbum", async () => {
-    const { aoEscreverResenha } = renderizar();
+  it("o cartão do álbum avalia o disco sem abrir a janela de faixas", async () => {
+    const aoAbrirAlbum = vi.fn();
+    cleanup();
+    render(
+      <ProvedorUsuario>
+        <Espiao />
+        <AbaAlbuns artista={matue} aoAbrirAlbum={aoAbrirAlbum} aoAbrirLogin={() => {}} />
+      </ProvedorUsuario>
+    );
     await act(() => contexto.registrarUsuario("Mell", "mell@rpm.test", "12345678"));
 
-    await userEvent.click(within(screen.getByRole("group", { name: "Sua nota" })).getByRole("button", { name: "5 vinis" }));
-    expect(contexto.obterAvaliacao(`album-matue-${indice333}`).nota).toBe(5);
+    const cartao = screen.getByRole("group", { name: "Nota para 333" });
+    await userEvent.click(within(cartao).getByRole("button", { name: "5 vinis" }));
+    expect(contexto.obterAvaliacao(`album-matue-${indice333}`)).toMatchObject({
+      nota: 5,
+      obra: { tipo: "album", artistaId: "matue", titulo: "333" },
+    });
+    expect(aoAbrirAlbum).not.toHaveBeenCalled();
 
-    await userEvent.click(screen.getByRole("button", { name: "Escrever resenha" }));
-    expect(aoEscreverResenha).toHaveBeenCalledWith(
-      expect.objectContaining({ chave: `album-matue-${indice333}`, obra: { tipo: "album", artistaId: "matue", titulo: "333" } })
-    );
+    await userEvent.click(screen.getByRole("button", { name: "333" }));
+    expect(aoAbrirAlbum).toHaveBeenCalledWith(expect.objectContaining({ indice: indice333 }));
   });
 
   it("avisa quando o álbum não tem faixas catalogadas", async () => {

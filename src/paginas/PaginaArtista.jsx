@@ -6,7 +6,7 @@ import { AbaHistoria } from "../componentes/AbaHistoria";
 import { ImagemComFallback } from "../componentes/ImagemComFallback";
 
 // Página de detalhes, músicas, álbuns e história do artista selecionado
-export function PaginaArtista({ artista, aoAvaliar, aoAbrirAlbum }) {
+export function PaginaArtista({ artista, aoAvaliar, aoAbrirAlbum, aoAbrirLogin }) {
   const [abaAtiva, setAbaAtiva] = useState("musicas");
 
   if (!artista) {
@@ -96,7 +96,7 @@ export function PaginaArtista({ artista, aoAvaliar, aoAbrirAlbum }) {
             />
           )}
           {abaAtiva === "albuns" && (
-            <AbaAlbuns artista={artista} aoAbrirAlbum={aoAbrirAlbum} />
+            <AbaAlbuns artista={artista} aoAbrirAlbum={aoAbrirAlbum} aoAbrirLogin={aoAbrirLogin} />
           )}
           {abaAtiva === "historia" && (
             <AbaHistoria
