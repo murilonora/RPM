@@ -164,6 +164,7 @@ function ShellAplicativo() {
               aoSelecionarArtista={selecionarArtista}
               aoNavegarParaAlbuns={navegarParaPaginaDeTodosAlbuns}
               aoAvaliar={abrirAvaliacao}
+              aoAbrirLogin={abrirModalDeAutenticacao}
             />
           }
         />

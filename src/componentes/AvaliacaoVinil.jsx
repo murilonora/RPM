@@ -45,6 +45,7 @@ export function AvaliacaoVinil({ chaveItem, tamanho = "normal", apenasLeitura = 
       {[1, 2, 3, 4, 5].map((nota) => (
         <button
           key={nota}
+          type="button"
           className="botao-vinil"
           onClick={(evento) => {
             evento.stopPropagation();

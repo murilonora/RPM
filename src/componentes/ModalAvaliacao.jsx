@@ -7,13 +7,17 @@ export function ModalAvaliacao({ visivel, aoFechar, item }) {
   const { estaLogado, obterAvaliacao, avaliarItem } = useUsuario();
   const [comentarioTemp, setComentarioTemp] = useState("");
 
-  // Sincroniza o form quando o modal abrir
+  // Sincroniza o form apenas quando o modal abrir ou trocar de item.
+  // obterAvaliacao fica fora das dependências de propósito: ela muda a cada
+  // nota dada e reexecutar aqui apagaria o comentário que está sendo digitado.
+  const chaveItem = item?.chave;
   useEffect(() => {
-    if (visivel && item) {
-      const avalAtual = obterAvaliacao(item.chave);
+    if (visivel && chaveItem) {
+      const avalAtual = obterAvaliacao(chaveItem);
       setComentarioTemp(avalAtual.comentario || "");
     }
-  }, [visivel, item, obterAvaliacao]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [visivel, chaveItem]);
 
   if (!visivel || !item) return null;
 
