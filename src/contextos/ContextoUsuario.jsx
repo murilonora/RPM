@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { createContext, useContext, useState, useEffect, useCallback, useMemo } from "react";
 
 // Chaves usadas no localStorage do navegador
 const CHAVE_USUARIOS = "rpm_usuarios";
@@ -6,6 +6,9 @@ const CHAVE_SESSAO = "rpm_sessao";
 
 // Contexto global do usuario (compartilhado entre todos os componentes)
 const ContextoUsuario = createContext(null);
+
+// Objeto fixo para itens sem avaliação (evita criar um novo a cada leitura)
+const AVALIACAO_VAZIA = Object.freeze({ nota: 0, comentario: "" });
 
 // Utilitarios de leitura e escrita no localStorage
 function obterDoStorage(chave, valorPadrao) {
@@ -28,7 +31,10 @@ export function ProvedorUsuario({ children }) {
   const [avaliacoes, setAvaliacoes] = useState({});
   const [chaveFavoritoManual, setChaveFavoritoManual] = useState(null);
 
-  const usuarioLogado = usuarios.find((u) => u.id === idSessao) || null;
+  const usuarioLogado = useMemo(
+    () => usuarios.find((u) => u.id === idSessao) || null,
+    [usuarios, idSessao]
+  );
 
   // Carrega as avaliações e favorito manual do usuário logado ao trocar de sessão
   useEffect(() => {
@@ -51,77 +57,107 @@ export function ProvedorUsuario({ children }) {
     salvarNoStorage(CHAVE_SESSAO, idSessao);
   }, [idSessao]);
 
+  // As funções abaixo usam useCallback e o valor do contexto usa useMemo:
+  // assim os componentes só redesenham quando algo que eles leem muda de fato,
+  // e não a cada render do provedor.
+
   // Cadastra um novo usuario e ja faz login automatico
-  function registrarUsuario(nome, email) {
+  const registrarUsuario = useCallback((nome, email) => {
     const id = nome.toLowerCase().replace(/\s+/g, "-") + "-" + Date.now();
     const novoUsuario = { id, nome, email, criadoEm: new Date().toISOString() };
     setUsuarios((anteriores) => [...anteriores, novoUsuario]);
     setIdSessao(id);
     return novoUsuario;
-  }
+  }, []);
 
   // Tenta fazer login buscando o email entre os usuarios cadastrados
-  function entrarComEmail(email) {
-    const usuario = usuarios.find((u) => u.email === email);
-    if (usuario) {
-      setIdSessao(usuario.id);
-      return usuario;
-    }
-    return null;
-  }
+  const entrarComEmail = useCallback(
+    (email) => {
+      const usuario = usuarios.find((u) => u.email === email);
+      if (usuario) {
+        setIdSessao(usuario.id);
+        return usuario;
+      }
+      return null;
+    },
+    [usuarios]
+  );
 
   // Encerra a sessao sem apagar dados
-  function sairDaConta() {
+  const sairDaConta = useCallback(() => {
     setIdSessao(null);
     setAvaliacoes({});
     setChaveFavoritoManual(null);
-  }
+  }, []);
 
   // Define manualmente qual item é o favorito absoluto
-  function definirFavorito(chaveItem) {
-    if (!idSessao) return;
-    setChaveFavoritoManual(chaveItem);
-    salvarNoStorage(`rpm_favorito_${idSessao}`, chaveItem);
-  }
+  const definirFavorito = useCallback(
+    (chaveItem) => {
+      if (!idSessao) return;
+      setChaveFavoritoManual(chaveItem);
+      salvarNoStorage(`rpm_favorito_${idSessao}`, chaveItem);
+    },
+    [idSessao]
+  );
 
-  // Salva ou atualiza a nota e o comentario de um item (musica ou album)
+  // Salva ou atualiza a nota e o comentario de um item (musica ou album).
+  // Atualização funcional: não depende de "avaliacoes", então a função não muda a cada nota.
   const avaliarItem = useCallback(
     (chaveItem, nota, comentario = "") => {
       if (!idSessao) return;
-      const novasAvaliacoes = { ...avaliacoes, [chaveItem]: { nota, comentario } };
-      setAvaliacoes(novasAvaliacoes);
-      salvarNoStorage(`rpm_avaliacoes_${idSessao}`, novasAvaliacoes);
+      setAvaliacoes((anteriores) => {
+        const novasAvaliacoes = { ...anteriores, [chaveItem]: { nota, comentario } };
+        salvarNoStorage(`rpm_avaliacoes_${idSessao}`, novasAvaliacoes);
+        return novasAvaliacoes;
+      });
     },
-    [idSessao, avaliacoes]
+    [idSessao]
   );
 
   // Retorna a nota e comentario atual de um item
-  function obterAvaliacao(chaveItem) {
-    return avaliacoes[chaveItem] || { nota: 0, comentario: "" };
-  }
+  const obterAvaliacao = useCallback(
+    (chaveItem) => avaliacoes[chaveItem] || AVALIACAO_VAZIA,
+    [avaliacoes]
+  );
 
-  // Estatisticas calculadas em tempo real
-  const valoresAvaliacoes = Object.values(avaliacoes).filter((a) => a.nota > 0);
-  const totalAvaliacoes = valoresAvaliacoes.length;
-  const mediaAvaliacoes =
-    totalAvaliacoes > 0
-      ? (valoresAvaliacoes.reduce((soma, a) => soma + a.nota, 0) / totalAvaliacoes).toFixed(1)
-      : "0.0";
+  // Estatisticas calculadas apenas quando as avaliações mudam
+  const { totalAvaliacoes, mediaAvaliacoes } = useMemo(() => {
+    const notas = Object.values(avaliacoes).filter((a) => a.nota > 0);
+    const total = notas.length;
+    const media = total > 0 ? (notas.reduce((soma, a) => soma + a.nota, 0) / total).toFixed(1) : "0.0";
+    return { totalAvaliacoes: total, mediaAvaliacoes: media };
+  }, [avaliacoes]);
 
-  const valor = {
-    usuarioLogado,
-    estaLogado: !!idSessao,
-    avaliacoes,
-    totalAvaliacoes,
-    mediaAvaliacoes,
-    chaveFavoritoManual,
-    definirFavorito,
-    registrarUsuario,
-    entrarComEmail,
-    sairDaConta,
-    avaliarItem,
-    obterAvaliacao,
-  };
+  const valor = useMemo(
+    () => ({
+      usuarioLogado,
+      estaLogado: !!idSessao,
+      avaliacoes,
+      totalAvaliacoes,
+      mediaAvaliacoes,
+      chaveFavoritoManual,
+      definirFavorito,
+      registrarUsuario,
+      entrarComEmail,
+      sairDaConta,
+      avaliarItem,
+      obterAvaliacao,
+    }),
+    [
+      usuarioLogado,
+      idSessao,
+      avaliacoes,
+      totalAvaliacoes,
+      mediaAvaliacoes,
+      chaveFavoritoManual,
+      definirFavorito,
+      registrarUsuario,
+      entrarComEmail,
+      sairDaConta,
+      avaliarItem,
+      obterAvaliacao,
+    ]
+  );
 
   return <ContextoUsuario.Provider value={valor}>{children}</ContextoUsuario.Provider>;
 }

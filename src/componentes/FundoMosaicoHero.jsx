@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { listaDeArtistas } from "../dados/dadosMusicais";
-import { tratarErroImagem } from "../utilitarios/comuns";
+import { imagemNoTamanho, tratarErroImagem } from "../utilitarios/comuns";
 
 /**
  * Componente que renderiza um fundo de mosaico com colunas infinitas
@@ -80,7 +80,7 @@ export function FundoMosaicoHero() {
                   className="hero-mosaic-card"
                 >
                   <img
-                    src={item.imagem}
+                    src={imagemNoTamanho(item.imagem, 250)}
                     alt={item.nome}
                     className="hero-mosaic-img"
                     loading="lazy"

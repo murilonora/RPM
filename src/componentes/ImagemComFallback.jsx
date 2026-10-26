@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { tratarErroImagem } from "../utilitarios/comuns";
+import { imagemNoTamanho, tratarErroImagem } from "../utilitarios/comuns";
 
 /**
  * Componente de imagem otimizado com skeleton brutalista e fallback automático.
@@ -12,6 +12,7 @@ export function ImagemComFallback({
   style = {},
   aspectRatio,
   loading = "lazy",
+  tamanho = 500,
   ...props
 }) {
   const [carregada, setCarregada] = useState(false);
@@ -41,7 +42,7 @@ export function ImagemComFallback({
       )}
 
       <img
-        src={src}
+        src={imagemNoTamanho(src, tamanho)}
         alt={alt}
         loading={loading}
         referrerPolicy="no-referrer"
