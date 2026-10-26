@@ -1,10 +1,11 @@
 import { useState, useMemo } from "react";
+import { Link } from "react-router-dom";
 import { listaDeArtistas } from "../dados/dadosMusicais";
 import { normalizarTexto } from "../utilitarios/comuns";
 import { FiltroAlfabetico } from "../componentes/FiltroAlfabetico";
 import { ImagemComFallback } from "../componentes/ImagemComFallback";
 
-export function PaginaTodosAlbuns({ aoSelecionarArtista, aoAvaliar }) {
+export function PaginaTodosAlbuns({ aoAvaliar }) {
   const [termoBusca, setTermoBusca] = useState("");
   const [letraFiltro, setLetraFiltro] = useState("TODOS");
 
@@ -99,11 +100,7 @@ export function PaginaTodosAlbuns({ aoSelecionarArtista, aoAvaliar }) {
             const chaveItem = `album-${album.artistaRef.id}-${album.indiceOriginal}`;
 
             return (
-              <article
-                key={chaveItem}
-                className="album-crate-card"
-                onClick={() => aoSelecionarArtista(album.artistaRef)}
-              >
+              <article key={chaveItem} className="album-crate-card cartao-com-link">
                 {/* Cabeçalho da Capa com Carimbo Técnico */}
                 <div className="album-crate-header">
                   <span className="album-tipo-etiqueta">LP // 12-INCH</span>
@@ -139,7 +136,12 @@ export function PaginaTodosAlbuns({ aoSelecionarArtista, aoAvaliar }) {
                 {/* Dados da Obra */}
                 <div className="album-dados-painel">
                   <span className="album-artista-nome">{album.artistaRef.nome}</span>
-                  <h2 className="album-titulo-obra">{album.titulo}</h2>
+                  <h2 className="album-titulo-obra">
+                    {/* O link cobre o cartão todo (::after); o botão de avaliar fica por cima */}
+                    <Link to={`/artista/${album.artistaRef.id}`} className="cartao-link">
+                      {album.titulo}
+                    </Link>
+                  </h2>
                   <div className="album-meta-tecnica">
                     <span>{album.faixas}</span>
                     <span>{album.reproducoes} STREAMS</span>

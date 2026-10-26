@@ -1,20 +1,21 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { AbaMusicas } from "../componentes/AbaMusicas";
 import { AbaAlbuns } from "../componentes/AbaAlbuns";
 import { AbaHistoria } from "../componentes/AbaHistoria";
 import { ImagemComFallback } from "../componentes/ImagemComFallback";
 
 // Página de detalhes, músicas, álbuns e história do artista selecionado
-export function PaginaArtista({ artista, aoVoltarAoInicio, aoAvaliar }) {
+export function PaginaArtista({ artista, aoAvaliar }) {
   const [abaAtiva, setAbaAtiva] = useState("musicas");
 
   if (!artista) {
     return (
       <main className="artist-page">
         <section className="artist-main">
-          <button className="back-button" type="button" onClick={aoVoltarAoInicio}>
+          <Link className="back-button" to="/">
             ← Voltar à busca
-          </button>
+          </Link>
           <h2>Artista não encontrado</h2>
         </section>
       </main>
@@ -43,9 +44,9 @@ export function PaginaArtista({ artista, aoVoltarAoInicio, aoAvaliar }) {
       </aside>
 
       <section className="artist-main">
-        <button className="back-button" type="button" onClick={aoVoltarAoInicio}>
+        <Link className="back-button" to="/">
           ← Voltar à busca
-        </button>
+        </Link>
 
         <div className="artist-heading">
           <div>

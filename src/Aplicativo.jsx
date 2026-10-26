@@ -28,9 +28,8 @@ function ScrollAoTopo() {
 }
 
 // Wrapper que resolve o artista dinamicamente pela URL /artista/:id
-function PaginaArtistaComUrl({ aoVoltarAoInicio, aoAvaliar }) {
+function PaginaArtistaComUrl({ aoAvaliar }) {
   const { id } = useParams();
-  const navigate = useNavigate();
 
   const artista =
     listaDeArtistas.find((a) => a.id === id) || listaDeArtistas[0];
@@ -41,16 +40,7 @@ function PaginaArtistaComUrl({ aoVoltarAoInicio, aoAvaliar }) {
     }
   }, [artista]);
 
-  return (
-    <PaginaArtista
-      artista={artista}
-      aoVoltarAoInicio={() => {
-        aoVoltarAoInicio();
-        navigate("/");
-      }}
-      aoAvaliar={aoAvaliar}
-    />
-  );
+  return <PaginaArtista artista={artista} aoAvaliar={aoAvaliar} />;
 }
 
 // Shell principal com gerenciamento de rotas e estado global
@@ -73,30 +63,10 @@ function ShellAplicativo() {
     }
   }, [location.pathname]);
 
-  function navegarParaInicio() {
-    navigate("/");
-  }
-
-  function selecionarArtista(artista) {
-    navigate(`/artista/${artista.id}`);
-  }
-
   function sortearArtistaAleatorioENavegar() {
     const indiceAleatorio = Math.floor(Math.random() * listaDeArtistas.length);
     const sorteado = listaDeArtistas[indiceAleatorio];
     navigate(`/artista/${sorteado.id}`);
-  }
-
-  function navegarParaPaginaDeTodosArtistas() {
-    navigate("/artistas");
-  }
-
-  function navegarParaPaginaDeTodosAlbuns() {
-    navigate("/albuns");
-  }
-
-  function navegarParaColecao() {
-    navigate("/colecao");
   }
 
   function abrirModalDeAutenticacao() {
@@ -119,60 +89,23 @@ function ShellAplicativo() {
     <div className="app-shell">
       <ScrollAoTopo />
       <Cabecalho
-        aoIrParaInicio={navegarParaInicio}
         aoClicarDescobrir={sortearArtistaAleatorioENavegar}
-        aoClicarArtistas={navegarParaPaginaDeTodosArtistas}
-        aoClicarAlbuns={navegarParaPaginaDeTodosAlbuns}
-        aoClicarColecao={navegarParaColecao}
         aoClicarEntrar={abrirModalDeAutenticacao}
-        rotaAtual={location.pathname}
       />
 
       <Routes>
-        <Route
-          path="/"
-          element={<PaginaInicial aoSelecionarArtista={selecionarArtista} />}
-        />
-        <Route
-          path="/artistas"
-          element={
-            <PaginaTodosArtistas aoSelecionarArtista={selecionarArtista} />
-          }
-        />
-        <Route
-          path="/albuns"
-          element={
-            <PaginaTodosAlbuns
-              aoSelecionarArtista={selecionarArtista}
-              aoAvaliar={abrirAvaliacao}
-            />
-          }
-        />
-        <Route
-          path="/artista/:id"
-          element={
-            <PaginaArtistaComUrl
-              aoVoltarAoInicio={navegarParaInicio}
-              aoAvaliar={abrirAvaliacao}
-            />
-          }
-        />
+        <Route path="/" element={<PaginaInicial />} />
+        <Route path="/artistas" element={<PaginaTodosArtistas />} />
+        <Route path="/albuns" element={<PaginaTodosAlbuns aoAvaliar={abrirAvaliacao} />} />
+        <Route path="/artista/:id" element={<PaginaArtistaComUrl aoAvaliar={abrirAvaliacao} />} />
         <Route
           path="/colecao"
           element={
-            <PaginaColecao
-              aoSelecionarArtista={selecionarArtista}
-              aoNavegarParaAlbuns={navegarParaPaginaDeTodosAlbuns}
-              aoAvaliar={abrirAvaliacao}
-              aoAbrirLogin={abrirModalDeAutenticacao}
-            />
+            <PaginaColecao aoAvaliar={abrirAvaliacao} aoAbrirLogin={abrirModalDeAutenticacao} />
           }
         />
         {/* Rota coringa com redirecionamento para o início */}
-        <Route
-          path="*"
-          element={<PaginaInicial aoSelecionarArtista={selecionarArtista} />}
-        />
+        <Route path="*" element={<PaginaInicial />} />
       </Routes>
 
       <ModalAutenticacao
