@@ -6,7 +6,7 @@ import { AvaliacaoVinil } from "../componentes/AvaliacaoVinil";
 import { ImagemComFallback } from "../componentes/ImagemComFallback";
 import { tratarErroImagem } from "../utilitarios/comuns";
 
-export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAvaliar }) {
+export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAvaliar, aoAbrirLogin }) {
   const {
     usuarioLogado,
     avaliacoes,
@@ -21,27 +21,6 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
   const [exportando, setExportando] = useState(false);
   const [mensagemCopiado, setMensagemCopiado] = useState(false);
   const placaRef = useRef(null);
-
-  // Se não estiver logado, exibe estado empático com o mascote
-  if (!usuarioLogado) {
-    return (
-      <main className="colecao-brutal-root">
-        <div className="colecao-deslogado-box">
-          <img
-            src="/assets/vinil-triste.png"
-            alt="Vinil Triste"
-            className="colecao-deslogado-img"
-          />
-          <span className="brutal-badge-mono">ACESSO_RESTRITO // REGISTRO_EXIGIDO</span>
-          <h2 className="colecao-deslogado-titulo">Você ainda não tem conta!</h2>
-          <p className="colecao-deslogado-sub">
-            Faça login ou cadastre sua conta de crítico para começar a catalogar seu acervo
-            musical, registrar notas em vinil e escrever resenhas.
-          </p>
-        </div>
-      </main>
-    );
-  }
 
   // Mapeia as avaliações salvas para itens detalhados com capa, títulos e artista
   const itensAvaliados = useMemo(() => {
@@ -117,6 +96,52 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
     }
     return itensAvaliados[0];
   }, [itensAvaliados, chaveFavoritoManual]);
+
+  // Se não estiver logado, exibe estado empático com o mascote
+  // (fica depois de todos os hooks para manter a ordem de chamada estável)
+  if (!usuarioLogado) {
+    return (
+      <main className="colecao-brutal-root">
+        <section className="colecao-deslogado" aria-labelledby="colecao-deslogado-titulo">
+          <div className="colecao-deslogado-texto">
+            <h1 id="colecao-deslogado-titulo" className="colecao-deslogado-titulo">
+              Sua estante ainda está vazia.
+            </h1>
+            <p className="colecao-deslogado-sub">
+              Entre na sua conta para guardar os discos que você ouviu, dar notas em vinil e
+              escrever o que achou de cada um.
+            </p>
+
+            <div className="colecao-deslogado-acoes">
+              <button type="button" className="colecao-deslogado-cta" onClick={aoAbrirLogin}>
+                Entrar ou criar conta
+              </button>
+              <button
+                type="button"
+                className="colecao-deslogado-link"
+                onClick={aoNavegarParaAlbuns}
+              >
+                Explorar os discos
+              </button>
+            </div>
+
+            <ul className="colecao-deslogado-lista">
+              <li>Dê de 1 a 5 vinis para álbuns e faixas</li>
+              <li>Escreva resenhas curtas ou longas</li>
+              <li>Escolha o seu Disco de Ouro</li>
+            </ul>
+          </div>
+
+          <img
+            src="/assets/vinil-triste.png"
+            alt=""
+            aria-hidden="true"
+            className="colecao-deslogado-mascote"
+          />
+        </section>
+      </main>
+    );
+  }
 
   async function exportarCardPng() {
     if (!placaRef.current || exportando || !favoritoAbsoluto) return;
