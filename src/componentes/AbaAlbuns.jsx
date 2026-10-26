@@ -1,35 +1,29 @@
-// Grid de exibição dos álbuns lançados pelo artista
-export function AbaAlbuns({ albuns = [], nomeArtista = "" }) {
-  if (!albuns || albuns.length === 0) {
+import { extrairSiglas } from "../utilitarios/comuns";
+import { ImagemComFallback } from "./ImagemComFallback";
+
+// Grid de exibição dos álbuns lançados pelo artista.
+// Clicar no álbum abre a ficha com a avaliação do disco e de cada faixa.
+export function AbaAlbuns({ artista, aoAbrirAlbum }) {
+  const albuns = artista.albuns || [];
+  if (albuns.length === 0) {
     return <p className="p-4 text-center">Nenhum álbum encontrado.</p>;
   }
 
-  const siglas = nomeArtista
-    ? nomeArtista
-        .split(" ")
-        .slice(0, 2)
-        .map((p) => p[0])
-        .join("")
-        .toUpperCase()
-    : "LP";
+  const siglas = extrairSiglas(artista.nome);
 
   return (
     <div className="album-grid">
       {albuns.map((album, indice) => (
-        <article className="album-card" key={`${album.titulo}-${indice}`}>
-          <div className={`album-art album-art-${(indice % 3) + 1}`} style={{ overflow: "hidden", position: "relative" }}>
+        <article className="album-card cartao-com-link cursor-pointer relative" key={`${album.titulo}-${indice}`}>
+          <div className={`album-art album-art-${(indice % 3) + 1} relative overflow-hidden${album.capa ? " tem-capa" : ""}`}>
             {album.capa ? (
-              <img
-                src={album.capa}
-                alt={album.titulo}
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-              />
+              <ImagemComFallback src={album.capa} alt="" className="w-full h-full" />
             ) : (
               <>
-                <span>
-                  {nomeArtista.split(" ").slice(0, 2).join("\n") || "DISCO"}
-                </span>
-                <small>{siglas} — {String(indice + 1).padStart(2, "0")}</small>
+                <span>{artista.nome.split(" ").slice(0, 2).join("\n") || "DISCO"}</span>
+                <small>
+                  {siglas} — {String(indice + 1).padStart(2, "0")}
+                </small>
               </>
             )}
           </div>
@@ -37,7 +31,16 @@ export function AbaAlbuns({ albuns = [], nomeArtista = "" }) {
             <span>{album.ano}</span>
             <span>{album.faixas}</span>
           </div>
-          <h3>{album.titulo}</h3>
+          <h3>
+            {/* O botão cobre o cartão inteiro (::after) e abre a ficha de faixas */}
+            <button
+              type="button"
+              className="cartao-link"
+              onClick={() => aoAbrirAlbum({ artista, album, indice })}
+            >
+              {album.titulo}
+            </button>
+          </h3>
           <p>{album.reproducoes} reproduções</p>
         </article>
       ))}

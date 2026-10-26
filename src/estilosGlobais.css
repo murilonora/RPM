@@ -2,35 +2,40 @@
 
 @font-face {
   font-family: "DM Sans:Black";
-  src: url("https://static.figma.com/font/DMSans_opsz_wght__1") format("woff2");
+  src: url("/fonts/dm-sans-variavel.woff2") format("woff2");
+  font-display: swap;
   font-style: normal;
   font-weight: 900;
 }
 
 @font-face {
   font-family: "DM Sans:Bold";
-  src: url("https://static.figma.com/font/DMSans_opsz_wght__1") format("woff2");
+  src: url("/fonts/dm-sans-variavel.woff2") format("woff2");
+  font-display: swap;
   font-style: normal;
   font-weight: 700;
 }
 
 @font-face {
   font-family: "DM Sans:Regular";
-  src: url("https://static.figma.com/font/DMSans_opsz_wght__1") format("woff2");
+  src: url("/fonts/dm-sans-variavel.woff2") format("woff2");
+  font-display: swap;
   font-style: normal;
   font-weight: 400;
 }
 
 @font-face {
   font-family: "DM Serif Display:Italic";
-  src: url("https://static.figma.com/font/DMSerifDisplay-Italic_2") format("woff2");
+  src: url("/fonts/dm-serif-display-italico.woff2") format("woff2");
+  font-display: swap;
   font-style: italic;
   font-weight: 400;
 }
 
 @font-face {
   font-family: "DM Serif Display:Regular";
-  src: url("https://static.figma.com/font/DMSerifDisplay-Regular_2") format("woff2");
+  src: url("/fonts/dm-serif-display.woff2") format("woff2");
+  font-display: swap;
   font-style: normal;
   font-weight: 400;
 }
@@ -53,9 +58,26 @@ body {
   background: #f7f4ed;
 }
 
+/* Espaço reservado enquanto o código de uma página carrega, para o rodapé não pular */
+.carregando-pagina {
+  min-height: calc(100vh - 76px);
+}
+
 button,
 input {
   font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Foco visível para quem navega por teclado; :where() mantém especificidade zero
+   para que estilos de foco específicos de cada componente continuem valendo */
+:where(a, button, input, textarea, [tabindex]):focus-visible {
+  outline: 2px solid #ff0004;
+  outline-offset: 3px;
 }
 
 button {
@@ -106,6 +128,7 @@ button {
 }
 
 .site-header nav button,
+.site-header nav a,
 .collection-button {
   padding: 8px 0;
   border: 0;
@@ -116,6 +139,13 @@ button {
   letter-spacing: 0.9px;
   text-transform: uppercase;
   cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.site-header nav a.active,
+.collection-button.active {
+  color: #ff0004;
+  border-bottom: 2px solid #ff0004;
 }
 
 .header-actions {
@@ -123,6 +153,58 @@ button {
   align-items: center;
   gap: 24px;
   margin-left: auto;
+}
+
+/* Menu do celular: o botão só aparece quando a navegação do topo é escondida */
+.menu-celular-botao {
+  display: none;
+  padding: 11px 16px;
+  border: 1px solid #191525;
+  background: #191525;
+  color: #f7f4ed;
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.site-header .menu-celular {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 8px 24px 20px;
+  border-bottom: 2px solid #191525;
+  background: #f7f4ed;
+  box-shadow: 0 18px 30px rgb(0 0 0 / 18%);
+}
+
+.site-header .menu-celular a,
+.site-header .menu-celular button {
+  padding: 16px 0;
+  border: 0;
+  border-bottom: 1px solid rgb(25 21 37 / 12%);
+  background: none;
+  color: #191525;
+  font-family: "DM Serif Display:Regular", serif;
+  font-size: 26px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-align: left;
+  text-transform: none;
+  cursor: pointer;
+}
+
+.site-header .menu-celular a.active {
+  color: #ff0004;
+}
+
+.menu-celular-usuario {
+  margin: 16px 0 0;
+  color: #6f6876;
+  font-size: 13px;
 }
 
 .outline-button {
@@ -142,27 +224,9 @@ button {
   display: grid;
   min-height: calc(100vh - 76px);
   place-items: center;
-  overflow: visible;
+  overflow: hidden;
   background: #0e0d15;
   color: #f7f4ed;
-}
-
-.hero-photo,
-.hero-shade {
-  position: absolute;
-  inset: 0;
-}
-
-.hero-photo {
-  background-image: url("/assets/home-hero.jpg");
-  background-position: center 46%;
-  background-size: cover;
-}
-
-.hero-shade {
-  background:
-    linear-gradient(90deg, rgb(10 9 16 / 88%) 0%, rgb(10 9 16 / 72%) 38%, rgb(10 9 16 / 25%) 75%),
-    linear-gradient(0deg, rgb(10 9 16 / 74%) 0%, transparent 50%);
 }
 
 .hero-content {
@@ -263,50 +327,105 @@ button {
   cursor: pointer;
 }
 
-.search-result {
+.search-box:focus-within {
+  box-shadow: 0 12px 40px rgb(0 0 0 / 28%), 0 0 0 2px #ff0004;
+}
+
+/* Resultados da busca unificada */
+.busca-dropdown {
   position: absolute;
-  top: calc(100% + 10px);
-  left: 12px;
-  display: grid;
-  width: calc(100% - 24px);
-  grid-template-columns: 52px 1fr auto;
-  align-items: center;
-  gap: 14px;
-  padding: 12px;
-  border: 1px solid rgb(25 21 37 / 16%);
+  z-index: 50;
+  top: calc(100% + 8px);
+  right: 0;
+  left: 0;
+  max-height: min(420px, 60vh);
+  overflow-y: auto;
+  padding: 8px;
+  border: 1px solid #191525;
   background: #f7f4ed;
-  box-shadow: 0 18px 48px rgb(0 0 0 / 28%);
+  box-shadow: 0 18px 40px rgb(0 0 0 / 35%);
   text-align: left;
-  cursor: pointer;
 }
 
-.search-result img {
-  width: 52px;
-  height: 52px;
-  object-fit: cover;
-}
-
-.search-result span {
-  display: flex;
-  flex-direction: column;
-}
-
-.search-result strong {
-  font-family: "DM Serif Display:Regular", serif;
-  font-size: 20px;
-}
-
-.search-result small {
-  margin-top: 4px;
-  color: #6f6876;
+.busca-grupo-titulo {
+  margin: 10px 10px 4px;
+  color: #7e786b;
+  font-family: "DM Sans:Bold", sans-serif;
   font-size: 11px;
 }
 
-.search-result .result-action {
+.busca-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  border-left: 2px solid transparent;
+}
+
+.busca-item.ativo {
+  border-left-color: #ff0004;
+  background: #ebe6da;
+}
+
+.busca-item-foto {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  object-fit: cover;
+  background: #191525;
+}
+
+.busca-item-textos {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.busca-selo {
+  align-self: flex-start;
+  padding: 1px 6px;
   font-family: "DM Sans:Bold", sans-serif;
   font-size: 10px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+  border: 1px solid #191525;
+}
+
+.busca-selo--artista {
+  background: #191525;
+  color: #f7f4ed;
+}
+
+.busca-selo--musica {
+  border-color: #ff0004;
+  background: #ff0004;
+  color: #f7f4ed;
+}
+
+.busca-selo--album {
+  background: transparent;
+  color: #191525;
+}
+
+.busca-item-titulo {
+  overflow: hidden;
+  font-size: 15px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.busca-item-sub {
+  overflow: hidden;
+  color: #6f6876;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.busca-vazio {
+  margin: 0;
+  padding: 14px 12px;
+  color: #6f6876;
+  font-size: 14px;
 }
 
 .quick-search {
@@ -314,25 +433,49 @@ button {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin-top: 16px;
+  margin-top: 18px;
+  flex-wrap: wrap;
 }
 
-.quick-search span {
+.quick-search .quick-search-sortear {
   margin-right: 4px;
-  color: #888390;
-  font-size: 9px;
+  padding: 6px 2px;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  color: #c8c4cf;
+  font-size: 10px;
   letter-spacing: 1.4px;
+  font-weight: 700;
   text-transform: uppercase;
+  transition: color 0.2s ease;
 }
 
-.quick-search button {
-  padding: 6px 11px;
-  border: 1px solid rgb(247 244 237 / 25%);
+.quick-search .quick-search-sortear:hover {
+  color: #ff0004;
+}
+
+.quick-search .btn-explorar-item {
+  padding: 6px 14px;
+  border: 1px solid rgba(247, 244, 237, 0.28);
   border-radius: 999px;
-  background: transparent;
-  color: #d8d4dc;
-  font-size: 10px;
+  background: rgba(20, 18, 28, 0.65);
+  backdrop-filter: blur(8px);
+  color: #f7f4ed;
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
   cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.quick-search .btn-explorar-item:hover {
+  background: #f7f4ed;
+  color: #14121c;
+  border-color: #f7f4ed;
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
 }
 
 .hero-index {
@@ -373,6 +516,243 @@ button {
 
 .intro-section > h2 em {
   color: #191525;
+}
+
+/* Catálogo da página inicial: cabeçalho, filtro por vertente e cartões */
+.intro-section.catalogo-secao {
+  padding-top: 40px;
+}
+
+.intro-section.destaque-secao {
+  margin-top: 40px;
+}
+
+.intro-section > .catalogo-cabecalho {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  color: inherit;
+}
+
+.catalogo-titulo {
+  margin: 4px 0;
+}
+
+.filtro-categorias {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filtro-categoria-btn {
+  padding: 8px 16px;
+  border: 1px solid #d4cfc4;
+  background: #f7f4ed;
+  color: #191525;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.filtro-categoria-btn:hover {
+  border-color: #191525;
+}
+
+.filtro-categoria-btn.ativo {
+  border-color: #191525;
+  background: #191525;
+  color: #f7f4ed;
+  font-family: "DM Sans:Bold", sans-serif;
+}
+
+.cartao-artista-home {
+  display: block;
+}
+
+/* Cartão inteiro clicável com um único link (o título): o ::after do link
+   cobre o cartão, e botões internos ficam acima dele com z-index */
+.cartao-com-link {
+  position: relative;
+}
+
+/* z-index 3: acima da capa e do disco dos cartões (que usam até 2) */
+.cartao-link::after {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  content: "";
+}
+
+.cartao-com-link button,
+.cartao-com-link .avaliacao-vinil {
+  position: relative;
+  z-index: 4;
+}
+
+.cartao-com-link:focus-within {
+  outline: 2px solid #ff0004;
+  outline-offset: 3px;
+}
+
+.cartao-link:focus-visible {
+  outline: none;
+}
+
+/* Quando o "link" do cartão é um botão (abre a ficha do álbum em vez de navegar) */
+button.cartao-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+
+/* Ficha do álbum: disco à esquerda, faixas avaliáveis à direita */
+.modal-conteudo.modal-album {
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
+  gap: 32px;
+  max-width: 920px;
+  max-height: min(680px, 90vh);
+  padding: 32px;
+}
+
+.modal-album-disco {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.modal-album-capa {
+  width: 100%;
+  aspect-ratio: 1;
+  margin-bottom: 18px;
+}
+
+.modal-album-artista {
+  margin: 0 0 4px;
+  color: #ff0004;
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 13px;
+}
+
+.modal-album-titulo {
+  margin: 0 0 6px;
+  font-family: "DM Serif Display:Regular", serif;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1.05;
+}
+
+.modal-album-meta {
+  margin: 0 0 20px;
+  color: #8f8a99;
+  font-size: 13px;
+}
+
+.modal-album-nota {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  color: #b9b4a8;
+  font-size: 13px;
+}
+
+.modal-album-resenha {
+  margin-top: 16px;
+  padding: 12px 16px;
+  border: 1px solid #f7f4ed;
+  background: transparent;
+  color: #f7f4ed;
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.modal-album-resenha:hover {
+  background: #f7f4ed;
+  color: #0f0e14;
+}
+
+.modal-album-faixas {
+  min-width: 0;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.modal-album-aviso {
+  margin: 24px 0;
+  color: #8f8a99;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.lista-faixas {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lista-faixas-item {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.lista-faixas-numero {
+  color: #6f6876;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.lista-faixas-titulo {
+  overflow: hidden;
+  font-size: 15px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lista-faixas-duracao {
+  color: #8f8a99;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.lista-faixas-item .avaliacao-vinil .nota-texto {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .modal-conteudo.modal-album {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+    padding: 24px 18px;
+  }
+
+  .modal-album-capa {
+    width: 160px;
+  }
+
+  .modal-album-faixas {
+    overflow: visible;
+  }
+
+  .lista-faixas-item {
+    grid-template-columns: 24px minmax(0, 1fr) auto;
+  }
+
+  .lista-faixas-duracao {
+    display: none;
+  }
 }
 
 .featured-artist {
@@ -463,11 +843,16 @@ button {
   pointer-events: none;
 }
 
-.artist-sidebar > img {
+.artist-sidebar > img,
+.artist-sidebar > div:not(.photo-caption) {
   width: 100%;
   height: 100%;
+}
+
+.artist-sidebar > div img {
   object-fit: cover;
-  object-position: top;
+  /* Rostos ficam no terço de cima das fotos do Deezer; "top" cortava a cabeça em caixas largas */
+  object-position: 50% 22%;
   filter: saturate(0.8) contrast(1.05);
 }
 
@@ -730,6 +1115,11 @@ button {
   content: "";
 }
 
+/* Sem círculo quando o álbum tem capa real */
+.album-art.tem-capa::after {
+  display: none;
+}
+
 .album-art small {
   position: absolute;
   right: 12px;
@@ -813,8 +1203,12 @@ button {
     padding: 0 24px;
   }
 
-  .site-header nav {
+  .site-header nav:not(.menu-celular) {
     display: none;
+  }
+
+  .menu-celular-botao {
+    display: block;
   }
 
   .featured-artist {
@@ -847,13 +1241,24 @@ button {
 }
 
 @media (max-width: 720px) {
+  .artist-sidebar {
+    height: 38vh;
+    min-height: 260px;
+    max-height: 380px;
+  }
+
   .site-header {
     height: 64px;
     padding: 0 18px;
   }
 
-  .collection-button {
+  .collection-button,
+  .nome-usuario {
     display: none;
+  }
+
+  .header-actions {
+    gap: 10px;
   }
 
   .brand img {
@@ -871,19 +1276,6 @@ button {
   .hero-content h1 {
     font-size: 50px;
     letter-spacing: -1.5px;
-  }
-
-  .search-result {
-    grid-template-columns: 46px 1fr;
-  }
-
-  .search-result img {
-    width: 46px;
-    height: 46px;
-  }
-
-  .result-action {
-    display: none !important;
   }
 
   .quick-search {
@@ -1022,104 +1414,1925 @@ button {
 }
 
 /* =============================
-   Grid Pages (Artistas & Albuns)
+   SISTEMA DE AVALIACAO (VINIL)
    ============================= */
-
-.page-grid {
-  background: #0e0d15;
-  color: #f7f4ed;
-  min-height: calc(100vh - 76px);
-  padding: 50px 48px 60px;
+.avaliacao-vinil {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
-
-.page-grid .page-header {
-  margin-bottom: 40px;
+.avaliacao-vinil.pequeno {
+  gap: 2px;
 }
-
-.page-grid .page-title {
-  font-family: "DM Serif Display:Regular", serif;
-  font-size: clamp(1.8rem, 4vw, 2.6rem);
-  margin: 0 0 6px 0;
-  letter-spacing: -1px;
-}
-
-.page-grid .page-subtitle {
-  font-size: 0.95rem;
-  color: #888;
-  margin: 0;
-}
-
-.grid-container {
-  display: grid;
-  gap: 24px;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-}
-
-.grid-card {
-  background: #1a1924;
-  border-radius: 12px;
-  overflow: hidden;
+.botao-vinil {
+  background: transparent;
+  border: none;
+  padding: 0;
   cursor: pointer;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-.grid-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
-}
-
-.grid-card .card-img {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  object-position: top;
-  display: block;
-}
-.grid-card .card-img-placeholder {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  background: linear-gradient(135deg, #2a2740, #1a1924);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.4rem;
-  color: #555;
+  transition: transform 0.2s ease;
+}
+.botao-vinil:hover:not(:disabled) {
+  transform: scale(1.15) rotate(15deg);
+}
+.botao-vinil:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.icone-vinil {
+  transition: all 0.3s ease;
+}
+.icone-vinil.destacado {
+  transform: rotate(45deg);
+}
+.icone-vinil.preenchido {
+  transform: rotate(90deg);
+}
+.avaliacao-vinil.pequeno .icone-vinil {
+  width: 20px;
+  height: 20px;
+}
+.nota-texto {
+  margin-left: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ff0004;
 }
 
-.grid-card .card-body {
-  padding: 14px 16px;
+/* =============================
+   MODAL DE AUTENTICAÇÃO E AVALIAÇÃO (BRUTALISTA)
+   ============================= */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(8, 8, 10, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(6px);
 }
-.grid-card .card-title {
-  font-family: "DM Sans:Bold", sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
-  margin: 0 0 4px 0;
+.modal-conteudo {
+  background: #0f0e14;
+  width: 100%;
+  max-width: 420px;
+  border-radius: 0;
+  padding: 32px;
+  position: relative;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.8);
   color: #f7f4ed;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  border: 2px solid rgba(255,255,255,0.2);
+  animation: modalIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.grid-card .card-subtitle {
-  font-size: 0.82rem;
-  color: #999;
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.modal-fechar {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  color: #888;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.modal-fechar:hover {
+  color: #ff0004;
+}
+.modal-titulo {
+  font-family: "DM Serif Display:Regular", serif;
+  font-size: 1.6rem;
+  margin: 0 0 24px 0;
+  text-align: center;
+}
+.modal-abas {
+  display: flex;
+  gap: 0;
+  margin-bottom: 24px;
+  background: #08080a;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.modal-abas button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 0;
+  border: none;
+  background: transparent;
+  color: #888;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.modal-abas button.ativa {
+  background: #f7f4ed;
+  color: #191525;
+}
+.modal-formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.campo-formulario label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #aaa;
+}
+.campo-formulario input {
+  width: 100%;
+  background: #08080a;
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 12px 16px;
+  border-radius: 0;
+  color: #f7f4ed;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+.campo-formulario input:focus {
+  outline: none;
+  border-color: #ff0004;
+}
+.modal-erro {
+  color: #ff0004;
+  font-size: 0.85rem;
   margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  text-align: center;
 }
-.grid-card .card-meta {
+.campo-formulario.com-erro input {
+  border-color: #ff0004;
+}
+.campo-erro,
+.campo-dica {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.8rem;
+}
+.campo-erro {
+  color: #ff5a5d;
+}
+.campo-dica {
+  color: #8f8a99;
+}
+.modal-aviso-servidor {
+  margin: 4px 0 0;
+  color: #8f8a99;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  text-align: center;
+}
+.botao-principal:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+.botao-principal {
+  background: #ff0004;
+  color: #fff;
+  border: none;
+  padding: 14px;
+  border-radius: 0;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background 0.2s;
+}
+.botao-principal:hover {
+  background: #d90003;
+}
+
+/* =============================
+   CABECALHO - USUARIO LOGADO
+   ============================= */
+.usuario-logado {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.nome-usuario {
+  font-size: 0.85rem;
+  font-weight: 800;
+  font-family: monospace;
+  letter-spacing: 0.05em;
+  color: #191525;
+  background: rgba(25, 21, 37, 0.08);
+  padding: 6px 12px;
+  border-radius: 0;
+  border: 1px solid rgba(25, 21, 37, 0.15);
+}
+
+
+
+/* ========================================================
+   PAGINA ARTISTAS — ARQUIVO MECÂNICO / GALERIA RETRATO
+   ======================================================== */
+.artistas-catalogo-root {
+  min-height: calc(100vh - 76px);
+  background: #08080a;
+  color: #f7f4ed;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 1. Barra Superior de Controle */
+.artistas-barra-controle,
+.albuns-barra-controle {
+  background: #f7f4ed;
+  color: #08080a;
+  padding: 16px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  border-bottom: 2px solid #08080a;
+  position: sticky;
+  top: 76px;
+  z-index: 20;
+}
+
+.artistas-busca-box,
+.albuns-busca-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  max-width: 460px;
+  border-bottom: 2px solid #08080a;
+  padding-bottom: 4px;
+}
+
+.busca-prefix-mono {
+  font-family: monospace;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #ff0004;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.artistas-busca-input,
+.albuns-busca-input {
+  border: none;
+  background: transparent;
+  width: 100%;
+  font-family: monospace, sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #08080a;
+  outline: none;
+}
+.artistas-busca-input::placeholder,
+.albuns-busca-input::placeholder {
+  color: #8c877d;
+}
+
+/* Filtro por Letras Reto e Geométrico */
+.artistas-letras-bloco,
+.albuns-letras-bloco {
+  display: flex;
+  align-items: center;
+  border: 1px solid #08080a;
+  background: #ffffff;
+  overflow-x: auto;
+}
+
+.letra-reta-btn {
+  background: transparent;
+  border: none;
+  border-right: 1px solid #08080a;
+  color: #08080a;
+  cursor: pointer;
+  font-family: monospace;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 8px 11px;
+  transition: all 0.15s ease;
+}
+
+.letra-reta-btn:last-child {
+  border-right: none;
+}
+
+.letra-reta-btn:hover {
+  background: rgba(8, 8, 10, 0.08);
+}
+
+.letra-reta-btn.ativo {
+  background: #08080a;
+  color: #f7f4ed;
+}
+
+/* 2. Header de Status */
+.artistas-header-indice,
+.albuns-header-indice {
+  padding: 24px 48px 12px;
   display: flex;
   justify-content: space-between;
-  margin-top: 8px;
-  font-size: 0.75rem;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.indice-tag-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.indice-ponto-red {
+  width: 8px;
+  height: 8px;
+  background: #ff0004;
+  display: inline-block;
+}
+
+.indice-titulo-mono {
+  font-family: monospace;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #f7f4ed;
+}
+
+.indice-rotulo-sub {
+  font-family: monospace;
+  font-size: 0.68rem;
+  color: #777;
+}
+
+/* 3. Galeria de Artistas (Grade Retangular de Retratos) */
+.artistas-galeria-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 24px;
+  padding: 32px 48px 60px;
+}
+
+.artista-quadro-card {
+  background: #0f0e14;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.artista-quadro-card:hover {
+  border-color: #f7f4ed;
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7);
+}
+
+.artista-moldura-foto {
+  width: 100%;
+  aspect-ratio: 1 / 1.15;
+  position: relative;
+  overflow: hidden;
+  background: #14121c;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.artista-foto-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+  transition: transform 0.35s ease;
+}
+
+.artista-quadro-card:hover .artista-foto-img {
+  transform: scale(1.05);
+}
+
+.artista-foto-filtro-sombra {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(8, 8, 10, 0.85) 100%);
+}
+
+.artista-etiqueta-categoria {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #08080a;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  color: #f7f4ed;
+  font-family: monospace;
+  font-size: 0.6rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  letter-spacing: 0.06em;
+}
+
+.artista-dados-bloco {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.artista-head-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: monospace;
+  font-size: 0.68rem;
+}
+
+.artista-cidade-mono {
+  color: #ff0004;
+  font-weight: 800;
+}
+
+.artista-ouvintes-tag {
   color: #666;
 }
 
-@media (max-width: 640px) {
-  .page-grid {
-    padding: 30px 16px 40px;
+.artista-nome-editorial {
+  margin: 4px 0 0;
+  font-family: "DM Serif Display:Regular", serif;
+  font-size: 1.6rem;
+  line-height: 1.1;
+  color: #f7f4ed;
+  letter-spacing: -0.02em;
+}
+
+.artista-genero-desc {
+  margin: 2px 0 0;
+  font-size: 0.8rem;
+  color: #8c877d;
+}
+
+.artista-card-footer {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: monospace;
+  font-size: 0.68rem;
+}
+
+.artista-contagem-albuns {
+  color: #777;
+}
+
+.artista-btn-ver {
+  color: #ff0004;
+  font-weight: 800;
+}
+
+.artista-quadro-card:hover .artista-btn-ver {
+  color: #f7f4ed;
+}
+
+.artistas-vazio-box,
+.albuns-vazio-box {
+  padding: 80px 20px;
+  text-align: center;
+  grid-column: 1 / -1;
+  font-family: monospace;
+  color: #666;
+}
+
+/* ========================================================
+   PAGINA ÁLBUNS — ESTANTE FÍSICA DE VINIL (CRATE DIGGING)
+   ======================================================== */
+.albuns-catalogo-root {
+  min-height: calc(100vh - 76px);
+  background: #08080a;
+  color: #f7f4ed;
+  display: flex;
+  flex-direction: column;
+}
+
+.albuns-crate-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 28px;
+  padding: 32px 48px 60px;
+}
+
+.album-crate-card {
+  background: #0f0e14;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 18px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.album-crate-card:hover {
+  border-color: #ff0004;
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7);
+}
+
+.album-crate-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 10px;
+  margin-bottom: 16px;
+  font-family: monospace;
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.album-tipo-etiqueta {
+  color: #8c877d;
+}
+
+.album-ano-etiqueta {
+  color: #ff0004;
+}
+
+/* Efeito Físico do Vinil saindo para cima */
+.album-fisico-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  margin-bottom: 16px;
+}
+
+.album-disco-vinil-fisico {
+  position: absolute;
+  top: 5px;
+  left: 5%;
+  width: 90%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, #242424 0%, #111111 60%, #050505 100%);
+  border: 1px solid #333333;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  transition: transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.vinyl-grooves-fisico {
+  position: absolute;
+  width: 75%;
+  height: 75%;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 5px rgba(0, 0, 0, 0.8), inset 0 0 0 10px rgba(255, 255, 255, 0.04);
+}
+
+.vinyl-center-red {
+  position: relative;
+  width: 32%;
+  height: 32%;
+  border-radius: 50%;
+  background: #ff0004;
+  border: 2px solid #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vinyl-furo-preto {
+  width: 25%;
+  height: 25%;
+  border-radius: 50%;
+  background: #08080a;
+  border: 1px solid #555;
+}
+
+.album-capa-quadrada {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: #14121c;
+  z-index: 2;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  transition: transform 0.35s ease;
+}
+
+.album-capa-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.album-capa-vazia {
+  width: 100%;
+  height: 100%;
+  background: #14121c;
+  display: grid;
+  place-items: center;
+  font-family: monospace;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #555;
+}
+
+/* Hover: Vinil sobe em diagonal girando */
+.album-crate-card:hover .album-disco-vinil-fisico {
+  transform: translateY(-28px) translateX(20px) rotate(140deg);
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.6));
+}
+
+.album-crate-card:hover .album-capa-quadrada {
+  transform: scale(1.02);
+}
+
+/* Dados da Obra */
+.album-dados-painel {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.album-artista-nome {
+  font-family: monospace;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #ff0004;
+  text-transform: uppercase;
+}
+
+.album-titulo-obra {
+  margin: 2px 0 0;
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #f7f4ed;
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.album-meta-tecnica {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-family: monospace;
+  font-size: 0.68rem;
+  color: #777;
+}
+
+.album-btn-avaliar-disco {
+  margin-top: 14px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #f7f4ed;
+  font-family: monospace;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 8px 12px;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.disco-ponto-icon {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff0004;
+  display: inline-block;
+}
+
+.album-btn-avaliar-disco:hover {
+  background: #ff0004;
+  border-color: #ff0004;
+  color: #ffffff;
+}
+
+.album-btn-avaliar-disco:hover .disco-ponto-icon {
+  background: #ffffff;
+}
+
+/* Responsividade das telas de Artistas e Álbuns */
+@media (max-width: 980px) {
+  .artistas-barra-controle,
+  .albuns-barra-controle {
+    padding: 14px 24px;
+    flex-direction: column;
+    align-items: stretch;
   }
-  .grid-container {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 16px;
+  .artistas-header-indice,
+  .albuns-header-indice,
+  .artistas-galeria-grid,
+  .albuns-crate-grid {
+    padding-left: 24px;
+    padding-right: 24px;
   }
 }
+
+@media (max-width: 640px) {
+  .artistas-galeria-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+  }
+  .albuns-crate-grid {
+    /* minmax(0, 1fr): sem isso o cartão não encolhe abaixo do disco de vinil e a página rola para o lado */
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .album-crate-card {
+    min-width: 0;
+  }
+  .artistas-letras-bloco,
+  .albuns-letras-bloco {
+    width: 100%;
+  }
+}
+
+
+/* ========================================================
+   FUNDO HERO — MOSAICO DINÂMICO DE COLUNAS INFINITAS
+   ======================================================== */
+.hero-mosaic-container {
+  position: absolute;
+  inset: -40px;
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  overflow: hidden;
+  pointer-events: none; /* Não interativo: não captura cliques nem bloqueia a página */
+  z-index: 0;
+  user-select: none;
+  transform: rotate(-3deg) scale(1.08); /* Inclinação sutil cinematográfica */
+}
+
+.hero-mosaic-col {
+  flex: 1;
+  min-width: 160px;
+  max-width: 220px;
+  height: 120%;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-mosaic-track {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  will-change: transform;
+}
+
+.hero-mosaic-track.mover-cima {
+  animation: mosaicMoverCima linear infinite;
+}
+
+.hero-mosaic-track.mover-baixo {
+  animation: mosaicMoverBaixo linear infinite;
+}
+
+@keyframes mosaicMoverCima {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes mosaicMoverBaixo {
+  0% {
+    transform: translateY(-50%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* Cartão do mosaico */
+.hero-mosaic-card {
+  position: relative;
+  border-radius: 0;
+  overflow: hidden;
+  aspect-ratio: 1 / 1.18;
+  background: #191525;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+  filter: brightness(0.7) saturate(0.85);
+  pointer-events: none;
+}
+
+.hero-mosaic-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Camadas de sombra cinematográfica e vinheta para legibilidade do texto central */
+.hero-mosaic-overlay-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at center,
+    rgba(14, 13, 21, 0.82) 0%,
+    rgba(14, 13, 21, 0.68) 50%,
+    rgba(14, 13, 21, 0.92) 100%
+  );
+  backdrop-filter: blur(2.5px);
+  z-index: 1;
+}
+
+.hero-mosaic-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(14, 13, 21, 0.9) 0%, transparent 22%, transparent 78%, rgba(14, 13, 21, 0.95) 100%),
+    linear-gradient(90deg, rgba(14, 13, 21, 0.85) 0%, transparent 25%, transparent 75%, rgba(14, 13, 21, 0.85) 100%);
+  z-index: 2;
+}
+
+/* Responsividade do mosaico */
+@media (max-width: 1200px) {
+  .hero-mosaic-col:nth-child(n + 5) {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-mosaic-container {
+    inset: -20px;
+    gap: 12px;
+    transform: none;
+  }
+  .hero-mosaic-col:nth-child(n + 4) {
+    display: none;
+  }
+  .hero-mosaic-col {
+    min-width: 120px;
+  }
+}
+
+
+/* ========================================================
+   PAGINA COLECAO — ARQUIVO TÉCNICO BRUTALISTA / FICHÁRIO DE VINIL
+   ======================================================== */
+.colecao-brutal-root {
+  min-height: calc(100vh - 76px);
+  background: #08080a; /* Preto vinil carvão absoluto */
+  color: #f7f4ed;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 80px;
+}
+
+/* 0. ESTADO DESLOGADO — ESTANTE VAZIA */
+.colecao-deslogado {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: 64px;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 72px 48px 0;
+}
+
+.colecao-deslogado-texto {
+  max-width: 34rem;
+}
+
+.colecao-deslogado-titulo {
+  margin: 0 0 20px;
+  font-family: "DM Serif Display:Regular", Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(2.6rem, 5.2vw, 4.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: #f7f4ed;
+}
+
+.colecao-deslogado-sub {
+  margin: 0 0 36px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #b9b4a8;
+}
+
+.colecao-deslogado-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 28px;
+  margin-bottom: 44px;
+}
+
+.colecao-deslogado-cta {
+  padding: 16px 28px;
+  border: 2px solid #ff0004;
+  background: #ff0004;
+  color: #f7f4ed;
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.colecao-deslogado-cta:hover {
+  background: transparent;
+  color: #ff0004;
+}
+
+.colecao-deslogado-link {
+  padding: 4px 0;
+  border: 0;
+  border-bottom: 1px solid #5c5866;
+  background: none;
+  color: #f7f4ed;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.colecao-deslogado-link:hover {
+  border-color: #f7f4ed;
+}
+
+.colecao-deslogado-cta:focus-visible,
+.colecao-deslogado-link:focus-visible {
+  outline: 2px solid #f7f4ed;
+  outline-offset: 4px;
+}
+
+.colecao-deslogado-lista {
+  margin: 0;
+  padding: 24px 0 0;
+  border-top: 1px solid #26232c;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+  color: #8f8a99;
+  font-size: 0.95rem;
+}
+
+.colecao-deslogado-lista li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Pequeno disco como marcador da lista */
+.colecao-deslogado-lista li::before {
+  content: "";
+  flex-shrink: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ff0004 0 28%, #2e2b34 30% 100%);
+}
+
+.colecao-deslogado-mascote {
+  justify-self: center;
+  display: block;
+  width: clamp(260px, 34vw, 420px);
+  height: auto;
+}
+
+@media (max-width: 860px) {
+  .colecao-deslogado {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 32px 20px 0;
+  }
+
+  .colecao-deslogado-mascote {
+    order: -1;
+    width: min(280px, 72vw);
+  }
+}
+
+/* 1. FICHA TÉCNICA DO CRÍTICO */
+.arquivo-ficha-critico {
+  background: #f7f4ed;
+  color: #08080a;
+  border-bottom: 2px solid #08080a;
+  padding: 32px 48px;
+}
+
+.ficha-topo-grid {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.ficha-identificacao {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ficha-codigo-linha {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: "DM Sans:Bold", monospace, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+}
+
+.ficha-label-mono {
+  background: #08080a;
+  color: #f7f4ed;
+  padding: 2px 8px;
+  font-weight: 800;
+}
+
+.ficha-serial {
+  color: #ff0004;
+  font-weight: 800;
+}
+
+.ficha-nome-critico {
+  margin: 6px 0 0;
+  font-family: "DM Serif Display:Regular", serif;
+  font-size: clamp(2.4rem, 4vw, 3.6rem);
+  font-weight: 400;
+  line-height: 1;
+  color: #08080a;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.ficha-credencial {
+  margin: 6px 0 0;
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: #555047;
+}
+
+.ficha-credencial code {
+  background: rgba(8, 8, 10, 0.08);
+  padding: 2px 6px;
+  font-weight: 700;
+  color: #08080a;
+}
+
+.ficha-selo-caixa {
+  border: 2px solid #08080a;
+  padding: 0;
+  min-width: 170px;
+  text-align: center;
+}
+
+.selo-caixa-topo {
+  background: #08080a;
+  color: #f7f4ed;
+  font-family: "DM Sans:Bold", monospace, sans-serif;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  padding: 4px 8px;
+}
+
+.selo-caixa-corpo {
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: #ffffff;
+}
+
+.selo-ano-gravacao {
+  font-family: monospace;
+  font-size: 0.65rem;
+  color: #777;
+  font-weight: 700;
+}
+
+.selo-grau {
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 0.82rem;
+  color: #ff0004;
+  letter-spacing: 0.08em;
+  font-weight: 800;
+}
+
+/* Grade de Métricas Brutalistas */
+.ficha-metricas-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border: 1px solid #08080a;
+  background: #ffffff;
+}
+
+.metrica-quadro {
+  padding: 16px 20px;
+  border-right: 1px solid #08080a;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metrica-quadro:last-child {
+  border-right: none;
+}
+
+.metrica-mono-tag {
+  font-family: monospace;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #666;
+}
+
+.metrica-mono-num {
+  font-family: "DM Serif Display:Regular", monospace, serif;
+  font-size: 2.8rem;
+  line-height: 1;
+  color: #08080a;
+}
+
+.metrica-destaque-red .metrica-mono-num {
+  color: #ff0004;
+}
+
+.metrica-mono-sub {
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 0.65rem;
+  color: #888;
+  letter-spacing: 0.06em;
+}
+
+/* 2. O TEMPLO DO DISCO DE OURO (PLACA GEOMÉTRICA) */
+.templo-ouro-arquivo {
+  margin: 36px 48px 0;
+}
+
+.placa-ouro-moldura {
+  background: #0d0c12;
+  border: 2px solid #ffd700;
+  padding: 28px 36px;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.08);
+}
+
+.placa-ouro-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+  padding-bottom: 14px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.placa-ouro-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "DM Sans:Bold", monospace, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: #ffd700;
+}
+
+.ouro-quadrado-icon {
+  color: #ff0004;
+  font-size: 0.8rem;
+}
+
+.placa-ouro-controles {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.placa-nota-carimbo {
+  font-family: monospace;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #ffd700;
+  border: 1px solid #ffd700;
+  padding: 3px 8px;
+}
+
+.placa-btn-trocar {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #f7f4ed;
+  font-family: monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  transition: all 0.2s;
+}
+
+.placa-btn-trocar:hover {
+  background: #ffd700;
+  color: #08080a;
+  border-color: #ffd700;
+}
+
+.placa-ouro-corpo {
+  display: grid;
+  grid-template-columns: 210px 1fr;
+  align-items: center;
+  gap: 36px;
+  cursor: pointer;
+}
+
+.placa-disco-wrap {
+  position: relative;
+  width: 195px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+}
+
+.placa-disco-ouro {
+  position: absolute;
+  top: 3px;
+  left: 48px;
+  width: 134px;
+  height: 134px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.8), 0 0 25px rgba(212, 175, 55, 0.35);
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.5s ease;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.6));
+}
+
+.disco-ouro-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.placa-capa-quadrada {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #14121c;
+  z-index: 2;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.7);
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.placa-capa-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.placa-capa-placeholder {
+  width: 100%;
+  height: 100%;
+  background: #14121c;
+  color: #f7f4ed;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 2rem;
+}
+
+.placa-tipo-etiqueta {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #ff0004;
+  color: #ffffff;
+  font-family: monospace;
+  font-size: 0.6rem;
+  font-weight: 800;
+  padding: 2px 6px;
+}
+
+.placa-ouro-corpo:hover .placa-disco-ouro {
+  transform: translateX(38px) rotate(160deg);
+  filter: drop-shadow(0 14px 28px rgba(255, 215, 0, 0.55));
+}
+
+.placa-ouro-corpo:hover .placa-capa-quadrada {
+  transform: scale(1.02);
+}
+
+.placa-dados-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.placa-artista-head {
+  font-family: monospace;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #ff0004;
+  text-transform: uppercase;
+}
+
+.placa-titulo-obra {
+  margin: 0;
+  font-family: "DM Serif Display:Regular", serif;
+  font-size: clamp(2.2rem, 3.6vw, 3.2rem);
+  font-weight: 400;
+  line-height: 1;
+  color: #f7f4ed;
+  letter-spacing: -0.02em;
+}
+
+.placa-sub-detalhe {
+  margin: 4px 0 0;
+  font-size: 0.88rem;
+  color: #8c877d;
+}
+
+.placa-resenha-box {
+  margin-top: 14px;
+  padding: 12px 18px;
+  background: rgba(255, 215, 0, 0.05);
+  border-left: 2px solid #ffd700;
+  border-top: 1px solid rgba(255, 215, 0, 0.15);
+  border-bottom: 1px solid rgba(255, 215, 0, 0.15);
+}
+
+.resenha-tag-mono {
+  font-family: monospace;
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #ffd700;
+  letter-spacing: 0.1em;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.resenha-texto-aspas {
+  margin: 0 0 6px 0;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: #f7f4ed;
+  line-height: 1.5;
+}
+
+.resenha-assinatura {
+  display: block;
+  font-family: monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #ff0004;
+  text-transform: uppercase;
+}
+
+.placa-sem-resenha {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.placa-btn-adicionar-txt {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #f7f4ed;
+  padding: 6px 14px;
+  font-family: monospace;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.placa-btn-adicionar-txt:hover {
+  background: #ff0004;
+  border-color: #ff0004;
+}
+
+.placa-ouro-footer-acoes {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 215, 0, 0.2);
+  flex-wrap: wrap;
+}
+
+.placa-btn-exportar {
+  background: #191525;
+  border: 1px solid #ffd700;
+  color: #ffd700;
+  padding: 8px 16px;
+  font-family: monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.placa-btn-exportar:hover:not(:disabled) {
+  background: #ffd700;
+  color: #0d0c12;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+}
+
+.placa-btn-exportar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 3. BARRA DE FILTRO BRUTALISTA */
+.arquivo-filtros-secao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 36px 48px 16px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.arquivo-abas-bloco {
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.aba-reta-btn {
+  background: transparent;
+  border: none;
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
+  color: #8c877d;
+  padding: 10px 18px;
+  font-family: monospace;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.aba-reta-btn:last-child {
+  border-right: none;
+}
+
+.aba-reta-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #f7f4ed;
+}
+
+.aba-reta-btn.ativo {
+  background: #f7f4ed;
+  color: #08080a;
+}
+
+.arquivo-btn-explorar {
+  background: transparent;
+  border: 1px dashed rgba(255, 255, 255, 0.3);
+  color: #c8c4cf;
+  padding: 10px 18px;
+  font-family: monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.arquivo-btn-explorar:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f7f4ed;
+  border-color: #f7f4ed;
+}
+
+/* 4. GRID DE FICHAS TÉCNICAS (ESTANTE DE DISCOS) */
+.arquivo-grid-secao {
+  padding: 16px 48px 40px;
+}
+
+.fichas-arquivo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 20px;
+}
+
+.ficha-card-item {
+  background: #0f0e14;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.ficha-card-item:hover {
+  border-color: #f7f4ed;
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+}
+
+.ficha-card-item.card-favorito-ativo {
+  border-color: #ffd700;
+  background: linear-gradient(180deg, rgba(255, 215, 0, 0.06) 0%, #0f0e14 40%);
+}
+
+.ficha-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 10px;
+  margin-bottom: 14px;
+}
+
+.ficha-card-tipo {
+  font-family: monospace;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #8c877d;
+}
+
+.ficha-card-ano {
+  font-family: monospace;
+  font-size: 0.7rem;
+  color: #555;
+  font-weight: 700;
+}
+
+.ficha-card-ouro-badge {
+  font-family: monospace;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #ffd700;
+}
+
+.ficha-card-body {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.ficha-capa-wrap {
+  width: 72px;
+  height: 72px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  flex-shrink: 0;
+  background: #191525;
+}
+
+.ficha-capa-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.ficha-capa-vazia {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  color: #555;
+}
+
+.ficha-titulos-box {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.ficha-card-artista {
+  font-family: monospace;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #ff0004;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ficha-card-titulo {
+  margin: 0;
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #f7f4ed;
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ficha-card-comentario {
+  margin-top: 14px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 2px solid rgba(255, 0, 4, 0.5);
+  font-style: italic;
+  font-size: 0.82rem;
+  color: #bbb;
+  line-height: 1.4;
+}
+
+.ficha-card-footer {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.ficha-botoes-acoes {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-ficha-coroar {
+  background: transparent;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  color: #ffd700;
+  font-family: monospace;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 4px 8px;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: all 0.2s;
+}
+
+.btn-ficha-coroar:hover {
+  background: rgba(255, 215, 0, 0.15);
+  border-color: #ffd700;
+}
+
+.btn-ficha-coroar.ativo {
+  background: #ffd700;
+  color: #08080a;
+}
+
+.btn-ficha-editar {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #aaa;
+  font-family: monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-ficha-editar:hover {
+  background: #ff0004;
+  border-color: #ff0004;
+  color: #ffffff;
+}
+
+/* ESTADO VAZIO BRUTALISTA */
+.arquivo-vazio-box {
+  margin: 40px auto;
+  max-width: 580px;
+  padding: 48px 32px;
+  text-align: center;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  background: #0f0e14;
+}
+
+.vazio-titulo {
+  font-family: "DM Sans:Bold", monospace, sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 0.1em;
+  margin: 0 0 8px;
+  color: #f7f4ed;
+}
+
+.vazio-subtitulo {
+  color: #888;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 0 0 24px;
+}
+
+.arquivo-cta-btn {
+  background: #ff0004;
+  color: #ffffff;
+  border: none;
+  font-family: monospace;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.arquivo-cta-btn:hover {
+  background: #cc0003;
+  transform: translateY(-2px);
+}
+
+.arquivo-sem-itens {
+  text-align: center;
+  padding: 60px 20px;
+  font-family: monospace;
+  color: #666;
+}
+
+/* MODAL SELETOR BRUTALISTA */
+.modal-brutal-seletor {
+  border-radius: 0 !important;
+  border: 2px solid #ffd700 !important;
+  background: #08080a !important;
+  max-width: 540px;
+}
+
+.seletor-card-item.brutal-item {
+  border-radius: 0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #0f0e14;
+}
+
+.seletor-card-item.brutal-item:hover {
+  border-color: #ffd700;
+  background: rgba(255, 215, 0, 0.08);
+}
+
+.seletor-card-item.brutal-item.selecionado {
+  border-color: #ffd700;
+  background: rgba(255, 215, 0, 0.15);
+}
+
+.modal-seletor-titulo {
+  margin: 4px 0 8px;
+  text-align: left;
+}
+
+.modal-seletor-sub {
+  margin-bottom: 20px;
+  color: #888;
+  font-size: 0.85rem;
+}
+
+.seletor-lista-itens {
+  display: grid;
+  gap: 8px;
+  max-height: 55vh;
+  overflow-y: auto;
+}
+
+.seletor-card-item.brutal-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 10px;
+  color: #f7f4ed;
+  text-align: left;
+  cursor: pointer;
+}
+
+.seletor-item-capa {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+.seletor-item-textos {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.seletor-item-textos strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.seletor-item-textos span {
+  color: #8f8a99;
+  font-size: 12px;
+}
+
+.seletor-check-badge,
+.seletor-btn-escolher {
+  flex-shrink: 0;
+  font-family: monospace;
+  font-size: 11px;
+}
+
+.seletor-check-badge {
+  color: #ffd700;
+}
+
+.seletor-btn-escolher {
+  color: #8f8a99;
+}
+
+/* RESPONSIVIDADE BRUTALISTA */
+@media (max-width: 980px) {
+  .arquivo-ficha-critico {
+    padding: 24px;
+  }
+  .ficha-metricas-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .metrica-quadro:nth-child(2) {
+    border-right: none;
+  }
+  .metrica-quadro {
+    border-bottom: 1px solid #08080a;
+  }
+  .templo-ouro-arquivo {
+    margin: 24px 24px 0;
+    padding: 20px;
+  }
+  .placa-ouro-corpo {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .arquivo-filtros-secao,
+  .arquivo-grid-secao {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .ficha-topo-grid {
+    flex-direction: column;
+  }
+  .ficha-selo-caixa {
+    width: 100%;
+  }
+  .ficha-metricas-grid {
+    grid-template-columns: 1fr;
+  }
+  .metrica-quadro {
+    border-right: none;
+    border-bottom: 1px solid #08080a;
+  }
+  .arquivo-abas-bloco {
+    flex-direction: column;
+    width: 100%;
+  }
+  .aba-reta-btn {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    width: 100%;
+    text-align: left;
+  }
+}
+

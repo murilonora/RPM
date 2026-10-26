@@ -1,5 +1,7 @@
+import { ImagemComFallback } from "./ImagemComFallback";
+
 // Lista com as músicas mais reproduzidas do artista selecionado
-export function AbaMusicas({ musicas = [] }) {
+export function AbaMusicas({ musicas = [], artistaId = "", aoAvaliar }) {
   if (!musicas || musicas.length === 0) {
     return <p className="p-4 text-center">Nenhuma faixa encontrada.</p>;
   }
@@ -13,17 +15,29 @@ export function AbaMusicas({ musicas = [] }) {
         <span>Reproduções</span>
       </div>
       {musicas.map((musica, indice) => (
-        <button className="ranking-row" key={`${musica.titulo}-${indice}`}>
+        <button 
+          className="ranking-row" 
+          key={`${musica.titulo}-${indice}`}
+          type="button"
+          onClick={() => aoAvaliar && aoAvaliar({
+            chave: `musica-${artistaId}-${indice}`,
+            titulo: musica.titulo,
+            subtitulo: `Música • ${musica.album}`,
+            capa: musica.capa,
+            obra: { tipo: "musica", artistaId, titulo: musica.titulo },
+          })}
+        >
           <span className="rank">{String(indice + 1).padStart(2, "0")}</span>
-          <span className="track-title" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            {musica.capa && (
-              <img
-                src={musica.capa}
-                alt={musica.titulo}
-                style={{ width: "36px", height: "36px", borderRadius: "4px", objectFit: "cover" }}
-              />
-            )}
-            <i aria-hidden="true">▶</i>
+          <span className="track-title flex items-center gap-2.5">
+            <ImagemComFallback
+              src={musica.capa || "/assets/rpm-mark.svg"}
+              alt={musica.titulo}
+              className="w-9 h-9 shrink-0"
+              tamanho={250}
+            />
+            <div className="flex items-center justify-center w-5 h-5 rounded-full bg-[#191525] border border-[#333] shrink-0" aria-hidden="true">
+              <div className="w-1.5 h-1.5 bg-[#f7f4ed] rounded-full" />
+            </div>
             <strong>{musica.titulo}</strong>
           </span>
           <span>{musica.album}</span>

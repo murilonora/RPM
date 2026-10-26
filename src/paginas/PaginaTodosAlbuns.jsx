@@ -1,48 +1,175 @@
+import { useState, useMemo } from "react";
+import { Link } from "react-router-dom";
 import { listaDeArtistas } from "../dados/dadosMusicais";
+import { normalizarTexto } from "../utilitarios/comuns";
+import { FiltroAlfabetico } from "../componentes/FiltroAlfabetico";
+import { ImagemComFallback } from "../componentes/ImagemComFallback";
 
-export function PaginaTodosAlbuns({ aoSelecionarArtista }) {
-  // Extrair todos os albuns e vincular ao artista
-  const todosAlbuns = [];
-  listaDeArtistas.forEach((artista) => {
-    artista.albuns.forEach((album) => {
-      todosAlbuns.push({ ...album, artistaRef: artista });
+export function PaginaTodosAlbuns({ aoAbrirAlbum }) {
+  const [termoBusca, setTermoBusca] = useState("");
+  const [letraFiltro, setLetraFiltro] = useState("TODOS");
+
+  // Extrair todos os álbuns vinculando a referência do artista
+  const todosAlbuns = useMemo(() => {
+    const albuns = [];
+    listaDeArtistas.forEach((artista) => {
+      artista.albuns.forEach((album, idx) => {
+        albuns.push({
+          ...album,
+          indiceOriginal: idx,
+          artistaRef: artista,
+        });
+      });
     });
-  });
+    return albuns.sort((a, b) => a.titulo.localeCompare(b.titulo));
+  }, []);
 
-  // Ordem alfabetica pelo titulo do album
-  todosAlbuns.sort((a, b) => a.titulo.localeCompare(b.titulo));
+  // Letras iniciais únicas dos álbuns
+  const letrasDisponiveis = useMemo(() => {
+    const letras = new Set();
+    todosAlbuns.forEach((alb) => {
+      const inicial = alb.titulo.charAt(0).toUpperCase();
+      if (/[A-Z]/.test(inicial)) {
+        letras.add(inicial);
+      }
+    });
+    return Array.from(letras).sort();
+  }, [todosAlbuns]);
+
+  // Filtro por texto e letra
+  const albunsFiltrados = useMemo(() => {
+    const termo = normalizarTexto(termoBusca);
+    return todosAlbuns.filter((album) => {
+      const bateTexto =
+        !termo ||
+        normalizarTexto(album.titulo).includes(termo) ||
+        normalizarTexto(album.artistaRef.nome).includes(termo) ||
+        normalizarTexto(album.artistaRef.categoria).includes(termo) ||
+        album.ano.includes(termo);
+
+      const inicial = album.titulo.charAt(0).toUpperCase();
+      const bateLetra = letraFiltro === "TODOS" || inicial === letraFiltro;
+
+      return bateTexto && bateLetra;
+    });
+  }, [todosAlbuns, termoBusca, letraFiltro]);
 
   return (
-    <main className="page-grid">
-      <div className="page-header">
-        <h2 className="page-title">Todos os Albuns</h2>
-        <p className="page-subtitle">{todosAlbuns.length} albuns em ordem alfabetica</p>
+    <main className="albuns-catalogo-root">
+      {/* 1. BARRA SUPERIOR MECÂNICA & TÉCNICA */}
+      <div className="albuns-barra-controle">
+        <div className="albuns-busca-box">
+          <span className="busca-prefix-mono">// BUSCA_DISCOGRAFIA:</span>
+          <input
+            type="text"
+            className="albuns-busca-input"
+            placeholder="DIGITE ÁLBUM, ARTISTA OU ANO..."
+            value={termoBusca}
+            onChange={(e) => setTermoBusca(e.target.value)}
+          />
+        </div>
+
+        {/* Filtro por Letras Unificado */}
+        <FiltroAlfabetico
+          letrasDisponiveis={letrasDisponiveis}
+          letraAtiva={letraFiltro}
+          aoSelecionarLetra={setLetraFiltro}
+          classeContainer="albuns-letras-bloco"
+        />
       </div>
 
-      <div className="grid-container">
-        {todosAlbuns.map((album, i) => (
-          <div
-            key={`${album.titulo}-${i}`}
-            className="grid-card"
-            onClick={() => aoSelecionarArtista(album.artistaRef)}
-          >
-            {album.capa ? (
-              <img src={album.capa} alt={album.titulo} className="card-img" />
-            ) : (
-              <div className="card-img-placeholder">
-                {album.titulo.slice(0, 2).toUpperCase()}
-              </div>
-            )}
-            <div className="card-body">
-              <h3 className="card-title">{album.titulo}</h3>
-              <p className="card-subtitle">{album.artistaRef.nome}</p>
-              <div className="card-meta">
-                <span>{album.ano}</span>
-                <span>{album.reproducoes} streams</span>
-              </div>
-            </div>
+      {/* 2. HEADER DE STATUS DA DISCOGRAFIA */}
+      <div className="albuns-header-indice">
+        <div className="indice-tag-wrap">
+          <span className="indice-ponto-red" />
+          <span className="indice-titulo-mono">
+            DISCOGRAFIA OFICIAL // EXIBINDO {albunsFiltrados.length} DE {todosAlbuns.length} ÁLBUNS
+          </span>
+        </div>
+        <span className="indice-rotulo-sub">PASSE O MOUSE SOBRE O DISCO PARA LIBERAR O VINIL</span>
+      </div>
+
+      {/* 3. ESTANTE DE VINIS EM FORMATO CRATE DIGGING (GRID DE CAPAS DE VINIL) */}
+      <div className="albuns-crate-grid">
+        {albunsFiltrados.length === 0 ? (
+          <div className="albuns-vazio-box">
+            <span className="vazio-mono">// NENHUM ÁLBUM ENCONTRADO NO CATÁLOGO</span>
           </div>
-        ))}
+        ) : (
+          albunsFiltrados.map((album) => {
+            const chaveItem = `album-${album.artistaRef.id}-${album.indiceOriginal}`;
+
+            return (
+              <article key={chaveItem} className="album-crate-card cartao-com-link">
+                {/* Cabeçalho da Capa com Carimbo Técnico */}
+                <div className="album-crate-header">
+                  <span className="album-tipo-etiqueta">LP // 12-INCH</span>
+                  <span className="album-ano-etiqueta">{album.ano}</span>
+                </div>
+
+                {/* Efeito Físico: Vinil Saindo da Capa no Hover */}
+                <div className="album-fisico-container">
+                  {/* O Disco de Vinil que desliza para cima/fora e gira */}
+                  <div className="album-disco-vinil-fisico" aria-hidden="true">
+                    <div className="vinyl-grooves-fisico" />
+                    <div className="vinyl-center-red">
+                      <div className="vinyl-furo-preto" />
+                    </div>
+                  </div>
+
+                  {/* A Capa Quadrada do Disco (Jacket) */}
+                  <div className="album-capa-quadrada">
+                    {album.capa ? (
+                      <ImagemComFallback
+                        src={album.capa}
+                        alt={album.titulo}
+                        className="album-capa-img w-full h-full"
+                      />
+                    ) : (
+                      <div className="album-capa-vazia">
+                        <span>{album.titulo.slice(0, 2).toUpperCase()}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Dados da Obra */}
+                <div className="album-dados-painel">
+                  <span className="album-artista-nome">{album.artistaRef.nome}</span>
+                  <h2 className="album-titulo-obra">
+                    {/* O link cobre o cartão todo (::after); o botão de avaliar fica por cima */}
+                    <Link to={`/artista/${album.artistaRef.id}`} className="cartao-link">
+                      {album.titulo}
+                    </Link>
+                  </h2>
+                  <div className="album-meta-tecnica">
+                    <span>{album.faixas}</span>
+                    <span>{album.reproducoes} STREAMS</span>
+                  </div>
+
+                  {/* Abre a ficha do disco: nota do álbum e de cada faixa */}
+                  {aoAbrirAlbum && (
+                    <button
+                      type="button"
+                      className="album-btn-avaliar-disco"
+                      onClick={() =>
+                        aoAbrirAlbum({
+                          artista: album.artistaRef,
+                          album,
+                          indice: album.indiceOriginal,
+                        })
+                      }
+                      title="Avaliar o disco e as faixas em vinis"
+                    >
+                      <span className="disco-ponto-icon" />
+                      [ AVALIAR DISCO ]
+                    </button>
+                  )}
+                </div>
+              </article>
+            );
+          })
+        )}
       </div>
     </main>
   );

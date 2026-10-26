@@ -10,4 +10,14 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  // Em desenvolvimento, chamadas a /api vão para o backend Spring Boot (porta 8080)
+  server: {
+    proxy: {
+      '/api': 'http://localhost:8080',
+    },
+  },
+  test: {
+    environment: 'jsdom',
+    include: ['src/**/*.test.{js,jsx}'],
+  },
 });

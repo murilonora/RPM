@@ -1,152 +1,195 @@
-# RPM — Trap & Rap: Arquivo e Enciclopédia Musical
+# 💿 RPM — Arquivo & Enciclopédia Musical Brutalista
 
-Aplicação Web desenvolvida com **React 19**, **JavaScript (ES Modules)**, **Tailwind CSS v4** e **Vite**. O projeto funciona como uma plataforma editorial, enciclopédia digital e acervo discográfico focado nas quatro grandes vertentes da cultura urbana: **Trap Brasileiro**, **Rap Brasileiro**, **Rap Americano** e **Hip Hop Americano**.
+> **Plataforma editorial, arquivo discográfico e sistema de crítica musical física.**  
+> Desenvolvido em **React 19**, **Vite 8** e **Tailwind CSS v4** com estética editorial brutalista (0-radius, preto vinil carvão, vermelho RPM e papel creme).
 
 ---
 
 ## 📌 Sumário
-- [Sobre o Projeto](#-sobre-o-projeto)
-- [Artistas e Vertentes Cadastradas](#-artistas-e-vertentes-cadastradas)
-- [Tecnologias Utilizadas](#-tecnologias-utilizadas)
+- [Visão Geral & Identidade Visual](#-visão-geral--identidade-visual)
+- [Arquitetura & Tecnologias](#-arquitetura--tecnologias)
+- [Funcionalidades & Telas](#-funcionalidades--telas)
+- [Sistema de Avaliação & Coleção do Crítico](#-sistema-de-avaliação--coleção-do-crítico)
 - [Estrutura do Projeto](#-estrutura-do-projeto)
-- [Pré-requisitos](#-pré-requisitos)
-- [Como Rodar Localmente](#-como-rodar-localmente)
-- [Funcionalidades e Telas](#-funcionalidades-e-telas)
-- [Como Adicionar Novos Artistas](#-como-adicionar-novos-artistas)
+- [Instalação & Execução](#-instalação--execução)
+- [Persistência Local (LocalStorage Schema)](#-persistência-local-localstorage-schema)
 
 ---
 
-## 🎤 Sobre o Projeto
+## 🎨 Visão Geral & Identidade Visual
 
-O **RPM** reúne acervos, histórias editoriais, discografias completas e dados de reprodução dos maiores nomes do rap e do hip hop nacional e mundial. Todos os dados são reais, estruturados em JavaScript e gerenciados dinamicamente pelos componentes React.
+O **RPM** (Rotação Por Minuto) é uma enciclopédia interativa inspirada em catálogos de arquivo físico, zines editoriais e sebos de discos de vinil clássicos. O design afasta-se deliberadamente de layouts genéricos de streaming contemporâneos, adotando:
 
----
-
-## 🎧 Artistas e Vertentes Cadastradas
-
-O catálogo já conta com artistas fundamentais de cada movimento, com suas músicas mais tocadas, álbuns com faixas, estatísticas e biografias aprofundadas:
-
-| Vertente | Artistas Incluídos | Destaques |
-| :--- | :--- | :--- |
-| **Trap Brasileiro** | **Matuê**, **KayBlack**, **Filipe Ret** | *Máquina do Tempo*, *333*, *Contraditório*, *LUME* |
-| **Rap Brasileiro** | **Racionais MC's**, **Emicida**, **Sabotage** | *Sobrevivendo no Inferno*, *AmarElo*, *Rap É Compromisso* |
-| **Rap Americano** | **Kendrick Lamar**, **Eminem**, **Travis Scott** | *good kid, m.A.A.d city*, *DAMN.*, *ASTROWORLD*, *The Eminem Show* |
-| **Hip Hop Americano** | **2Pac**, **The Notorious B.I.G.**, **Dr. Dre** | *All Eyez on Me*, *Ready to Die*, *2001*, *The Chronic* |
+- **Paleta Cromática Rigorosa:**
+  - `Preto Vinil Carvão` (`#08080a` / `#0f0e14`)
+  - `Vermelho RPM` (`#ff0004` / `#cc0003`)
+  - `Creme Papel de Prensa` (`#f7f4ed`)
+  - `Dourado Certificado` (`#ffd700`)
+- **Geometria Brutalista:** Bordas retas (`border-radius: 0`), divisórias mecânicas, tipografia monoespaçada técnica (`// ARQUIVO_RPM`) em contraste com a elegância de fontes serifadas editoriais (`DM Serif Display`).
+- **Acervo Musical Rico:** Catálogo com 55 artistas de relevância histórica e contemporânea (Trap, Rap Nacional, Rap Internacional, MPB, Samba, Rock, etc.), com discografia detalhada, contagem de streams, capas reais e ensaios biográficos.
 
 ---
 
-## 🛠 Tecnologias Utilizadas
+## 🛠 Arquitetura & Tecnologias
 
-- **[React 19](https://react.dev/)**: Biblioteca component-based com hooks (`useState`) e gerenciamento de estado limpo.
-- **[JavaScript (ES6+)](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)**: Código 100% em JavaScript puro, sem TypeScript, ideal para projetos acadêmicos.
-- **[Vite 8](https://vite.dev/)**: Servidor de desenvolvimento ultrarrápido com HMR e compilador otimizado.
-- **[Tailwind CSS v4](https://tailwindcss.com/)**: Estilização moderna e layout responsivo.
+- **[React 19](https://react.dev/)**: Arquitetura baseada em componentes funcionais modernos com hooks (`useState`, `useEffect`, `useMemo`, `useCallback`, `useContext`).
+- **[Vite 8](https://vite.dev/)**: Ferramenta de build ultrarrápida com Hot Module Replacement (HMR) e compilação otimizada para produção.
+- **[Tailwind CSS v4](https://tailwindcss.com/) & CSS Vanilla Estruturado**: Estilos globais e componentes tipográficos com zero dependências externas de ícones pesados.
+- **Normalização com Tolerância a Diacríticos**: Algoritmo de busca que ignora acentuação e caixa alta/baixa (`normalizarTexto`), garantindo que buscas como `"matue"` ou `"musica"` encontrem registros com `"Matuê"` ou `"música"`.
+
+---
+
+## 🖥 Funcionalidades & Telas
+
+### 1. Página Inicial (`PaginaInicial.jsx`)
+- **Fundo Mosaico Hero Marquee (`FundoMosaicoHero.jsx`)**: 6 colunas infinitas verticais que deslizam suavemente em direções alternadas com capas de discos e retratos de artistas, sob uma textura de vinil e vinheta cinematográfica.
+- **Busca Unificada em Tempo Real**: Barra central que vasculha simultaneamente **Artistas**, **Músicas** e **Álbuns**, agrupando resultados com crachás distintivos e prévias visuais.
+- **Explorador Dinâmico Rotativo**: Alternância periódica (intervalo de 7s) sorteando artistas do acervo para sugestão instantânea.
+- **Filtro por Movimento & Matéria Editorial**: Destaques em formato jornalístico e grade de artistas por vertente.
+
+### 2. Galeria Editorial de Artistas (`PaginaTodosArtistas.jsx`)
+- **Arquivo Retrato Brutalista**: Cards de artistas com estética de galeria fotográfica, contagem de álbuns, métricas de ouvintes mensais e gênero musical.
+- **Filtro Alfabético Rápido (A-Z)**: Barra mecânica para salto instantâneo por letra inicial.
+
+### 3. Estante de Vinis — *Crate Digging* (`PaginaTodosAlbuns.jsx`)
+- **Experiência Física de Sebo**: Grid simulando caixas de vinis de 12 polegadas (*12-inch LP jackets*). Ao passar o mouse sobre a capa, o disco de vinil desliza suavemente para fora girando com o sulco físico exposto.
+- **Ação Direta `[ AVALIAR DISCO ]`**: Permite atribuir notas ao álbum diretamente da estante global.
+
+### 4. Página Individual do Artista (`PaginaArtista.jsx`)
+- **Sidebar Editorial de Retrato**: Fotografia imponente em alta resolução com legenda e metadados de origem e período ativo.
+- **Abas de Conteúdo**:
+  - `Mais ouvidas`: Ranking tabular com reproduções e avaliação por faixa.
+  - `Álbuns`: Discografia completa com capas, faixas e streams.
+  - `História`: Ensaio biográfico completo e citações emblemáticas.
+
+---
+
+## ⭐️ Sistema de Avaliação & Coleção do Crítico
+
+### 1. Avaliação em Vinis (1 a 5 Discos)
+- Componente dedicado (`AvaliacaoVinil.jsx`) que substitui estrelas convencionais por discos de vinil interativos com sulcos mecânicos e animação de rotação no hover.
+- Suporta leitura e escrita com toggle inteligente (clicar na nota atual desmarca).
+- Modal dedicado (`ModalAvaliacao.jsx`) permitindo redigir resenhas textuais para cada obra.
+- **Avaliação por faixa** (`ModalAlbum.jsx`, sistema da Mell): ao abrir um álbum aparecem as faixas reais do disco, cada uma com sua nota em vinis, além da nota e da resenha do álbum inteiro. A lista de faixas vem de `src/dados/faixasAlbuns.json` (104 dos 139 álbuns), levantada na API do Deezer, e só é baixada quando um álbum é aberto.
+
+### 2. Arquivo Técnico do Crítico (`PaginaColecao.jsx`)
+- **Ficha Técnica & Credencial do Usuário**: Exibe número de série único (`ID: #...`), selo de certificação da coleção e métricas automáticas (total catalogado, média de notas, grau máximo e resenhas registradas).
+- **Templo do Disco de Ouro (Hall da Fama)**:
+  - Destaca o favorito absoluto da coleção em um pedestal com disco de ouro e sulcos gravados.
+  - Botão `[ ⟳ TROCAR FAVORITO ]` com modal de seleção rápida.
+  - Botão `[ TORNAR FAVORITO ]` disponível em cada card da coleção.
+- **Filtros do Arquivo**: `TODOS`, `ÁLBUNS`, `FAIXAS` e `★ 5 VINIS (OBRAS-PRIMAS)`.
+- **Estado Vazio Humanizado**: Apresentação ilustrada com o mascote Vinil Triste quando o usuário não possui itens avaliados ou não está autenticado.
 
 ---
 
 ## 📂 Estrutura do Projeto
 
-Pastas e arquivos nomeados em **Português**, seguindo as melhores práticas de arquitetura de software:
-
 ```text
 RPM/
-├── public/                     # Arquivos estáticos e ativos públicos
-│   └── assets/                 # Imagens e marcas
-├── src/                        # Código-fonte da aplicação
-│   ├── componentes/            # Componentes reutilizáveis
-│   │   ├── AbaAlbuns.jsx       # Grid de álbuns e discografia do artista
-│   │   ├── AbaHistoria.jsx     # Biografia, contexto histórico e citações
-│   │   ├── AbaMusicas.jsx      # Ranking das músicas mais ouvidas
-│   │   ├── Cabecalho.jsx       # Barra de navegação e menu superior
-│   │   └── Logotipo.jsx        # Marca visual do RPM
-│   ├── dados/                  # Base de dados estruturada em JavaScript
-│   │   └── dadosMusicais.js    # Acervo completo de artistas, músicas e álbuns
-│   ├── paginas/                # Telas da aplicação
-│   │   ├── PaginaArtista.jsx   # Página de perfil dinâmico com navegação em abas
-│   │   └── PaginaInicial.jsx   # Busca inteligente, catálogo de cards e filtros
-│   ├── Aplicativo.jsx          # Componente raiz com orquestração de rotas e estado
-│   ├── estilosGlobais.css      # Estilização editorial e regras tipográficas
-│   └── principal.jsx           # Ponto de entrada do React no DOM
-├── index.html                  # Shell HTML principal
-├── package.json                # Dependências e scripts npm
-├── vite.config.js              # Configuração simplificada do Vite
-└── README.md                   # Esta documentação
+├── public/
+│   ├── assets/
+│   │   ├── rpm-mark.svg        # Logotipo vetorial oficial
+│   │   └── vinil-triste.webp   # Mascote do acervo (fundo transparente)
+│   └── fonts/                  # DM Sans e DM Serif Display hospedadas no projeto
+├── src/
+│   ├── componentes/
+│   │   ├── AbaAlbuns.jsx        # Discografia do artista
+│   │   ├── AbaHistoria.jsx      # Biografia editorial
+│   │   ├── AbaMusicas.jsx       # Ranking de faixas
+│   │   ├── AvaliacaoVinil.jsx   # Seletor interativo de 1 a 5 vinis
+│   │   ├── Cabecalho.jsx        # Barra de navegação e autenticação
+│   │   ├── FundoMosaicoHero.jsx # Marquee infinito de colunas verticais
+│   │   ├── Logotipo.jsx         # Marca da aplicação
+│   │   ├── ModalAlbum.jsx       # Ficha do álbum com nota por faixa
+│   │   ├── ModalAutenticacao.jsx# Login e cadastro (validado pelo backend)
+│   │   ├── ModalAvaliacao.jsx   # Modal de nota e resenha crítica
+│   │   └── colecao/             # Partes da página Coleção
+│   ├── contextos/
+│   │   └── ContextoUsuario.jsx  # Sessão e avaliações (backend + cópia local)
+│   ├── dados/
+│   │   ├── dadosMusicais.ts     # Banco de dados musical tipado (55 artistas)
+│   │   ├── faixas.js            # Carrega as faixas dos álbuns sob demanda
+│   │   └── faixasAlbuns.json    # Faixas reais de 104 álbuns (levantamento da Mell)
+│   ├── servicos/
+│   │   └── api.js               # Cliente da API do backend
+│   ├── paginas/
+│   │   ├── PaginaArtista.jsx    # Perfil aprofundado do artista
+│   │   ├── PaginaColecao.jsx    # Fichário do crítico e Disco de Ouro
+│   │   ├── PaginaInicial.jsx    # Vitrine, busca unificada e destaques
+│   │   ├── PaginaTodosAlbuns.jsx# Crate digging de álbuns físicos
+│   │   └── PaginaTodosArtistas.jsx# Galeria editorial de artistas
+│   ├── Aplicativo.jsx           # Roteamento e orquestrador de estado global
+│   ├── estilosGlobais.css       # Design system brutalista e animações físicas
+│   └── principal.jsx            # Ponto de entrada do React DOM
+├── index.html                   # HTML base com meta tags e favicon
+├── package.json                 # Dependências e scripts npm
+├── backend/                     # API Spring Boot + MySQL (Matheus e Gabriel)
+├── vite.config.js               # Vite, Tailwind, proxy /api e testes
+└── README.md                    # Documentação do projeto
 ```
 
 ---
 
-## 💻 Pré-requisitos
+## 🔌 Integração Front ↔ Backend
 
-- **Node.js** (versão 18, 20 ou superior recomendada)
-- Gerenciador **npm** (incluso no Node.js)
+O backend fica em `backend/` (Spring Boot + MySQL, por Matheus e Gabriel). Em desenvolvimento o Vite repassa tudo que começa com `/api` para `http://localhost:8080` (ver `vite.config.js`), e o front fala com ele por `src/servicos/api.js`.
+
+| Ação no site | Rota | Corpo enviado |
+| :--- | :--- | :--- |
+| Ao abrir o site | `GET /api/status` | — |
+| Criar conta | `POST /api/usuarios` | `{ nome, email, senha }` |
+| Nota de álbum | `POST /api/avaliacoes/albuns` | `{ artistaId, tituloAlbum, nota, usuario }` |
+| Nota de música ou faixa | `POST /api/avaliacoes/musicas` | `{ artistaId, tituloMusica, nota, usuario }` |
+| Resenha | `POST .../comentarios` | o mesmo corpo + `texto` |
+
+- **Validação**: as mensagens de erro do backend (400 `{ campo: "mensagem" }`) aparecem embaixo de cada campo do cadastro.
+- **Servidor desligado**: o site continua funcionando com os dados no navegador; as notas ficam marcadas como pendentes e são reenviadas quando o servidor volta.
+- **O que o backend ainda precisa** para o front deixar de depender do navegador: salvar usuários e avaliações no MySQL (hoje as rotas só validam), rota de login (`POST /api/login`), rotas de leitura (`GET` das avaliações do usuário) e atualizar a nota quando o mesmo usuário avalia a mesma obra de novo, em vez de duplicar.
+
+### Rodando os dois juntos
+1. Backend: abrir `backend/` no IntelliJ (Java 21), definir `DB_PASSWORD` (e `DB_USER`, se não for `root`) e rodar `RpmApplication`. O banco `sitemusica` precisa existir no MySQL.
+2. Front: `npm run dev` e abrir `http://localhost:5173`.
+
+## 💾 Persistência Local (LocalStorage Schema)
+
+Cópia local usada enquanto o backend não guarda os dados (e quando ele está fora do ar):
+
+| Chave LocalStorage | Tipo | Descrição |
+| :--- | :--- | :--- |
+| `rpm_usuarios` | `Array<Usuario>` | Perfis cadastrados (`id`, `nome`, `email`, `senhaHash`, `criadoEm`). A senha só é guardada como hash SHA-256. |
+| `rpm_sessao` | `string` | ID do usuário atualmente logado. |
+| `rpm_avaliacoes_<id>` | `Record<string, {nota, comentario, obra, sincronizado}>` | Notas (1-5) e resenhas; `obra` identifica o item para o backend e `sincronizado` diz se já chegou ao servidor. |
+| `rpm_favorito_<id>` | `string` | Chave do item definido manualmente como Disco de Ouro. |
 
 ---
 
-## 🚀 Como Rodar Localmente
+## 🚀 Instalação & Execução
 
+### Pré-requisitos
+- **Node.js** (versão 18 ou superior recomendada)
+- Gerenciador de pacotes **npm** ou **yarn**
+
+### Passo a passo
 ```bash
-# 1. Instalar as dependências
+# 1. Clonar o repositório
+git clone https://github.com/murilonora/RPM.git
+cd RPM
+
+# 2. Instalar as dependências
 npm install
 
-# 2. Iniciar o servidor de desenvolvimento
+# 3. Rodar em ambiente de desenvolvimento
 npm run dev
-```
 
-Abra o link informado no terminal (ex: `http://localhost:5173`) no navegador.
-
-Para gerar e validar a build de produção:
-```bash
+# 4. Compilar e otimizar para produção
 npm run build
+
+# 5. Visualizar o build de produção localmente
 npm run preview
 ```
 
 ---
 
-## 🖥 Funcionalidades
-
-1. **Busca Instantânea Inteligente**:
-   - Pesquise pelo nome do artista, gênero, categoria ou até pelo título de uma música.
-   - Pré-visualização com foto, vertente e botão para abrir o perfil direto.
-2. **Filtros por Categorias**:
-   - Alterne com 1 clique entre: *Todos*, *Trap Brasileiro*, *Rap Brasileiro*, *Rap Americano* e *Hip Hop Americano*.
-3. **Catálogo em Cards**:
-   - Visualização de todos os artistas com fotos, ouvintes mensais e síntese de carreira.
-4. **Matéria Editorial em Destaque**:
-   - Artigo com foco no impacto cultural dos *Racionais MC's* e a importância de *Sobrevivendo no Inferno*.
-5. **Página Dinâmica do Artista**:
-   - **Mais ouvidas**: Top faixas com número de reproduções, ano e álbum.
-   - **Álbuns**: Grade com capas estilizadas com as siglas do artista, quantidade de faixas e ano.
-   - **História**: Biografia editorial completa com citação marcante do artista.
-
----
-
-## ➕ Como Adicionar Novos Artistas
-
-Basta abrir o arquivo `src/dados/dadosMusicais.js` e adicionar um novo objeto ao array `listaDeArtistas`:
-
-```javascript
-{
-  id: "nome-do-artista",
-  nome: "Nome Completo",
-  categoria: "Trap Brasileiro", // ou "Rap Brasileiro", "Rap Americano", "Hip Hop Americano"
-  genero: "Subgênero",
-  origem: "Cidade, Estado, País",
-  periodoAtivo: "Ano — presente",
-  ouvintesMensais: "X.X mi",
-  foto: "URL da foto ou caminho em /assets/...",
-  legendaFoto: "Descrição da foto",
-  resumo: "Pequeno resumo da relevância do artista.",
-  biografia: [
-    "Primeiro parágrafo da história...",
-    "Segundo parágrafo..."
-  ],
-  citacao: "“Uma frase marcante do artista.”",
-  musicas: [
-    { titulo: "Nome da Música", album: "Nome do Disco", ano: "2024", reproducoes: "100 mi" }
-  ],
-  albuns: [
-    { titulo: "Nome do Álbum", ano: "2024", faixas: "10 faixas", reproducoes: "300 mi" }
-  ]
-}
-```
-A aplicação irá automaticamente incluí-lo na busca, nos filtros e na grade de exibição!
+## 📄 Licença & Créditos
+Projeto acadêmico do grupo: front-end por **Murilo Nora**, backend por **Matheus Rocha** e **Gabriel Angelo**, avaliação por faixa e levantamento das faixas por **Mell Feital**. As imagens de capas e artistas são utilizadas estritamente para fins educacionais e de demonstração de interface.
