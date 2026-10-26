@@ -27,7 +27,6 @@ export function AbaMusicas({ musicas = [], artistaId = "", aoAbrirLogin }) {
               className="track-capa"
               tamanho={250}
             />
-            <i aria-hidden="true">▶</i>
             <strong>{musica.titulo}</strong>
           </span>
           <span>{musica.album}</span>
