@@ -36,6 +36,7 @@ export function PaginaArtista({ artista, aoAvaliar }) {
           alt={`Foto de ${artista.nome}`}
           className="w-full h-full object-cover object-top"
           loading="eager"
+          tamanho={1000}
         />
         <div className="photo-caption">
           <span>{artista.legendaFoto || `${artista.nome} ao vivo`}</span>

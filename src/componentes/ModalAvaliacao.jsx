@@ -38,7 +38,7 @@ export function ModalAvaliacao({ visivel, aoFechar, item }) {
         {!estaLogado ? (
           <div className="text-center py-2.5">
             <img 
-              src="/assets/vinil-triste.png"
+              src="/assets/vinil-triste.webp"
               alt="Vinil Triste" 
               className="w-40 mx-auto mb-4 block"
             />
@@ -64,6 +64,7 @@ export function ModalAvaliacao({ visivel, aoFechar, item }) {
                   src={item.capa}
                   alt={item.titulo}
                   className="w-16 h-16 shrink-0"
+                  tamanho={250}
                 />
               ) : (
                 <div className="w-16 h-16 bg-[#333] flex items-center justify-center text-xs font-bold shrink-0">

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { listaDeArtistas } from "../dados/dadosMusicais";
-import { normalizarTexto, tratarErroImagem } from "../utilitarios/comuns";
+import { imagemNoTamanho, normalizarTexto, tratarErroImagem } from "../utilitarios/comuns";
 
 const MAX_POR_GRUPO = 6;
 
@@ -158,7 +158,12 @@ export function BuscaUnificada({ termo, aoMudarTermo }) {
                       onMouseMove={() => indice !== indiceAtivo && setIndiceAtivo(indice)}
                       onClick={() => setAberto(false)}
                     >
-                      <img src={item.foto} alt="" className="busca-item-foto" onError={tratarErroImagem} />
+                      <img
+                        src={imagemNoTamanho(item.foto, 250)}
+                        alt=""
+                        className="busca-item-foto"
+                        onError={tratarErroImagem}
+                      />
                       <span className="busca-item-textos">
                         <span className={`busca-selo busca-selo--${item.tipo}`}>{grupo.selo}</span>
                         <strong className="busca-item-titulo">{item.titulo}</strong>

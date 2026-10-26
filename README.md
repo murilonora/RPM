@@ -89,9 +89,8 @@ RPM/
 ├── public/
 │   ├── assets/
 │   │   ├── rpm-mark.svg        # Logotipo vetorial oficial
-│   │   ├── vinil-triste.png    # Mascote do acervo (fundo transparente)
-│   │   └── home-hero.jpg       # Textura de apoio
-│   └── artistas/               # Fotos locais de apoio
+│   │   └── vinil-triste.webp   # Mascote do acervo (fundo transparente)
+│   └── fonts/                  # DM Sans e DM Serif Display hospedadas no projeto
 ├── src/
 │   ├── componentes/
 │   │   ├── AbaAlbuns.jsx        # Discografia do artista

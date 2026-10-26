@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import {
   BrowserRouter,
   Routes,
@@ -11,12 +11,22 @@ import { ProvedorUsuario } from "./contextos/ContextoUsuario";
 import { Cabecalho } from "./componentes/Cabecalho";
 import { ModalAutenticacao } from "./componentes/ModalAutenticacao";
 import { PaginaInicial } from "./paginas/PaginaInicial";
-import { PaginaArtista } from "./paginas/PaginaArtista";
-import { PaginaTodosArtistas } from "./paginas/PaginaTodosArtistas";
-import { PaginaTodosAlbuns } from "./paginas/PaginaTodosAlbuns";
-import { PaginaColecao } from "./paginas/PaginaColecao";
 import { listaDeArtistas } from "./dados/dadosMusicais";
 import { ModalAvaliacao } from "./componentes/ModalAvaliacao";
+
+// A página inicial vai no pacote principal; as demais só baixam quando abertas
+const PaginaArtista = lazy(() =>
+  import("./paginas/PaginaArtista").then((m) => ({ default: m.PaginaArtista }))
+);
+const PaginaTodosArtistas = lazy(() =>
+  import("./paginas/PaginaTodosArtistas").then((m) => ({ default: m.PaginaTodosArtistas }))
+);
+const PaginaTodosAlbuns = lazy(() =>
+  import("./paginas/PaginaTodosAlbuns").then((m) => ({ default: m.PaginaTodosAlbuns }))
+);
+const PaginaColecao = lazy(() =>
+  import("./paginas/PaginaColecao").then((m) => ({ default: m.PaginaColecao }))
+);
 
 // Rola suavemente ao topo em qualquer transição de rota
 function ScrollAoTopo() {
@@ -93,20 +103,22 @@ function ShellAplicativo() {
         aoClicarEntrar={abrirModalDeAutenticacao}
       />
 
-      <Routes>
-        <Route path="/" element={<PaginaInicial />} />
-        <Route path="/artistas" element={<PaginaTodosArtistas />} />
-        <Route path="/albuns" element={<PaginaTodosAlbuns aoAvaliar={abrirAvaliacao} />} />
-        <Route path="/artista/:id" element={<PaginaArtistaComUrl aoAvaliar={abrirAvaliacao} />} />
-        <Route
-          path="/colecao"
-          element={
-            <PaginaColecao aoAvaliar={abrirAvaliacao} aoAbrirLogin={abrirModalDeAutenticacao} />
-          }
-        />
-        {/* Rota coringa com redirecionamento para o início */}
-        <Route path="*" element={<PaginaInicial />} />
-      </Routes>
+      <Suspense fallback={<main className="carregando-pagina" aria-busy="true" />}>
+        <Routes>
+          <Route path="/" element={<PaginaInicial />} />
+          <Route path="/artistas" element={<PaginaTodosArtistas />} />
+          <Route path="/albuns" element={<PaginaTodosAlbuns aoAvaliar={abrirAvaliacao} />} />
+          <Route path="/artista/:id" element={<PaginaArtistaComUrl aoAvaliar={abrirAvaliacao} />} />
+          <Route
+            path="/colecao"
+            element={
+              <PaginaColecao aoAvaliar={abrirAvaliacao} aoAbrirLogin={abrirModalDeAutenticacao} />
+            }
+          />
+          {/* Rota coringa com redirecionamento para o início */}
+          <Route path="*" element={<PaginaInicial />} />
+        </Routes>
+      </Suspense>
 
       <ModalAutenticacao
         visivel={modalAutenticacaoVisivel}

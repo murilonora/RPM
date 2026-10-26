@@ -2,35 +2,40 @@
 
 @font-face {
   font-family: "DM Sans:Black";
-  src: url("https://static.figma.com/font/DMSans_opsz_wght__1") format("woff2");
+  src: url("/fonts/dm-sans-variavel.woff2") format("woff2");
+  font-display: swap;
   font-style: normal;
   font-weight: 900;
 }
 
 @font-face {
   font-family: "DM Sans:Bold";
-  src: url("https://static.figma.com/font/DMSans_opsz_wght__1") format("woff2");
+  src: url("/fonts/dm-sans-variavel.woff2") format("woff2");
+  font-display: swap;
   font-style: normal;
   font-weight: 700;
 }
 
 @font-face {
   font-family: "DM Sans:Regular";
-  src: url("https://static.figma.com/font/DMSans_opsz_wght__1") format("woff2");
+  src: url("/fonts/dm-sans-variavel.woff2") format("woff2");
+  font-display: swap;
   font-style: normal;
   font-weight: 400;
 }
 
 @font-face {
   font-family: "DM Serif Display:Italic";
-  src: url("https://static.figma.com/font/DMSerifDisplay-Italic_2") format("woff2");
+  src: url("/fonts/dm-serif-display-italico.woff2") format("woff2");
+  font-display: swap;
   font-style: italic;
   font-weight: 400;
 }
 
 @font-face {
   font-family: "DM Serif Display:Regular";
-  src: url("https://static.figma.com/font/DMSerifDisplay-Regular_2") format("woff2");
+  src: url("/fonts/dm-serif-display.woff2") format("woff2");
+  font-display: swap;
   font-style: normal;
   font-weight: 400;
 }
@@ -51,6 +56,11 @@ body {
   min-width: 320px;
   min-height: 100vh;
   background: #f7f4ed;
+}
+
+/* Espaço reservado enquanto o código de uma página carrega, para o rodapé não pular */
+.carregando-pagina {
+  min-height: calc(100vh - 76px);
 }
 
 button,
@@ -143,6 +153,58 @@ button {
   align-items: center;
   gap: 24px;
   margin-left: auto;
+}
+
+/* Menu do celular: o botão só aparece quando a navegação do topo é escondida */
+.menu-celular-botao {
+  display: none;
+  padding: 11px 16px;
+  border: 1px solid #191525;
+  background: #191525;
+  color: #f7f4ed;
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.site-header .menu-celular {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 8px 24px 20px;
+  border-bottom: 2px solid #191525;
+  background: #f7f4ed;
+  box-shadow: 0 18px 30px rgb(0 0 0 / 18%);
+}
+
+.site-header .menu-celular a,
+.site-header .menu-celular button {
+  padding: 16px 0;
+  border: 0;
+  border-bottom: 1px solid rgb(25 21 37 / 12%);
+  background: none;
+  color: #191525;
+  font-family: "DM Serif Display:Regular", serif;
+  font-size: 26px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-align: left;
+  text-transform: none;
+  cursor: pointer;
+}
+
+.site-header .menu-celular a.active {
+  color: #ff0004;
+}
+
+.menu-celular-usuario {
+  margin: 16px 0 0;
+  color: #6f6876;
+  font-size: 13px;
 }
 
 .outline-button {
@@ -983,8 +1045,12 @@ button {
     padding: 0 24px;
   }
 
-  .site-header nav {
+  .site-header nav:not(.menu-celular) {
     display: none;
+  }
+
+  .menu-celular-botao {
+    display: block;
   }
 
   .featured-artist {
@@ -1028,8 +1094,13 @@ button {
     padding: 0 18px;
   }
 
-  .collection-button {
+  .collection-button,
+  .nome-usuario {
     display: none;
+  }
+
+  .header-actions {
+    gap: 10px;
   }
 
   .brand img {
@@ -1047,19 +1118,6 @@ button {
   .hero-content h1 {
     font-size: 50px;
     letter-spacing: -1.5px;
-  }
-
-  .search-result {
-    grid-template-columns: 46px 1fr;
-  }
-
-  .search-result img {
-    width: 46px;
-    height: 46px;
-  }
-
-  .result-action {
-    display: none !important;
   }
 
   .quick-search {
@@ -1913,8 +1971,13 @@ button {
     gap: 16px;
   }
   .albuns-crate-grid {
-    grid-template-columns: 1fr;
+    /* minmax(0, 1fr): sem isso o cartão não encolhe abaixo do disco de vinil e a página rola para o lado */
+    grid-template-columns: minmax(0, 1fr);
     gap: 20px;
+  }
+
+  .album-crate-card {
+    min-width: 0;
   }
   .artistas-letras-bloco,
   .albuns-letras-bloco {
@@ -2961,6 +3024,17 @@ button {
 .seletor-card-item.brutal-item.selecionado {
   border-color: #ffd700;
   background: rgba(255, 215, 0, 0.15);
+}
+
+.modal-seletor-titulo {
+  margin: 4px 0 8px;
+  text-align: left;
+}
+
+.modal-seletor-sub {
+  margin-bottom: 20px;
+  color: #888;
+  font-size: 0.85rem;
 }
 
 .seletor-lista-itens {
