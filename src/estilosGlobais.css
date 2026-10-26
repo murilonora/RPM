@@ -1166,7 +1166,13 @@ button.cartao-link {
 }
 
 .ranking-row > .avaliacao-disco {
+  justify-self: center;
   margin: 10px 0;
+}
+
+/* Título "Avaliação" centralizado sobre a pílula */
+.list-header > span:last-child {
+  text-align: center;
 }
 
 .track-capa {
