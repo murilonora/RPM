@@ -582,8 +582,9 @@ button {
   content: "";
 }
 
-.cartao-com-link button,
-.cartao-com-link .avaliacao-vinil {
+.cartao-com-link button:not(.cartao-link),
+.cartao-com-link .avaliacao-vinil,
+.cartao-com-link .avaliacao-disco {
   position: relative;
   z-index: 4;
 }
@@ -609,149 +610,216 @@ button.cartao-link {
   cursor: pointer;
 }
 
-/* Ficha do álbum: disco à esquerda, faixas avaliáveis à direita */
-.modal-conteudo.modal-album {
-  display: grid;
-  grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
-  gap: 32px;
-  max-width: 920px;
-  max-height: min(680px, 90vh);
-  padding: 32px;
+/* Janela do álbum e avaliação com o visual da Mell (mell-teste):
+   fundo creme, cantos arredondados, cartões brancos por faixa e
+   pílula "Sua nota:" com discos que acendem */
+.album-faixas-fundo {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.85);
 }
 
-.modal-album-disco {
+.album-faixas-janela {
+  position: relative;
   display: flex;
+  width: 800px;
+  max-width: 95vw;
+  height: 500px;
+  max-height: 90vh;
+  gap: 24px;
+  padding: 24px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #f8f5ee;
+  color: #18181b;
+}
+
+.album-faixas-fechar {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 1;
+  border: none;
+  background: none;
+  color: #9ca3af;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.album-faixas-disco {
+  display: flex;
+  width: 50%;
   min-width: 0;
   flex-direction: column;
+  height: 100%;
+  padding-right: 24px;
+  border-right: 1px solid #e5e7eb;
+  overflow-y: auto;
 }
 
-.modal-album-capa {
+.album-faixas-capa {
   width: 100%;
-  aspect-ratio: 1;
-  margin-bottom: 18px;
+  flex-shrink: 0;
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-.modal-album-artista {
-  margin: 0 0 4px;
-  color: #ff0004;
-  font-family: "DM Sans:Bold", sans-serif;
-  font-size: 13px;
-}
-
-.modal-album-titulo {
-  margin: 0 0 6px;
-  font-family: "DM Serif Display:Regular", serif;
-  font-size: 30px;
-  font-weight: 400;
-  line-height: 1.05;
-}
-
-.modal-album-meta {
-  margin: 0 0 20px;
-  color: #8f8a99;
-  font-size: 13px;
-}
-
-.modal-album-nota {
+.album-faixas-capa-vazia {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 14px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-  color: #b9b4a8;
-  font-size: 13px;
+  align-items: center;
+  justify-content: center;
+  background: #e4e4e7;
+  color: #71717a;
+  font-size: 24px;
+  font-weight: bold;
 }
 
-.modal-album-resenha {
-  margin-top: 16px;
-  padding: 12px 16px;
-  border: 1px solid #f7f4ed;
-  background: transparent;
-  color: #f7f4ed;
-  font-family: "DM Sans:Bold", sans-serif;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+.album-faixas-titulo {
+  margin: 16px 0 0;
+  color: #18181b;
+  font-size: 24px;
+  font-weight: bold;
 }
 
-.modal-album-resenha:hover {
-  background: #f7f4ed;
-  color: #0f0e14;
+.album-faixas-ano {
+  margin: 4px 0 0;
+  color: #52525b;
 }
 
-.modal-album-faixas {
+.album-faixas-lista {
+  width: 50%;
   min-width: 0;
   overflow-y: auto;
-  padding-right: 6px;
+  padding-right: 8px;
 }
 
-.modal-album-aviso {
-  margin: 24px 0;
-  color: #8f8a99;
+.album-faixas-subtitulo {
+  margin: 0 0 16px;
+  color: #18181b;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.album-faixas-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+  padding: 12px;
+  border: 1px solid #f4f4f5;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.album-faixas-nome {
+  margin-bottom: 8px;
+  color: #27272a;
+  font-weight: 500;
+}
+
+.album-faixas-aviso {
+  color: #52525b;
   font-size: 14px;
   line-height: 1.6;
 }
 
-.lista-faixas {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.lista-faixas-item {
-  display: grid;
-  grid-template-columns: 28px minmax(0, 1fr) auto auto;
+/* Pílula "Sua nota:" */
+.avaliacao-disco {
+  display: flex;
+  width: fit-content;
   align-items: center;
-  gap: 12px;
-  padding: 10px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  gap: 8px;
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 8px;
+  background: rgba(24, 24, 27, 0.1);
 }
 
-.lista-faixas-numero {
-  color: #6f6876;
-  font-family: monospace;
-  font-size: 12px;
-}
-
-.lista-faixas-titulo {
-  overflow: hidden;
-  font-size: 15px;
-  text-overflow: ellipsis;
+.avaliacao-disco-rotulo {
+  flex-shrink: 0;
   white-space: nowrap;
+  margin-right: 8px;
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 500;
 }
 
-.lista-faixas-duracao {
-  color: #8f8a99;
-  font-family: monospace;
-  font-size: 12px;
+.avaliacao-disco-lista {
+  display: flex;
+  gap: 6px;
 }
 
-.lista-faixas-item .avaliacao-vinil .nota-texto {
-  display: none;
+.avaliacao-disco--escuro {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.avaliacao-disco--escuro .avaliacao-disco-rotulo {
+  color: #a1a1aa;
+}
+
+/* Disco escuro some no fundo preto: clareia os apagados */
+.avaliacao-disco--escuro .avaliacao-disco-botao:not(.aceso) {
+  filter: grayscale(1) brightness(2.6);
+  opacity: 0.4;
+}
+
+.avaliacao-disco--escuro .avaliacao-disco-botao:not(.aceso):hover {
+  opacity: 0.7;
+}
+
+.avaliacao-disco-botao {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  filter: grayscale(1);
+  opacity: 0.3;
+  transition: all 0.2s ease-out;
+}
+
+.avaliacao-disco-botao:hover {
+  opacity: 0.6;
+  transform: scale(1.05);
+}
+
+.avaliacao-disco-botao.aceso {
+  filter: grayscale(0) drop-shadow(0 0 8px rgba(244, 63, 94, 0.6));
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.avaliacao-disco-botao svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 @media (max-width: 720px) {
-  .modal-conteudo.modal-album {
-    grid-template-columns: 1fr;
+  .album-faixas-janela {
+    flex-direction: column;
+    height: auto;
     overflow-y: auto;
-    padding: 24px 18px;
   }
 
-  .modal-album-capa {
-    width: 160px;
-  }
-
-  .modal-album-faixas {
+  .album-faixas-disco,
+  .album-faixas-lista {
+    width: 100%;
+    height: auto;
+    padding-right: 0;
+    border-right: 0;
     overflow: visible;
   }
 
-  .lista-faixas-item {
-    grid-template-columns: 24px minmax(0, 1fr) auto;
-  }
-
-  .lista-faixas-duracao {
-    display: none;
+  .album-faixas-capa {
+    width: 180px;
   }
 }
 
