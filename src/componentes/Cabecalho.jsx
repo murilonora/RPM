@@ -1,21 +1,17 @@
+import { NavLink } from "react-router-dom";
 import { Logotipo } from "./Logotipo";
 import { useUsuario } from "../contextos/ContextoUsuario";
 
+// NavLink já marca a rota atual com a classe "active" e aria-current="page"
+const classeDoLink = ({ isActive }) => (isActive ? "active" : "");
+
 // Cabecalho com navegacao, botao de colecao e area de login/usuario
-export function Cabecalho({
-  aoIrParaInicio,
-  aoClicarDescobrir,
-  aoClicarArtistas,
-  aoClicarAlbuns,
-  aoClicarColecao,
-  aoClicarEntrar,
-  rotaAtual = "/",
-}) {
+export function Cabecalho({ aoClicarDescobrir, aoClicarEntrar }) {
   const { estaLogado, usuarioLogado, sairDaConta } = useUsuario();
 
   return (
     <header className="site-header">
-      <Logotipo aoClicar={aoIrParaInicio} />
+      <Logotipo />
       <nav aria-label="Navegação principal">
         <button
           type="button"
@@ -24,29 +20,20 @@ export function Cabecalho({
         >
           Descobrir
         </button>
-        <button
-          type="button"
-          className={rotaAtual === "/artistas" ? "active" : ""}
-          onClick={aoClicarArtistas}
-        >
+        <NavLink to="/artistas" className={classeDoLink}>
           Artistas
-        </button>
-        <button
-          type="button"
-          className={rotaAtual === "/albuns" ? "active" : ""}
-          onClick={aoClicarAlbuns}
-        >
+        </NavLink>
+        <NavLink to="/albuns" className={classeDoLink}>
           Álbuns
-        </button>
+        </NavLink>
       </nav>
       <div className="header-actions">
-        <button
-          type="button"
-          className={`collection-button ${rotaAtual === "/colecao" ? "active" : ""}`}
-          onClick={aoClicarColecao}
+        <NavLink
+          to="/colecao"
+          className={({ isActive }) => `collection-button ${isActive ? "active" : ""}`}
         >
           Coleção
-        </button>
+        </NavLink>
         {estaLogado ? (
           <div className="usuario-logado">
             <span className="nome-usuario">{usuarioLogado.nome}</span>

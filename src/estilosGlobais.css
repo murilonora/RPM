@@ -58,6 +58,18 @@ input {
   font: inherit;
 }
 
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Foco visível para quem navega por teclado; :where() mantém especificidade zero
+   para que estilos de foco específicos de cada componente continuem valendo */
+:where(a, button, input, textarea, [tabindex]):focus-visible {
+  outline: 2px solid #ff0004;
+  outline-offset: 3px;
+}
+
 button {
   color: inherit;
 }
@@ -106,6 +118,7 @@ button {
 }
 
 .site-header nav button,
+.site-header nav a,
 .collection-button {
   padding: 8px 0;
   border: 0;
@@ -119,7 +132,7 @@ button {
   transition: color 0.15s ease, border-color 0.15s ease;
 }
 
-.site-header nav button.active,
+.site-header nav a.active,
 .collection-button.active {
   color: #ff0004;
   border-bottom: 2px solid #ff0004;
@@ -252,6 +265,107 @@ button {
   cursor: pointer;
 }
 
+.search-box:focus-within {
+  box-shadow: 0 12px 40px rgb(0 0 0 / 28%), 0 0 0 2px #ff0004;
+}
+
+/* Resultados da busca unificada */
+.busca-dropdown {
+  position: absolute;
+  z-index: 50;
+  top: calc(100% + 8px);
+  right: 0;
+  left: 0;
+  max-height: min(420px, 60vh);
+  overflow-y: auto;
+  padding: 8px;
+  border: 1px solid #191525;
+  background: #f7f4ed;
+  box-shadow: 0 18px 40px rgb(0 0 0 / 35%);
+  text-align: left;
+}
+
+.busca-grupo-titulo {
+  margin: 10px 10px 4px;
+  color: #7e786b;
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 11px;
+}
+
+.busca-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  border-left: 2px solid transparent;
+}
+
+.busca-item.ativo {
+  border-left-color: #ff0004;
+  background: #ebe6da;
+}
+
+.busca-item-foto {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  object-fit: cover;
+  background: #191525;
+}
+
+.busca-item-textos {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.busca-selo {
+  align-self: flex-start;
+  padding: 1px 6px;
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 10px;
+  border: 1px solid #191525;
+}
+
+.busca-selo--artista {
+  background: #191525;
+  color: #f7f4ed;
+}
+
+.busca-selo--musica {
+  border-color: #ff0004;
+  background: #ff0004;
+  color: #f7f4ed;
+}
+
+.busca-selo--album {
+  background: transparent;
+  color: #191525;
+}
+
+.busca-item-titulo {
+  overflow: hidden;
+  font-size: 15px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.busca-item-sub {
+  overflow: hidden;
+  color: #6f6876;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.busca-vazio {
+  margin: 0;
+  padding: 14px 12px;
+  color: #6f6876;
+  font-size: 14px;
+}
+
 .quick-search {
   display: flex;
   align-items: center;
@@ -261,8 +375,12 @@ button {
   flex-wrap: wrap;
 }
 
-.quick-search span {
+.quick-search .quick-search-sortear {
   margin-right: 4px;
+  padding: 6px 2px;
+  border: 0;
+  background: none;
+  cursor: pointer;
   color: #c8c4cf;
   font-size: 10px;
   letter-spacing: 1.4px;
@@ -271,11 +389,11 @@ button {
   transition: color 0.2s ease;
 }
 
-.quick-search span:hover {
+.quick-search .quick-search-sortear:hover {
   color: #ff0004;
 }
 
-.quick-search button {
+.quick-search .btn-explorar-item {
   padding: 6px 14px;
   border: 1px solid rgba(247, 244, 237, 0.28);
   border-radius: 999px;
@@ -290,7 +408,7 @@ button {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.quick-search button:hover {
+.quick-search .btn-explorar-item:hover {
   background: #f7f4ed;
   color: #14121c;
   border-color: #f7f4ed;
@@ -336,6 +454,85 @@ button {
 
 .intro-section > h2 em {
   color: #191525;
+}
+
+/* Catálogo da página inicial: cabeçalho, filtro por vertente e cartões */
+.intro-section.catalogo-secao {
+  padding-top: 40px;
+}
+
+.intro-section.destaque-secao {
+  margin-top: 40px;
+}
+
+.intro-section > .catalogo-cabecalho {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  color: inherit;
+}
+
+.catalogo-titulo {
+  margin: 4px 0;
+}
+
+.filtro-categorias {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filtro-categoria-btn {
+  padding: 8px 16px;
+  border: 1px solid #d4cfc4;
+  background: #f7f4ed;
+  color: #191525;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.filtro-categoria-btn:hover {
+  border-color: #191525;
+}
+
+.filtro-categoria-btn.ativo {
+  border-color: #191525;
+  background: #191525;
+  color: #f7f4ed;
+  font-family: "DM Sans:Bold", sans-serif;
+}
+
+.cartao-artista-home {
+  display: block;
+}
+
+/* Cartão inteiro clicável com um único link (o título): o ::after do link
+   cobre o cartão, e botões internos ficam acima dele com z-index */
+.cartao-com-link {
+  position: relative;
+}
+
+/* z-index 3: acima da capa e do disco dos cartões (que usam até 2) */
+.cartao-link::after {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  content: "";
+}
+
+.cartao-com-link button,
+.cartao-com-link .avaliacao-vinil {
+  position: relative;
+  z-index: 4;
+}
+
+.cartao-com-link:focus-within {
+  outline: 2px solid #ff0004;
+  outline-offset: 3px;
+}
+
+.cartao-link:focus-visible {
+  outline: none;
 }
 
 .featured-artist {
@@ -427,14 +624,15 @@ button {
 }
 
 .artist-sidebar > img,
-.artist-sidebar > div {
+.artist-sidebar > div:not(.photo-caption) {
   width: 100%;
   height: 100%;
 }
 
 .artist-sidebar > div img {
   object-fit: cover;
-  object-position: top;
+  /* Rostos ficam no terço de cima das fotos do Deezer; "top" cortava a cabeça em caixas largas */
+  object-position: 50% 22%;
   filter: saturate(0.8) contrast(1.05);
 }
 
@@ -2765,8 +2963,64 @@ button {
   background: rgba(255, 215, 0, 0.15);
 }
 
+.seletor-lista-itens {
+  display: grid;
+  gap: 8px;
+  max-height: 55vh;
+  overflow-y: auto;
+}
+
+.seletor-card-item.brutal-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 10px;
+  color: #f7f4ed;
+  text-align: left;
+  cursor: pointer;
+}
+
 .seletor-item-capa {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  object-fit: cover;
   border-radius: 0;
+}
+
+.seletor-item-textos {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.seletor-item-textos strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.seletor-item-textos span {
+  color: #8f8a99;
+  font-size: 12px;
+}
+
+.seletor-check-badge,
+.seletor-btn-escolher {
+  flex-shrink: 0;
+  font-family: monospace;
+  font-size: 11px;
+}
+
+.seletor-check-badge {
+  color: #ffd700;
+}
+
+.seletor-btn-escolher {
+  color: #8f8a99;
 }
 
 /* RESPONSIVIDADE BRUTALISTA */

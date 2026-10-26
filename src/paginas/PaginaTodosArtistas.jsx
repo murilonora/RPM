@@ -1,10 +1,11 @@
 import { useState, useMemo } from "react";
+import { Link } from "react-router-dom";
 import { listaDeArtistas } from "../dados/dadosMusicais";
 import { normalizarTexto } from "../utilitarios/comuns";
 import { FiltroAlfabetico } from "../componentes/FiltroAlfabetico";
 import { ImagemComFallback } from "../componentes/ImagemComFallback";
 
-export function PaginaTodosArtistas({ aoSelecionarArtista }) {
+export function PaginaTodosArtistas() {
   const [termoBusca, setTermoBusca] = useState("");
   const [letraFiltro, setLetraFiltro] = useState("TODOS");
 
@@ -90,11 +91,7 @@ export function PaginaTodosArtistas({ aoSelecionarArtista }) {
             const totalFaixas = artista.musicas ? artista.musicas.length : 0;
 
             return (
-              <article
-                key={artista.id}
-                className="artista-quadro-card"
-                onClick={() => aoSelecionarArtista(artista)}
-              >
+              <Link key={artista.id} to={`/artista/${artista.id}`} className="artista-quadro-card">
                 {/* Imagem do Artista em Moldura Reta com Aspecto Retrato */}
                 <div className="artista-moldura-foto">
                   <ImagemComFallback
@@ -123,7 +120,7 @@ export function PaginaTodosArtistas({ aoSelecionarArtista }) {
                     <span className="artista-btn-ver">EXPLORAR →</span>
                   </div>
                 </div>
-              </article>
+              </Link>
             );
           })
         )}

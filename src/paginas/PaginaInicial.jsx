@@ -1,359 +1,120 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { Link } from "react-router-dom";
 import { listaDeArtistas, categoriasMusicais } from "../dados/dadosMusicais";
 import { FundoMosaicoHero } from "../componentes/FundoMosaicoHero";
 import { ImagemComFallback } from "../componentes/ImagemComFallback";
-import { normalizarTexto, tratarErroImagem } from "../utilitarios/comuns";
+import { BuscaUnificada } from "../componentes/BuscaUnificada";
+import { normalizarTexto } from "../utilitarios/comuns";
 
-// Estilos reutilizáveis para o dropdown de busca
-const estiloDropdown = {
-  position: "absolute",
-  top: "100%",
-  left: 0,
-  right: 0,
-  background: "#ffffff",
-  borderRadius: "0px",
-  border: "1px solid #191525",
-  boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
-  marginTop: "8px",
-  maxHeight: "400px",
-  overflowY: "auto",
-  zIndex: 50,
-  padding: "8px",
-};
+const INTERVALO_EXPLORAR_MS = 7000;
 
-const estiloItemBusca = {
-  width: "100%",
-  display: "flex",
-  alignItems: "center",
-  textAlign: "left",
-  padding: "8px 12px",
-  marginBottom: "4px",
-  borderRadius: "0px",
-  border: "none",
-  cursor: "pointer",
-  background: "transparent",
-};
+// Texto de busca de cada artista (nome, gênero, categoria, músicas e álbuns), normalizado uma vez
+const TEXTO_BUSCA_ARTISTA = new Map(
+  listaDeArtistas.map((artista) => [
+    artista.id,
+    normalizarTexto(
+      [
+        artista.nome,
+        artista.categoria,
+        artista.genero,
+        ...artista.musicas.map((m) => m.titulo),
+        ...artista.albuns.map((a) => a.titulo),
+      ].join(" ")
+    ),
+  ])
+);
 
-const estiloFoto = {
-  width: "48px",
-  height: "48px",
-  borderRadius: "0px",
-  objectFit: "cover",
-  marginRight: "12px",
-  flexShrink: 0,
-};
+const artistaEmDestaque =
+  listaDeArtistas.find((a) => a.id === "racionais-mcs") || listaDeArtistas[0];
 
-const estiloBadge = (cor) => ({
-  display: "inline-block",
-  fontSize: "0.65rem",
-  fontWeight: 700,
-  textTransform: "uppercase",
-  letterSpacing: "0.06em",
-  padding: "2px 8px",
-  borderRadius: "0px",
-  marginBottom: "3px",
-  background: cor,
-  color: "#ffffff",
-});
-
-const CORES_TIPO = {
-  artista: "#191525",
-  musica: "#d94e28",
-  album: "#2563eb",
-};
-
-// Página inicial com barra de busca unificada (artistas, músicas e álbuns)
-export function PaginaInicial({ aoSelecionarArtista }) {
-  const [termoBusca, setTermoBusca] = useState("");
-  const [categoriaAtiva, setCategoriaAtiva] = useState("Todos");
-  const [artistasExplorar, setArtistasExplorar] = useState([]);
-
-  // Função para sortear 5 artistas aleatórios da base de dados
-  function sortearArtistasExplorar() {
-    const embaralhada = [...listaDeArtistas].sort(() => 0.5 - Math.random());
-    setArtistasExplorar(embaralhada.slice(0, 5));
+// Embaralhamento Fisher-Yates: cada ordem tem a mesma chance de sair
+function sortearArtistas(quantidade) {
+  const copia = [...listaDeArtistas];
+  for (let i = copia.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copia[i], copia[j]] = [copia[j], copia[i]];
   }
+  return copia.slice(0, quantidade);
+}
 
-  // Sorteia inicialmente e atualiza periodicamente a cada 7 segundos
+// Sugestões rotativas isoladas num componente próprio: o intervalo de 7s
+// redesenha só esta linha, e não a página inteira
+function ExplorarArtistas() {
+  const [artistas, setArtistas] = useState(() => sortearArtistas(5));
+
   useEffect(() => {
-    sortearArtistasExplorar();
-    const intervalo = setInterval(() => {
-      sortearArtistasExplorar();
-    }, 7000);
+    const intervalo = setInterval(() => setArtistas(sortearArtistas(5)), INTERVALO_EXPLORAR_MS);
     return () => clearInterval(intervalo);
   }, []);
 
-  const artistaEmDestaque =
-    listaDeArtistas.find((a) => a.id === "racionais-mcs") || listaDeArtistas[0];
+  return (
+    <div className="quick-search">
+      <button
+        type="button"
+        className="quick-search-sortear"
+        onClick={() => setArtistas(sortearArtistas(5))}
+        title="Sortear outros artistas"
+      >
+        Explorar ⟳
+      </button>
+      {artistas.map((artista) => (
+        <Link key={artista.id} to={`/artista/${artista.id}`} className="btn-explorar-item">
+          {artista.nome}
+        </Link>
+      ))}
+    </div>
+  );
+}
 
-  const termo = normalizarTexto(termoBusca.trim());
+// Página inicial com barra de busca unificada (artistas, músicas e álbuns)
+export function PaginaInicial() {
+  const [termoBusca, setTermoBusca] = useState("");
+  const [categoriaAtiva, setCategoriaAtiva] = useState("Todos");
 
-  // -----------------------------------------------------------
-  // BUSCA UNIFICADA: gera uma lista de resultados com 3 tipos
-  // tipo: "artista" | "musica" | "album"
-  // -----------------------------------------------------------
-  const resultadosBusca = (() => {
-    if (!termo) return [];
-
-    const resultados = [];
-
-    listaDeArtistas.forEach((artista) => {
-      // 1. Verifica se o artista bate com o termo
-      if (
-        normalizarTexto(artista.nome).includes(termo) ||
-        normalizarTexto(artista.genero).includes(termo) ||
-        normalizarTexto(artista.categoria).includes(termo)
-      ) {
-        resultados.push({
-          tipo: "artista",
-          chave: `artista-${artista.id}`,
-          foto: artista.foto,
-          titulo: artista.nome,
-          subtitulo: `${artista.categoria} · ${artista.origem}`,
-          artista: artista,
-          acaoAoClicar: () => aoSelecionarArtista(artista),
-        });
-      }
-
-      // 2. Verifica músicas do artista
-      artista.musicas.forEach((musica, idx) => {
-        if (normalizarTexto(musica.titulo).includes(termo)) {
-          resultados.push({
-            tipo: "musica",
-            chave: `musica-${artista.id}-${idx}`,
-            foto: musica.capa || artista.foto,
-            titulo: musica.titulo,
-            subtitulo: `Música · ${musica.album} · ${artista.nome}`,
-            artista: artista,
-            acaoAoClicar: () => aoSelecionarArtista(artista),
-          });
-        }
-      });
-
-      // 3. Verifica álbuns do artista
-      artista.albuns.forEach((album, idx) => {
-        if (normalizarTexto(album.titulo).includes(termo)) {
-          resultados.push({
-            tipo: "album",
-            chave: `album-${artista.id}-${idx}`,
-            foto: album.capa || artista.foto,
-            titulo: album.titulo,
-            subtitulo: `Álbum · ${album.ano} · ${album.faixas} · ${artista.nome}`,
-            artista: artista,
-            acaoAoClicar: () => aoSelecionarArtista(artista),
-          });
-        }
-      });
-    });
-
-    return resultados;
-  })();
+  const termo = normalizarTexto(termoBusca);
 
   // Filtro da grade de cards (por categoria + busca)
-  const artistasFiltradosCatalogo = listaDeArtistas.filter((artista) => {
-    const correspondeBusca =
-      !termo ||
-      normalizarTexto(artista.nome).includes(termo) ||
-      normalizarTexto(artista.categoria).includes(termo) ||
-      normalizarTexto(artista.genero).includes(termo) ||
-      artista.musicas.some((m) => normalizarTexto(m.titulo).includes(termo)) ||
-      artista.albuns.some((a) => normalizarTexto(a.titulo).includes(termo));
-
-    const correspondeCategoria =
-      categoriaAtiva === "Todos" || artista.categoria === categoriaAtiva;
-
-    return correspondeBusca && correspondeCategoria;
-  });
-
-  function lidarComEnvio(evento) {
-    evento.preventDefault();
-    if (resultadosBusca.length > 0) {
-      resultadosBusca[0].acaoAoClicar();
-    }
-  }
+  const artistasFiltradosCatalogo = useMemo(
+    () =>
+      listaDeArtistas.filter(
+        (artista) =>
+          (!termo || TEXTO_BUSCA_ARTISTA.get(artista.id).includes(termo)) &&
+          (categoriaAtiva === "Todos" || artista.categoria === categoriaAtiva)
+      ),
+    [termo, categoriaAtiva]
+  );
 
   return (
     <main>
       <section className="home-hero">
         <FundoMosaicoHero />
         <div className="hero-content">
-          <h1>
-            Toda música tem uma história.
-          </h1>
+          <h1>Toda música tem uma história.</h1>
           <p className="hero-copy">
             Arquivo definitivo da música. Explore discografias essenciais, descubra trajetórias históricas e monte sua coleção de críticas em vinil.
           </p>
 
-          <form className="search-box" onSubmit={lidarComEnvio}>
-            <span className="search-symbol" aria-hidden="true" />
-            <input
-              value={termoBusca}
-              onChange={(e) => setTermoBusca(e.target.value)}
-              placeholder="Pesquise artista, música ou álbum..."
-              aria-label="Pesquisar artista, música ou álbum"
-              autoComplete="off"
-            />
-            <button type="submit" aria-label="Buscar">→</button>
-
-            {/* DROPDOWN DE RESULTADOS UNIFICADOS */}
-            {termo.length > 0 && (
-              <div style={estiloDropdown}>
-                {resultadosBusca.length === 0 ? (
-                  <p style={{ padding: "12px", margin: 0, color: "#666" }}>
-                    Nenhum resultado para "{termoBusca}".
-                  </p>
-                ) : (
-                  <>
-                    {/* Agrupa resultados por tipo para exibir com cabeçalhos */}
-                    {["artista", "musica", "album"].map((tipo) => {
-                      const itensDeTipo = resultadosBusca.filter((r) => r.tipo === tipo);
-                      if (itensDeTipo.length === 0) return null;
-
-                      const labelGrupo =
-                        tipo === "artista"
-                          ? " Artistas"
-                          : tipo === "musica"
-                          ? " Músicas"
-                          : " Álbuns";
-
-                      return (
-                        <div key={tipo}>
-                          {/* Cabeçalho do grupo */}
-                          <p
-                            style={{
-                              margin: "8px 12px 4px",
-                              fontSize: "0.7rem",
-                              fontWeight: 700,
-                              textTransform: "uppercase",
-                              letterSpacing: "0.08em",
-                              color: "#999",
-                            }}
-                          >
-                            {labelGrupo}
-                          </p>
-
-                          {itensDeTipo.map((resultado) => (
-                            <button
-                              key={resultado.chave}
-                              type="button"
-                              style={estiloItemBusca}
-                              onClick={resultado.acaoAoClicar}
-                              onMouseEnter={(e) =>
-                                (e.currentTarget.style.background = "#f7f4ed")
-                              }
-                              onMouseLeave={(e) =>
-                                (e.currentTarget.style.background = "transparent")
-                              }
-                            >
-                              <img
-                                src={resultado.foto}
-                                alt={resultado.titulo}
-                                style={estiloFoto}
-                                onError={tratarErroImagem}
-                              />
-                              <span style={{ flex: 1, minWidth: 0 }}>
-                                {/* Badge colorido indicando o tipo */}
-                                <span style={estiloBadge(CORES_TIPO[resultado.tipo])}>
-                                  {resultado.tipo === "artista"
-                                    ? "Artista"
-                                    : resultado.tipo === "musica"
-                                    ? "Música"
-                                    : "Álbum"}
-                                </span>
-                                <strong
-                                  style={{
-                                    display: "block",
-                                    fontSize: "0.95rem",
-                                    whiteSpace: "nowrap",
-                                    overflow: "hidden",
-                                    textOverflow: "ellipsis",
-                                  }}
-                                >
-                                  {resultado.titulo}
-                                </strong>
-                                <small style={{ color: "#777", fontSize: "0.78rem" }}>
-                                  {resultado.subtitulo}
-                                </small>
-                              </span>
-                              <span
-                                style={{
-                                  color: "#d94e28",
-                                  fontSize: "0.8rem",
-                                  fontWeight: 600,
-                                  marginLeft: "8px",
-                                  whiteSpace: "nowrap",
-                                }}
-                              >
-                                Ver perfil →
-                              </span>
-                            </button>
-                          ))}
-                        </div>
-                      );
-                    })}
-                  </>
-                )}
-              </div>
-            )}
-          </form>
-
-          <div className="quick-search">
-            <span
-              onClick={sortearArtistasExplorar}
-              title="Clique para sortear outros artistas"
-              style={{ cursor: "pointer" }}
-            >
-              Explorar ⟳:
-            </span>
-            {artistasExplorar.map((artista) => (
-              <button
-                key={artista.id}
-                type="button"
-                className="btn-explorar-item"
-                onClick={() => aoSelecionarArtista(artista)}
-                title={`Ver página de ${artista.nome}`}
-              >
-                {artista.nome}
-              </button>
-            ))}
-          </div>
+          <BuscaUnificada termo={termoBusca} aoMudarTermo={setTermoBusca} />
+          <ExplorarArtistas />
         </div>
         <span className="hero-index">RPM — ROTAÇÃO POR MINUTO</span>
       </section>
 
       {/* Filtros de categorias e grade de cards */}
-      <section className="intro-section" style={{ paddingTop: "40px" }}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            flexWrap: "wrap",
-            gap: "16px",
-          }}
-        >
+      <section className="intro-section catalogo-secao">
+        <div className="catalogo-cabecalho">
           <div>
             <p className="eyebrow">Catálogo Completo</p>
-            <h2 style={{ margin: "4px 0" }}>Selecione por vertente ou movimento</h2>
+            <h2 className="catalogo-titulo">Selecione por vertente ou movimento</h2>
           </div>
-          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+          <div className="filtro-categorias" role="group" aria-label="Filtrar por vertente">
             {categoriasMusicais.map((cat) => (
               <button
                 key={cat}
+                type="button"
+                className={`filtro-categoria-btn ${categoriaAtiva === cat ? "ativo" : ""}`}
+                aria-pressed={categoriaAtiva === cat}
                 onClick={() => setCategoriaAtiva(cat)}
-                style={{
-                  padding: "8px 16px",
-                  borderRadius: "0px",
-                  border:
-                    categoriaAtiva === cat
-                      ? "2px solid #191525"
-                      : "1px solid #d4cfc4",
-                  background: categoriaAtiva === cat ? "#191525" : "#f7f4ed",
-                  color: categoriaAtiva === cat ? "#ffffff" : "#191525",
-                  fontWeight: categoriaAtiva === cat ? "bold" : "normal",
-                  cursor: "pointer",
-                  transition: "all 0.2s",
-                }}
               >
                 {cat}
               </button>
@@ -364,14 +125,14 @@ export function PaginaInicial({ aoSelecionarArtista }) {
         {/* Grade de cards */}
         <div className="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-5 mt-6">
           {artistasFiltradosCatalogo.map((artista) => (
-            <article
+            <Link
               key={artista.id}
-              onClick={() => aoSelecionarArtista(artista)}
-              className="bg-white border border-[#191525] cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-lg overflow-hidden group"
+              to={`/artista/${artista.id}`}
+              className="cartao-artista-home bg-white border border-[#191525] transition-all duration-200 hover:-translate-y-1 hover:shadow-lg overflow-hidden group"
             >
               <ImagemComFallback
                 src={artista.foto}
-                alt={artista.nome}
+                alt=""
                 className="w-full h-44"
               />
               <div className="p-4">
@@ -389,13 +150,13 @@ export function PaginaInicial({ aoSelecionarArtista }) {
                   <span className="text-[#ff0004] group-hover:translate-x-0.5 transition-transform">Ver perfil →</span>
                 </div>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
       </section>
 
       {/* Matéria editorial em destaque */}
-      <section className="intro-section" style={{ marginTop: "40px" }}>
+      <section className="intro-section destaque-secao">
         <div>
           <p className="eyebrow">Histórias em destaque</p>
           <span className="edition">Edição Especial — Movimento Hip Hop</span>
@@ -403,17 +164,10 @@ export function PaginaInicial({ aoSelecionarArtista }) {
         <h2>
           Sobrevivendo no Inferno: A bíblia do <em>rap brasileiro.</em>
         </h2>
-        <button
-          className="featured-artist"
-          onClick={() => aoSelecionarArtista(artistaEmDestaque)}
-        >
+        <Link className="featured-artist" to={`/artista/${artistaEmDestaque.id}`}>
           <span className="feature-number">01</span>
           <div className="feature-image">
-            <img
-              src={artistaEmDestaque.foto}
-              alt="Foto do artista em destaque"
-              style={{ objectFit: "cover" }}
-            />
+            <img src={artistaEmDestaque.foto} alt="" />
           </div>
           <div className="feature-copy">
             <span>Especial de Leitura · 10 min</span>
@@ -424,7 +178,7 @@ export function PaginaInicial({ aoSelecionarArtista }) {
             </p>
             <b>Ler história completa e discografia →</b>
           </div>
-        </button>
+        </Link>
       </section>
     </main>
   );

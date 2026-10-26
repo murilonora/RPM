@@ -1,4 +1,5 @@
 import { useState, useMemo, useRef } from "react";
+import { Link } from "react-router-dom";
 import { toPng } from "html-to-image";
 import { useUsuario } from "../contextos/ContextoUsuario";
 import { listaDeArtistas } from "../dados/dadosMusicais";
@@ -6,7 +7,7 @@ import { AvaliacaoVinil } from "../componentes/AvaliacaoVinil";
 import { ImagemComFallback } from "../componentes/ImagemComFallback";
 import { tratarErroImagem } from "../utilitarios/comuns";
 
-export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAvaliar, aoAbrirLogin }) {
+export function PaginaColecao({ aoAvaliar, aoAbrirLogin }) {
   const {
     usuarioLogado,
     avaliacoes,
@@ -116,13 +117,9 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
               <button type="button" className="colecao-deslogado-cta" onClick={aoAbrirLogin}>
                 Entrar ou criar conta
               </button>
-              <button
-                type="button"
-                className="colecao-deslogado-link"
-                onClick={aoNavegarParaAlbuns}
-              >
+              <Link to="/albuns" className="colecao-deslogado-link">
                 Explorar os discos
-              </button>
+              </Link>
             </div>
 
             <ul className="colecao-deslogado-lista">
@@ -256,10 +253,7 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
             </div>
 
             {/* Corpo da Obra de Ouro com Capa e Disco Saindo */}
-            <div
-              className="placa-ouro-corpo"
-              onClick={() => aoSelecionarArtista(favoritoAbsoluto.artista)}
-            >
+            <div className="placa-ouro-corpo cartao-com-link">
               <div className="placa-disco-wrap">
                 <div className="placa-disco-ouro" aria-hidden="true">
                   <svg viewBox="0 0 140 140" className="disco-ouro-svg">
@@ -344,7 +338,11 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
                 <span className="placa-artista-head">
                   {favoritoAbsoluto.artista.nome} · ANO {favoritoAbsoluto.ano || "N/A"}
                 </span>
-                <h2 className="placa-titulo-obra">{favoritoAbsoluto.titulo}</h2>
+                <h2 className="placa-titulo-obra">
+                  <Link to={`/artista/${favoritoAbsoluto.artista.id}`} className="cartao-link">
+                    {favoritoAbsoluto.titulo}
+                  </Link>
+                </h2>
                 <p className="placa-sub-detalhe">{favoritoAbsoluto.subtitulo}</p>
 
                 {favoritoAbsoluto.comentario ? (
@@ -437,10 +435,10 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
           </button>
         </div>
 
-        {totalAvaliacoes > 0 && aoNavegarParaAlbuns && (
-          <button className="arquivo-btn-explorar" onClick={aoNavegarParaAlbuns}>
+        {totalAvaliacoes > 0 && (
+          <Link to="/albuns" className="arquivo-btn-explorar">
             + EXPLORAR ACERVO COMPLETO
-          </button>
+          </Link>
         )}
       </section>
 
@@ -458,11 +456,9 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
               Nenhuma obra catalogada no seu acervo pessoal. Navegue pelos álbuns dos artistas,
               atribua suas notas e monte sua coleção oficial de críticas.
             </p>
-            {aoNavegarParaAlbuns && (
-              <button className="arquivo-cta-btn" onClick={aoNavegarParaAlbuns}>
-                CATALOGAR MEU PRIMEIRO DISCO →
-              </button>
-            )}
+            <Link to="/albuns" className="arquivo-cta-btn">
+              CATALOGAR MEU PRIMEIRO DISCO →
+            </Link>
           </div>
         ) : itensFiltrados.length === 0 ? (
           <div className="arquivo-sem-itens">
@@ -476,8 +472,7 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
               return (
                 <div
                   key={item.chave}
-                  className={`ficha-card-item ${ehFavoritoAtual ? "card-favorito-ativo" : ""}`}
-                  onClick={() => aoSelecionarArtista(item.artista)}
+                  className={`ficha-card-item cartao-com-link ${ehFavoritoAtual ? "card-favorito-ativo" : ""}`}
                 >
                   {/* Cabeçalho da Ficha */}
                   <div className="ficha-card-header">
@@ -507,7 +502,11 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
 
                     <div className="ficha-titulos-box">
                       <span className="ficha-card-artista">{item.artista.nome}</span>
-                      <h3 className="ficha-card-titulo">{item.titulo}</h3>
+                      <h3 className="ficha-card-titulo">
+                        <Link to={`/artista/${item.artista.id}`} className="cartao-link">
+                          {item.titulo}
+                        </Link>
+                      </h3>
                     </div>
                   </div>
 
@@ -519,7 +518,7 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
                   )}
 
                   {/* Rodapé com Nota em Vinis e Ações Técnicas */}
-                  <div className="ficha-card-footer" onClick={(e) => e.stopPropagation()}>
+                  <div className="ficha-card-footer">
                     <div className="ficha-vinis-rating">
                       <AvaliacaoVinil chaveItem={item.chave} tamanho="pequeno" apenasLeitura />
                     </div>
@@ -568,6 +567,7 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
             onClick={(e) => e.stopPropagation()}
           >
             <button
+              type="button"
               className="modal-fechar"
               onClick={() => setModalSeletorAberto(false)}
               aria-label="Fechar"
@@ -588,9 +588,11 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
                 const selecionado = favoritoAbsoluto && favoritoAbsoluto.chave === item.chave;
 
                 return (
-                  <div
+                  <button
+                    type="button"
                     key={item.chave}
                     className={`seletor-card-item brutal-item ${selecionado ? "selecionado" : ""}`}
+                    aria-pressed={selecionado}
                     onClick={() => {
                       definirFavorito(item.chave);
                       setModalSeletorAberto(false);
@@ -602,18 +604,18 @@ export function PaginaColecao({ aoSelecionarArtista, aoNavegarParaAlbuns, aoAval
                       className="seletor-item-capa"
                       onError={tratarErroImagem}
                     />
-                    <div className="seletor-item-textos">
+                    <span className="seletor-item-textos">
                       <strong>{item.titulo}</strong>
                       <span>
                         {item.artista.nome} · {item.nota}/5 VINIS
                       </span>
-                    </div>
+                    </span>
                     {selecionado ? (
                       <span className="seletor-check-badge">★ ATUAL</span>
                     ) : (
                       <span className="seletor-btn-escolher">[ SELECIONAR ]</span>
                     )}
-                  </div>
+                  </button>
                 );
               })}
             </div>
