@@ -245,7 +245,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2020",
         "reproducoes": "260 mi",
         "streams": 260000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/b274c35e9f899e43679805908221bce4/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/127206722ac1abf297ea48398a9acc7e/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Freio da Blazer",
@@ -253,7 +253,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2021",
         "reproducoes": "210 mi",
         "streams": 210000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/055d28b0dd64ff89bb73a38fa160868f/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/6d25f3027cd2bdd4115403b32543734e/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Gratidão",
@@ -261,7 +261,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2020",
         "reproducoes": "185 mi",
         "streams": 185000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/2281a1a5b8e974e64ba2468d6b631165/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/8268c3038ba291b00c026f5858b5ff88/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
@@ -271,7 +271,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "faixas": "15 faixas",
         "reproducoes": "380 mi",
         "streams": 380000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/2281a1a5b8e974e64ba2468d6b631165/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/8268c3038ba291b00c026f5858b5ff88/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "IRRASTREÁVEL",
@@ -279,7 +279,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "faixas": "31 faixas",
         "reproducoes": "290 mi",
         "streams": 290000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/c70c0c2707f45778a8764030616b3f9b/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/c6bb9feaa78e9c132fbab164d7e8279a/1000x1000-000000-80-0-0.jpg"
       }
     ]
   },
@@ -729,7 +729,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "faixas": "10 faixas",
         "reproducoes": "210 mi",
         "streams": 210000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/89c4d9fa24e8e19e73fb2c8fe95a2efb/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/6eff0230958231ee7ffb1c53b98e82c1/1000x1000-000000-80-0-0.jpg"
       }
     ]
   },
@@ -1739,7 +1739,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2022",
         "reproducoes": "320 mi",
         "streams": 320000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/90797e88b8fa8b776a394ecb66cbdfd5/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/ffc4b2d2e985a437d2bcd7d8120af6bf/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Let's Go 4",
@@ -1747,7 +1747,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2023",
         "reproducoes": "280 mi",
         "streams": 280000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/36a928baeb1b8ea83492576b5cf8ff2f/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/def19513bd7b8100e9633b15100b830d/1000x1000-000000-80-0-0.jpg"
       }
     ],
     "albuns": [
@@ -1757,7 +1757,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "faixas": "10 faixas",
         "reproducoes": "410 mi",
         "streams": 410000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/448d3db3bebe7b28271705ec92f033a5/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/df31b048e5e5adb2e1cd7a1da9447b4c/1000x1000-000000-80-0-0.jpg"
       }
     ]
   },
@@ -1956,7 +1956,7 @@ const bancoDeDadosArtistas: Artista[] = [
     "periodoAtivo": "2013 - 2021",
     "ouvintesMensais": "19.4 mi",
     "ouvintesMensaisNum": 19400000,
-    "foto": "https://cdn-images.dzcdn.net/images/artist/5ad111b990fb42b2f433ecec4d3c6866/1000x1000-000000-80-0-0.jpg",
+    "foto": "https://cdn-images.dzcdn.net/images/artist/1ee9d64e22df6a19b21698995ae90fdf/1000x1000-000000-80-0-0.jpg",
     "legendaFoto": "Marilia Mendonca na Festa das Patroas",
     "resumo": "A Rainha da Sofrencia. Primeira latina a vencer o Grammy de Melhor Album de Musica Sertaneja.",
     "biografia": [
@@ -3614,7 +3614,7 @@ const bancoDeDadosArtistas: Artista[] = [
     "periodoAtivo": "2010 - presente",
     "ouvintesMensais": "26.4 mi",
     "ouvintesMensaisNum": 26400000,
-    "foto": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Alok_Tomorrowland_Winter_2025.jpg/1280px-Alok_Tomorrowland_Winter_2025.jpg",
+    "foto": "https://cdn-images.dzcdn.net/images/artist/2fd7529af23904e6634194c5b6f4def5/1000x1000-000000-80-0-0.jpg",
     "legendaFoto": "Alok em performance no Ultra Music Festival",
     "resumo": "O DJ brasileiro mais famoso do mundo, Top 5 global pelo ranking DJ Mag por multiplos anos.",
     "biografia": [
@@ -3885,7 +3885,7 @@ const bancoDeDadosArtistas: Artista[] = [
         "ano": "2017",
         "reproducoes": "2.8 bi",
         "streams": 2800000000,
-        "capa": "https://cdn-images.dzcdn.net/images/cover/7985ef4cc3b9423c21c70e0a5c4cfbc9/1000x1000-000000-80-0-0.jpg"
+        "capa": "https://cdn-images.dzcdn.net/images/cover/7985ef4ccd9e66af2fc3c18d629689aa/1000x1000-000000-80-0-0.jpg"
       },
       {
         "titulo": "Con Calma com Snow",
