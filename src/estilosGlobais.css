@@ -3609,13 +3609,24 @@ button.ficha-card-comentario--vazio:focus-visible {
 }
 
 /* ESTADO VAZIO BRUTALISTA */
+/* Coleção vazia (logado, sem avaliações): sem caixa nem fundo próprio, para não
+   criar um quadrado de outra cor sobre o preto da página */
 .arquivo-vazio-box {
-  margin: 40px auto;
-  max-width: 580px;
-  padding: 48px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 24px auto 40px;
+  max-width: 520px;
+  padding: 0 20px;
   text-align: center;
-  border: 1px dashed rgba(255, 255, 255, 0.2);
-  background: #0f0e14;
+}
+
+/* O mascote tinha o tamanho original da imagem (gigante no notebook) */
+.vazio-vinil-icone {
+  display: block;
+  width: clamp(140px, 22vw, 200px);
+  height: auto;
+  margin-bottom: 20px;
 }
 
 .vazio-titulo {
@@ -3634,6 +3645,8 @@ button.ficha-card-comentario--vazio:focus-visible {
 }
 
 .arquivo-cta-btn {
+  display: inline-block;
+  text-decoration: none;
   background: #ff0004;
   color: #ffffff;
   border: none;
