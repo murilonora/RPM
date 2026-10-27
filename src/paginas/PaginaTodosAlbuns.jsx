@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { listaDeArtistas } from "../dados/dadosMusicais";
-import { normalizarTexto } from "../utilitarios/comuns";
+import { imagemNoTamanho, normalizarTexto, tratarErroImagem } from "../utilitarios/comuns";
 import { FiltroAlfabetico } from "../componentes/FiltroAlfabetico";
 import { ImagemComFallback } from "../componentes/ImagemComFallback";
 import { AvaliacaoDisco } from "../componentes/AvaliacaoDisco";
@@ -110,12 +110,20 @@ export function PaginaTodosAlbuns({ aoAbrirAlbum, aoAbrirLogin }) {
 
                 {/* Efeito Físico: Vinil Saindo da Capa no Hover */}
                 <div className="album-fisico-container">
-                  {/* O Disco de Vinil que desliza para cima/fora e gira */}
+                  {/* O vinil fica guardado na capa e sai por cima, girando, no hover/foco */}
                   <div className="album-disco-vinil-fisico" aria-hidden="true">
-                    <div className="vinyl-grooves-fisico" />
-                    <div className="vinyl-center-red">
-                      <div className="vinyl-furo-preto" />
-                    </div>
+                    {album.capa ? (
+                      <img
+                        src={imagemNoTamanho(album.capa, 250)}
+                        alt=""
+                        className="vinyl-rotulo-capa"
+                        loading="lazy"
+                        referrerPolicy="no-referrer"
+                        onError={tratarErroImagem}
+                      />
+                    ) : (
+                      <span className="vinyl-rotulo-capa vinyl-rotulo-vazio" />
+                    )}
                   </div>
 
                   {/* A Capa Quadrada do Disco (Jacket) */}

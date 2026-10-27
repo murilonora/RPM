@@ -166,7 +166,7 @@ export function HistoriasEmDestaque({ historiasIniciais }) {
             <b>{historia.artista.nome}</b>
             {historia.fato}
           </p>
-          <Link className="historias-ler" to={`/artista/${historia.artistaId}`}>
+          <Link className="historias-ler" to={`/artista/${historia.artistaId}?aba=historia`}>
             Ler a história de {historia.artista.nome}
           </Link>
         </div>

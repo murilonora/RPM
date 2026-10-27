@@ -1,13 +1,35 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useRef } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { AbaMusicas } from "../componentes/AbaMusicas";
 import { AbaAlbuns } from "../componentes/AbaAlbuns";
 import { AbaHistoria } from "../componentes/AbaHistoria";
 import { ImagemComFallback } from "../componentes/ImagemComFallback";
 
-// Página de detalhes, músicas, álbuns e história do artista selecionado
+const ROTULOS_ABAS = {
+  musicas: "Mais ouvidas",
+  albuns: "Álbuns",
+  historia: "História",
+};
+
+// Página de detalhes, músicas, álbuns e história do artista selecionado.
+// A aba fica na URL (?aba=historia), assim outras páginas podem abrir direto nela.
 export function PaginaArtista({ artista, aoAbrirAlbum, aoAbrirLogin }) {
-  const [abaAtiva, setAbaAtiva] = useState("musicas");
+  const [parametros, setParametros] = useSearchParams();
+  const abaDaUrl = parametros.get("aba");
+  const abaAtiva = Object.hasOwn(ROTULOS_ABAS, abaDaUrl ?? "") ? abaDaUrl : "musicas";
+  const abasRef = useRef(null);
+
+  // Quem chega por um link com ?aba= vai direto para as abas, sem precisar rolar
+  useEffect(() => {
+    if (abaAtiva === abaDaUrl) {
+      abasRef.current?.scrollIntoView?.({ block: "start" });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [artista?.id]);
+
+  function setAbaAtiva(aba) {
+    setParametros(aba === "musicas" ? {} : { aba }, { replace: true });
+  }
 
   if (!artista) {
     return (
@@ -21,12 +43,6 @@ export function PaginaArtista({ artista, aoAbrirAlbum, aoAbrirLogin }) {
       </main>
     );
   }
-
-  const rotulosAbas = {
-    musicas: "Mais ouvidas",
-    albuns: "Álbuns",
-    historia: "História",
-  };
 
   return (
     <main className="artist-page">
@@ -72,8 +88,8 @@ export function PaginaArtista({ artista, aoAbrirAlbum, aoAbrirLogin }) {
           </div>
         </div>
 
-        <div className="tabs" role="tablist" aria-label="Conteúdo do artista">
-          {Object.keys(rotulosAbas).map((chave) => (
+        <div className="tabs" ref={abasRef} role="tablist" aria-label="Conteúdo do artista">
+          {Object.keys(ROTULOS_ABAS).map((chave) => (
             <button
               key={chave}
               type="button"
@@ -82,7 +98,7 @@ export function PaginaArtista({ artista, aoAbrirAlbum, aoAbrirLogin }) {
               role="tab"
               aria-selected={abaAtiva === chave}
             >
-              {rotulosAbas[chave]}
+              {ROTULOS_ABAS[chave]}
             </button>
           ))}
         </div>

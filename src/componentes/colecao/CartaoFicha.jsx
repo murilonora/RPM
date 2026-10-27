@@ -44,7 +44,23 @@ export function CartaoFicha({ item, ehFavorito, aoTornarFavorito, aoAvaliar }) {
         </div>
       </div>
 
-      {item.comentario && <div className="ficha-card-comentario">"{item.comentario}"</div>}
+      {/* Espaço fixo para a resenha: com texto mostra até 2 linhas; sem texto, convida a escrever.
+          Assim todas as fichas têm a mesma estrutura e o rodapé fica na mesma altura. */}
+      {item.comentario ? (
+        <blockquote className="ficha-card-comentario" title={item.comentario}>
+          <span>{item.comentario}</span>
+        </blockquote>
+      ) : aoAvaliar ? (
+        <button
+          type="button"
+          className="ficha-card-comentario ficha-card-comentario--vazio"
+          onClick={() => aoAvaliar(itemParaAvaliar(item))}
+        >
+          + Escrever resenha
+        </button>
+      ) : (
+        <p className="ficha-card-comentario ficha-card-comentario--vazio">Sem resenha</p>
+      )}
 
       <div className="ficha-card-footer">
         <div className="ficha-vinis-rating">
@@ -57,8 +73,9 @@ export function CartaoFicha({ item, ehFavorito, aoTornarFavorito, aoAvaliar }) {
             className={`btn-ficha-coroar ${ehFavorito ? "ativo" : ""}`}
             onClick={() => aoTornarFavorito(item.chave)}
             title={ehFavorito ? "Favorito Supremo Ativo" : "Definir como Favorito Supremo"}
+            aria-pressed={ehFavorito}
           >
-            {ehFavorito ? "★ OURO" : "TORNAR FAVORITO"}
+            {ehFavorito ? "★ FAVORITO" : "☆ FAVORITAR"}
           </button>
 
           {aoAvaliar && (

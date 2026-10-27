@@ -56,11 +56,11 @@ describe("HistoriasEmDestaque (carrossel)", () => {
     expect(screen.getAllByRole("tab")[0].getAttribute("aria-selected")).toBe("true");
   });
 
-  it("começa pela primeira história com link para o perfil", () => {
+  it("começa pela primeira história com link para a aba História", () => {
     renderizar({ historiasIniciais: FIXAS });
     expect(manchete()).toMatch(/Sobrevivendo no Inferno/);
     expect(screen.getByRole("link", { name: /Racionais MCs/ }).getAttribute("href")).toBe(
-      "/artista/racionais-mcs"
+      "/artista/racionais-mcs?aba=historia"
     );
   });
 
