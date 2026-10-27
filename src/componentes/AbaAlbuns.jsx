@@ -1,6 +1,6 @@
-import { extrairSiglas } from "../utilitarios/comuns";
+import { extrairSiglas } from "../utilitarios/texto";
 import { ImagemComFallback } from "./ImagemComFallback";
-import { AvaliacaoDisco } from "./AvaliacaoDisco";
+import { SeletorDeNota } from "./SeletorDeNota";
 
 // Grid de exibição dos álbuns lançados pelo artista.
 // Clicar no álbum abre a janela de faixas; a nota do álbum fica no próprio cartão.
@@ -16,7 +16,7 @@ export function AbaAlbuns({ artista, aoAbrirAlbum, aoAbrirLogin }) {
     <div className="album-grid">
       {albuns.map((album, indice) => (
         <article className="album-card cartao-com-link cursor-pointer relative" key={`${album.titulo}-${indice}`}>
-          <div className={`album-art album-art-${(indice % 3) + 1} relative overflow-hidden${album.capa ? " tem-capa" : ""}`}>
+          <div className={`album-art relative overflow-hidden${album.capa ? " tem-capa" : ""}`}>
             {album.capa ? (
               <ImagemComFallback src={album.capa} alt="" className="w-full h-full" />
             ) : (
@@ -45,7 +45,7 @@ export function AbaAlbuns({ artista, aoAbrirAlbum, aoAbrirLogin }) {
           <p>{album.reproducoes} reproduções</p>
 
           {/* Nota do álbum direto no cartão, como no layout da Mell */}
-          <AvaliacaoDisco
+          <SeletorDeNota
             chaveItem={`album-${artista.id}-${indice}`}
             obra={{ tipo: "album", artistaId: artista.id, titulo: album.titulo }}
             rotulo={`Nota para ${album.titulo}`}

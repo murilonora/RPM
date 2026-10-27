@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { useUsuario } from "../contextos/ContextoUsuario";
-import { AvaliacaoDisco } from "./AvaliacaoDisco";
+import { SeletorDeNota } from "./SeletorDeNota";
 import { ImagemComFallback } from "./ImagemComFallback";
 
 // Nota + resenha de uma obra (usado na Coleção), com o visual da avaliação da Mell:
 // cartão creme arredondado, obra num cartão branco e a pílula "Sua nota:".
 export function ModalAvaliacao({ visivel, aoFechar, item }) {
-  const { estaLogado, obterAvaliacao, avaliarItem } = useUsuario();
+  const { estaLogado, obterAvaliacao, avaliarItem, removerAvaliacao } = useUsuario();
   const [comentarioTemp, setComentarioTemp] = useState("");
 
   // Sincroniza o form apenas quando o modal abrir ou trocar de item.
@@ -23,11 +23,20 @@ export function ModalAvaliacao({ visivel, aoFechar, item }) {
 
   if (!visivel || !item) return null;
 
-  const notaAtual = obterAvaliacao(item.chave).nota || 0;
+  const salva = obterAvaliacao(item.chave);
+  const notaAtual = salva.nota || 0;
+  const jaAvaliado = notaAtual > 0 || !!salva.comentario;
 
+  // Salva a nota atual com a resenha digitada e fecha
   function aoSalvar(evento) {
     evento.preventDefault();
     avaliarItem(item.chave, notaAtual, comentarioTemp, item.obra);
+    aoFechar();
+  }
+
+  // Apaga nota e resenha; a Coleção mostra o aviso com "Desfazer"
+  function aoExcluir() {
+    removerAvaliacao(item.chave);
     aoFechar();
   }
 
@@ -70,7 +79,7 @@ export function ModalAvaliacao({ visivel, aoFechar, item }) {
               <div className="avaliacao-janela-textos">
                 <span className="album-faixas-nome">{item.titulo}</span>
                 <span className="avaliacao-janela-sub">{item.subtitulo}</span>
-                <AvaliacaoDisco chaveItem={item.chave} obra={item.obra} rotulo={`Nota para ${item.titulo}`} />
+                <SeletorDeNota chaveItem={item.chave} obra={item.obra} rotulo={`Nota para ${item.titulo}`} />
               </div>
             </div>
 
@@ -86,9 +95,16 @@ export function ModalAvaliacao({ visivel, aoFechar, item }) {
               className="avaliacao-janela-texto"
             />
 
-            <button type="submit" className="avaliacao-janela-salvar">
-              Salvar avaliação
-            </button>
+            <div className="avaliacao-janela-acoes">
+              {jaAvaliado && (
+                <button type="button" className="avaliacao-janela-excluir" onClick={aoExcluir}>
+                  Excluir avaliação
+                </button>
+              )}
+              <button type="submit" className="avaliacao-janela-salvar">
+                Salvar avaliação
+              </button>
+            </div>
           </form>
         )}
       </div>

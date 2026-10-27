@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { listaDeArtistas } from "../dados/dadosMusicais";
 import { ACERVO_HISTORIAS } from "../dados/historias";
-import { imagemNoTamanho, tratarErroImagem } from "../utilitarios/comuns";
+import { imagemNoTamanho, tratarErroImagem } from "../utilitarios/imagens";
 
 const DURACAO_SLIDE_MS = 9000;
 const DISTANCIA_SWIPE_PX = 50;
@@ -46,6 +46,7 @@ export function HistoriasEmDestaque({ historiasIniciais }) {
   const tiraRef = useRef(null);
   const total = historias.length;
 
+  // Vai para a história do índice (dá a volta no fim/começo) e guarda o sentido da animação
   const irPara = useCallback(
     (indice, sentido) => {
       const proximo = (indice + total) % total;
@@ -54,12 +55,15 @@ export function HistoriasEmDestaque({ historiasIniciais }) {
     },
     [ativa, total]
   );
+  // "Outras histórias": sorteia um novo conjunto e volta para a primeira
   function sortearOutras() {
     setHistorias(sortearHistorias());
     setDirecao(1);
     setAtiva(0);
   }
+  // Avança uma história
   const proxima = () => irPara(ativa + 1, 1);
+  // Volta uma história
   const anterior = () => irPara(ativa - 1, -1);
 
   // No celular a tira rola de lado: mantém a miniatura ativa à vista sem mexer na página
@@ -71,16 +75,19 @@ export function HistoriasEmDestaque({ historiasIniciais }) {
   }, [ativa]);
 
   useEffect(() => {
+    // Aba do navegador escondida pausa o carrossel
     const aoMudarVisibilidade = () => setPausado(document.hidden);
     document.addEventListener("visibilitychange", aoMudarVisibilidade);
     return () => document.removeEventListener("visibilitychange", aoMudarVisibilidade);
   }, []);
 
+  // Setas do teclado trocam de história
   function aoTeclar(evento) {
     if (evento.key === "ArrowRight") proxima();
     else if (evento.key === "ArrowLeft") anterior();
   }
 
+  // Swipe no celular: arrastar para a esquerda avança, para a direita volta
   function aoSoltarToque(evento) {
     if (inicioToque.current === null) return;
     const deslocamento = evento.changedTouches[0].clientX - inicioToque.current;
@@ -166,7 +173,7 @@ export function HistoriasEmDestaque({ historiasIniciais }) {
             <b>{historia.artista.nome}</b>
             {historia.fato}
           </p>
-          <Link className="historias-ler" to={`/artista/${historia.artistaId}`}>
+          <Link className="historias-ler" to={`/artista/${historia.artistaId}?aba=historia`}>
             Ler a história de {historia.artista.nome}
           </Link>
         </div>

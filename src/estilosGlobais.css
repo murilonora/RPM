@@ -222,9 +222,9 @@ button {
 .home-hero {
   position: relative;
   display: grid;
+  z-index: 2; /* a lista da busca passa por cima da seção seguinte */
   min-height: calc(100vh - 76px);
   place-items: center;
-  overflow: hidden;
   background: #0e0d15;
   color: #f7f4ed;
 }
@@ -243,10 +243,6 @@ button {
   font-weight: 700;
   letter-spacing: 1.6px;
   text-transform: uppercase;
-}
-
-.eyebrow.light {
-  color: #c8c4cf;
 }
 
 .hero-content h1 {
@@ -496,26 +492,6 @@ button {
   display: flex;
   justify-content: space-between;
   color: #6f6876;
-}
-
-.edition {
-  font-family: "Courier New", monospace;
-  font-size: 10px;
-  text-transform: uppercase;
-}
-
-.intro-section > h2 {
-  max-width: 750px;
-  margin: 36px 0 54px 20%;
-  font-family: "DM Serif Display:Regular", serif;
-  font-size: clamp(44px, 6vw, 74px);
-  font-weight: 400;
-  line-height: 0.95;
-  letter-spacing: -2px;
-}
-
-.intro-section > h2 em {
-  color: #191525;
 }
 
 /* Catálogo da página inicial: cabeçalho, filtro por vertente e cartões */
@@ -790,10 +766,41 @@ button.cartao-link {
   outline: none;
 }
 
-.avaliacao-janela-salvar {
-  width: 100%;
+/* Rodapé do modal: "Excluir" discreto à esquerda, "Salvar" compacto à direita */
+.avaliacao-janela-acoes {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
   margin-top: 16px;
-  padding: 12px;
+}
+
+.avaliacao-janela-excluir {
+  margin-right: auto;
+  padding: 10px 16px;
+  border: 1px solid #e4b4bd;
+  border-radius: 8px;
+  background: transparent;
+  color: #be123c;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.avaliacao-janela-excluir:hover {
+  border-color: #be123c;
+  background: #be123c;
+  color: #fff;
+}
+
+.avaliacao-janela-excluir:focus-visible,
+.avaliacao-janela-salvar:focus-visible {
+  outline: 2px solid #f43f5e;
+  outline-offset: 2px;
+}
+
+.avaliacao-janela-salvar {
+  padding: 10px 22px;
   border: 0;
   border-radius: 8px;
   background: #18181b;
@@ -808,6 +815,11 @@ button.cartao-link {
 
 .avaliacao-janela-deslogado {
   text-align: center;
+}
+
+.avaliacao-janela-deslogado .avaliacao-janela-salvar {
+  width: 100%;
+  margin-top: 16px;
 }
 
 .avaliacao-janela-mascote {
@@ -1055,6 +1067,7 @@ button.cartao-link {
   display: flex;
   gap: 36px;
   margin-top: 56px;
+  scroll-margin-top: 100px;
   border-bottom: 1px solid rgb(25 21 37 / 25%);
 }
 
@@ -1325,7 +1338,7 @@ button.cartao-link {
 
 @media (max-width: 720px) {
   .artist-sidebar {
-    height: 38vh;
+    height: 52vh;
     min-height: 260px;
     max-height: 380px;
   }
@@ -1375,15 +1388,6 @@ button.cartao-link {
 
   .intro-section > div:first-child {
     gap: 20px;
-  }
-
-  .intro-section > h2 {
-    margin: 36px 0 40px;
-    font-size: 46px;
-  }
-
-  .artist-sidebar {
-    height: 52vh;
   }
 
   .artist-main {
@@ -1479,40 +1483,7 @@ button.cartao-link {
 .avaliacao-vinil {
   display: flex;
   align-items: center;
-  gap: 4px;
-}
-.avaliacao-vinil.pequeno {
   gap: 2px;
-}
-.botao-vinil {
-  background: transparent;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s ease;
-}
-.botao-vinil:hover:not(:disabled) {
-  transform: scale(1.15) rotate(15deg);
-}
-.botao-vinil:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-.icone-vinil {
-  transition: all 0.3s ease;
-}
-.icone-vinil.destacado {
-  transform: rotate(45deg);
-}
-.icone-vinil.preenchido {
-  transform: rotate(90deg);
-}
-.avaliacao-vinil.pequeno .icone-vinil {
-  width: 20px;
-  height: 20px;
 }
 .nota-texto {
   margin-left: 8px;
@@ -2031,52 +2002,51 @@ button.cartao-link {
   width: 100%;
   aspect-ratio: 1 / 1;
   margin-bottom: 16px;
+  overflow: hidden;
 }
 
+/* Guardado dentro da capa; no hover/foco sai por cima e gira, como na vitrine da página inicial */
 .album-disco-vinil-fisico {
   position: absolute;
-  top: 5px;
-  left: 5%;
-  width: 90%;
+  top: 4%;
+  left: 4%;
+  width: 92%;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
-  background: radial-gradient(circle, #242424 0%, #111111 60%, #050505 100%);
-  border: 1px solid #333333;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background:
+    radial-gradient(circle, transparent 33%, rgb(255 255 255 / 7%) 33.5%, transparent 35%),
+    repeating-radial-gradient(circle, #0d0c10 0 2px, #1b1922 2.5px 3.5px);
+  box-shadow: inset 0 0 0 2px #050407, 0 10px 24px rgb(0 0 0 / 60%);
   z-index: 1;
-  transition: transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  translate: 0 0;
+  transition: translate 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.vinyl-grooves-fisico {
+.album-disco-vinil-fisico::after {
+  content: "";
   position: absolute;
-  width: 75%;
-  height: 75%;
+  top: 50%;
+  left: 50%;
+  width: 4%;
+  aspect-ratio: 1;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 0 0 5px rgba(0, 0, 0, 0.8), inset 0 0 0 10px rgba(255, 255, 255, 0.04);
+  background: #0f0e14;
+  transform: translate(-50%, -50%);
 }
 
-.vinyl-center-red {
-  position: relative;
-  width: 32%;
-  height: 32%;
+.vinyl-rotulo-capa {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 34%;
+  aspect-ratio: 1;
   border-radius: 50%;
+  object-fit: cover;
+  transform: translate(-50%, -50%);
+}
+
+.vinyl-rotulo-vazio {
   background: #ff0004;
-  border: 2px solid #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.vinyl-furo-preto {
-  width: 25%;
-  height: 25%;
-  border-radius: 50%;
-  background: #08080a;
-  border: 1px solid #555;
 }
 
 .album-capa-quadrada {
@@ -2087,7 +2057,7 @@ button.cartao-link {
   background: #14121c;
   z-index: 2;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-  transition: transform 0.35s ease;
+  transition: transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .album-capa-img {
@@ -2109,14 +2079,39 @@ button.cartao-link {
   color: #555;
 }
 
-/* Hover: Vinil sobe em diagonal girando */
-.album-crate-card:hover .album-disco-vinil-fisico {
-  transform: translateY(-28px) translateX(20px) rotate(140deg);
-  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.6));
+/* Hover ou foco: a capa recua para a esquerda e o vinil sai pela direita, girando */
+.album-crate-card:hover .album-disco-vinil-fisico,
+.album-crate-card:focus-within .album-disco-vinil-fisico {
+  translate: 30% 0;
+  animation: historias-girar 3.5s linear 0.3s infinite;
 }
 
-.album-crate-card:hover .album-capa-quadrada {
-  transform: scale(1.02);
+.album-crate-card:focus-within {
+  border-color: #ff0004;
+}
+
+/* O cartão sobe no hover; ao sair, o vinil volta para dentro da capa */
+.album-crate-card:hover .album-capa-quadrada,
+.album-crate-card:focus-within .album-capa-quadrada {
+  transform: translateX(-34%);
+}
+
+@media (hover: none) {
+  .album-crate-card:focus-within .album-disco-vinil-fisico {
+    translate: 0 0;
+    animation: none;
+  }
+
+  .album-crate-card:focus-within .album-capa-quadrada {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .album-crate-card:hover .album-disco-vinil-fisico,
+  .album-crate-card:focus-within .album-disco-vinil-fisico {
+    animation: none;
+  }
 }
 
 /* Dados da Obra */
@@ -2233,6 +2228,14 @@ button.cartao-link {
 /* ========================================================
    FUNDO HERO — MOSAICO DINÂMICO DE COLUNAS INFINITAS
    ======================================================== */
+/* Recorta o mosaico nas bordas do hero (o hero em si não corta nada) */
+.hero-mosaic-recorte {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
 .hero-mosaic-container {
   position: absolute;
   inset: -40px;
@@ -3128,31 +3131,98 @@ button.cartao-link {
   text-overflow: ellipsis;
 }
 
+/* Resenha: mesma altura em todas as fichas (2 linhas), com ou sem texto */
 .ficha-card-comentario {
-  margin-top: 14px;
-  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 58px;
+  margin: 14px 0 16px;
+  padding: 9px 12px;
+  overflow: hidden;
   background: rgba(255, 255, 255, 0.03);
+  border: 0;
   border-left: 2px solid rgba(255, 0, 4, 0.5);
+  font-family: inherit;
   font-style: italic;
   font-size: 0.82rem;
   color: #bbb;
-  line-height: 1.4;
+  line-height: 1.45;
+  text-align: left;
 }
 
-.ficha-card-footer {
-  margin-top: 16px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+.ficha-card-comentario > span {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.ficha-card-comentario > span::before {
+  content: "\201C";
+  margin-right: 2px;
+  color: #ff0004;
+  font-family: "DM Serif Display:Italic", serif;
+}
+
+.ficha-card-comentario--vazio {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 10px;
+  border: 1px dashed rgba(255, 255, 255, 0.14);
+  background: transparent;
+  color: #6f6a75;
+  font-family: monospace;
+  font-style: normal;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+button.ficha-card-comentario--vazio {
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+button.ficha-card-comentario--vazio:hover,
+button.ficha-card-comentario--vazio:focus-visible {
+  border-color: #ff0004;
+  background: rgba(255, 0, 4, 0.06);
+  color: #f7f4ed;
+  outline: none;
+}
+
+/* Rodapé preso ao fim da ficha: nota numa linha, ações em duas colunas iguais */
+.ficha-card-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Discos à esquerda, nota à direita em serifa — mesma linha em todas as fichas */
+.ficha-vinis-rating .avaliacao-vinil {
+  width: 100%;
+}
+
+.ficha-vinis-rating .nota-texto {
+  margin-left: auto;
+  font-family: "DM Serif Display:Italic", serif;
+  font-size: 1.25rem;
+  line-height: 1;
 }
 
 .ficha-botoes-acoes {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.ficha-botoes-acoes > button {
+  padding: 8px 6px;
+  text-align: center;
 }
 
 .btn-ficha-coroar {
@@ -3194,6 +3264,75 @@ button.cartao-link {
   background: #ff0004;
   border-color: #ff0004;
   color: #ffffff;
+}
+
+.btn-ficha-coroar:focus-visible,
+.btn-ficha-editar:focus-visible {
+  outline: 2px solid #ff0004;
+  outline-offset: 2px;
+}
+
+/* Aviso "Avaliação excluída — Desfazer" no rodapé da Coleção */
+.colecao-aviso-regiao {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 60;
+  width: max-content;
+  max-width: calc(100% - 32px);
+  transform: translateX(-50%);
+}
+
+.colecao-aviso {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 12px 14px 12px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-left: 3px solid #ff0004;
+  background: #0f0e14;
+  color: #e8e4dc;
+  font-family: monospace;
+  font-size: 0.78rem;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+  animation: colecao-aviso-entrar 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.colecao-aviso strong {
+  color: #ffffff;
+}
+
+.colecao-aviso button {
+  flex: none;
+  padding: 6px 12px;
+  border: 1px solid #ff0004;
+  background: transparent;
+  color: #ff5a5d;
+  font-family: monospace;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.colecao-aviso button:hover,
+.colecao-aviso button:focus-visible {
+  background: #ff0004;
+  color: #ffffff;
+  outline: none;
+}
+
+@keyframes colecao-aviso-entrar {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .colecao-aviso {
+    animation: none;
+  }
 }
 
 /* ESTADO VAZIO BRUTALISTA */
@@ -3254,12 +3393,6 @@ button.cartao-link {
   max-width: 540px;
 }
 
-.seletor-card-item.brutal-item {
-  border-radius: 0;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: #0f0e14;
-}
-
 .seletor-card-item.brutal-item:hover {
   border-color: #ffd700;
   background: rgba(255, 215, 0, 0.08);
@@ -3289,6 +3422,9 @@ button.cartao-link {
 }
 
 .seletor-card-item.brutal-item {
+  border-radius: 0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #0f0e14;
   display: flex;
   align-items: center;
   gap: 14px;
@@ -3406,13 +3542,10 @@ button.cartao-link {
 .historias-cabecalho {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 20px;
   margin-bottom: 28px;
   color: #6f6876;
-}
-
-.historias-cabecalho {
-  align-items: center;
 }
 
 .historias-sortear {

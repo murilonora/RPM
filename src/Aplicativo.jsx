@@ -13,7 +13,7 @@ import { ModalAutenticacao } from "./componentes/ModalAutenticacao";
 import { PaginaInicial } from "./paginas/PaginaInicial";
 import { listaDeArtistas } from "./dados/dadosMusicais";
 import { ModalAvaliacao } from "./componentes/ModalAvaliacao";
-import { ModalAlbum } from "./componentes/ModalAlbum";
+import { ModalFaixasDoAlbum } from "./componentes/ModalFaixasDoAlbum";
 
 // A página inicial vai no pacote principal; as demais só baixam quando abertas
 const PaginaArtista = lazy(() =>
@@ -38,12 +38,11 @@ function ScrollAoTopo() {
   return null;
 }
 
-// Wrapper que resolve o artista dinamicamente pela URL /artista/:id
+// Resolve o artista pela URL /artista/:id. Id inexistente mostra "Artista não encontrado"
+// (antes abria o primeiro artista da lista e a tela de erro nunca aparecia)
 function PaginaArtistaComUrl({ aoAbrirAlbum, aoAbrirLogin }) {
   const { id } = useParams();
-
-  const artista =
-    listaDeArtistas.find((a) => a.id === id) || listaDeArtistas[0];
+  const artista = listaDeArtistas.find((a) => a.id === id);
 
   useEffect(() => {
     if (artista) {
@@ -82,26 +81,32 @@ function ShellAplicativo() {
     }
   }, [location.pathname]);
 
+  // Botão "Descobrir": abre o perfil de um artista sorteado
   function sortearArtistaAleatorioENavegar() {
     const indiceAleatorio = Math.floor(Math.random() * listaDeArtistas.length);
     const sorteado = listaDeArtistas[indiceAleatorio];
     navigate(`/artista/${sorteado.id}`);
   }
 
+  // Abre a janela de login/cadastro (usada por qualquer ação que exige conta)
   function abrirModalDeAutenticacao() {
     setModalAutenticacaoVisivel(true);
   }
 
+  // Fecha a janela de login/cadastro
   function fecharModalDeAutenticacao() {
     setModalAutenticacaoVisivel(false);
   }
 
+  // Abre o modal de nota e resenha para a obra escolhida na Coleção
   function abrirAvaliacao(itemProps) {
     setDadosAvaliacao({ visivel: true, item: itemProps });
   }
 
+  // Fecha a janela de faixas (estável para o efeito do Esc no modal não ser recriado)
   const fecharAlbum = useCallback(() => setAlbumAberto(null), []);
 
+  // Fecha o modal de nota e resenha
   function fecharAvaliacao() {
     setDadosAvaliacao({ visivel: false, item: null });
   }
@@ -126,14 +131,14 @@ function ShellAplicativo() {
               <PaginaColecao aoAvaliar={abrirAvaliacao} aoAbrirLogin={abrirModalDeAutenticacao} />
             }
           />
-          {/* Rota coringa com redirecionamento para o início */}
+          {/* Qualquer endereço desconhecido mostra a página inicial */}
           <Route path="*" element={<PaginaInicial />} />
         </Routes>
       </Suspense>
 
       {/* Ordem importa: o que vem depois fica por cima (resenha e login abrem sobre a ficha do álbum) */}
       {albumAberto && (
-        <ModalAlbum
+        <ModalFaixasDoAlbum
           dados={albumAberto}
           aoFechar={fecharAlbum}
           aoAbrirLogin={abrirModalDeAutenticacao}

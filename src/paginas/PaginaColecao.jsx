@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useUsuario } from "../contextos/ContextoUsuario";
 import { ColecaoDeslogada } from "../componentes/colecao/ColecaoDeslogada";
@@ -15,6 +15,8 @@ import {
   montarItensAvaliados,
 } from "../componentes/colecao/itensColecao";
 
+const TEMPO_DESFAZER_MS = 6000;
+
 export function PaginaColecao({ aoAvaliar, aoAbrirLogin }) {
   const {
     usuarioLogado,
@@ -23,14 +25,25 @@ export function PaginaColecao({ aoAvaliar, aoAbrirLogin }) {
     mediaAvaliacoes,
     chaveFavoritoManual,
     definirFavorito,
+    ultimaExcluida,
+    desfazerExclusao,
+    descartarExclusao,
   } = useUsuario();
 
   const [abaFiltro, setAbaFiltro] = useState(ABAS_COLECAO.TODOS);
   const [modalSeletorAberto, setModalSeletorAberto] = useState(false);
 
+  // O aviso de "Desfazer" some sozinho; depois disso a exclusão fica definitiva
+  useEffect(() => {
+    if (!ultimaExcluida) return;
+    const temporizador = setTimeout(descartarExclusao, TEMPO_DESFAZER_MS);
+    return () => clearTimeout(temporizador);
+  }, [ultimaExcluida, descartarExclusao]);
+
   // Mapeia as avaliações salvas para itens detalhados com capa, títulos e artista
   const itensAvaliados = useMemo(() => montarItensAvaliados(avaliacoes), [avaliacoes]);
 
+  // Números das abas de filtro e da ficha do crítico
   const contagens = useMemo(
     () => ({
       albuns: itensAvaliados.filter((i) => i.tipo === "album").length,
@@ -41,11 +54,13 @@ export function PaginaColecao({ aoAvaliar, aoAbrirLogin }) {
     [itensAvaliados]
   );
 
+  // Fichas da aba escolhida (Todos, Álbuns, Faixas ou 5 vinis)
   const itensFiltrados = useMemo(
     () => filtrarPorAba(itensAvaliados, abaFiltro),
     [itensAvaliados, abaFiltro]
   );
 
+  // Obra do Disco de Ouro: a escolhida pelo usuário ou, sem escolha, a primeira
   const favoritoAbsoluto = useMemo(
     () => escolherFavorito(itensAvaliados, chaveFavoritoManual),
     [itensAvaliados, chaveFavoritoManual]
@@ -137,6 +152,20 @@ export function PaginaColecao({ aoAvaliar, aoAbrirLogin }) {
           </div>
         )}
       </section>
+
+      {/* Aviso de exclusão com opção de desfazer */}
+      <div className="colecao-aviso-regiao" role="status" aria-live="polite">
+        {ultimaExcluida && (
+          <div className="colecao-aviso">
+            <span>
+              Avaliação de <strong>{ultimaExcluida.avaliacao.obra?.titulo || "obra"}</strong> excluída.
+            </span>
+            <button type="button" onClick={desfazerExclusao}>
+              Desfazer
+            </button>
+          </div>
+        )}
+      </div>
 
       {modalSeletorAberto && (
         <ModalSeletorFavorito

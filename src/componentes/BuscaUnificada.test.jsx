@@ -1,3 +1,4 @@
+// Testes da busca unificada da página inicial (resultados, teclado e navegação)
 import { afterEach, describe, expect, it } from "vitest";
 import { useState } from "react";
 import { cleanup, render, screen } from "@testing-library/react";

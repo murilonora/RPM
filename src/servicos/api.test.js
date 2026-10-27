@@ -1,3 +1,4 @@
+// Testes do cliente da API: erros de validação, servidor fora do ar e envio de avaliações
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { ErroApi, ServidorIndisponivel, cadastrarUsuario, enviarAvaliacao, verificarServidor } from "./api";
 

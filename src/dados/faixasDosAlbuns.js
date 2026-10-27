@@ -1,16 +1,17 @@
 // Lista real de faixas dos álbuns, levantada pela Mell na API do Deezer
-// (faixasAlbuns.json: { "id-do-artista|Título do Álbum": [{ numero, titulo, duracao }] }).
+// (faixasDosAlbuns.json: { "id-do-artista|Título do Álbum": [{ numero, titulo, duracao }] }).
 // O arquivo tem ~170 KB, então só é baixado quando alguém abre um álbum.
 import { useEffect, useState } from "react";
-import { normalizarTexto } from "../utilitarios/comuns";
+import { normalizarTexto } from "../utilitarios/texto";
 
 let mapaFaixas = null;
 
 const chaveDoMapa = (artistaId, tituloAlbum) => `${artistaId}|${normalizarTexto(tituloAlbum)}`;
 
-export async function carregarMapaFaixas() {
+// Baixa o JSON uma única vez e guarda num Map (chave: artista + título normalizado)
+async function carregarMapaFaixas() {
   if (!mapaFaixas) {
-    const { default: json } = await import("./faixasAlbuns.json");
+    const { default: json } = await import("./faixasDosAlbuns.json");
     mapaFaixas = new Map(
       Object.entries(json).map(([chave, faixas]) => {
         const [artistaId, titulo] = chave.split("|");

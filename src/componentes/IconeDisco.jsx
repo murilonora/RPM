@@ -1,5 +1,6 @@
-// Um componente SVG que renderiza apenas o disco de vinil com o centro vermelho, sem o texto "RPM"
-export function DiscoSVG() {
+// Desenho de um disco de vinil (corpo escuro, sulcos e rótulo vermelho e branco).
+// É o ícone de cada botão do SeletorDeNota; o CSS deixa cinza quando apagado e acende na nota.
+export function IconeDisco() {
   return (
     <svg 
       viewBox="0 0 100 100" 

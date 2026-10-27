@@ -1,12 +1,12 @@
 import { useEffect } from "react";
-import { chaveDaFaixa, useFaixasDoAlbum } from "../dados/faixas";
-import { AvaliacaoDisco } from "./AvaliacaoDisco";
+import { chaveDaFaixa, useFaixasDoAlbum } from "../dados/faixasDosAlbuns";
+import { SeletorDeNota } from "./SeletorDeNota";
 import { ImagemComFallback } from "./ImagemComFallback";
-import { extrairSiglas } from "../utilitarios/comuns";
+import { extrairSiglas } from "../utilitarios/texto";
 
 // Janela do álbum com o layout da Mell: capa à esquerda e, à direita,
 // "Avaliar Faixas" com um cartão por faixa. dados = { artista, album, indice }
-export function ModalAlbum({ dados, aoFechar, aoAbrirLogin }) {
+export function ModalFaixasDoAlbum({ dados, aoFechar, aoAbrirLogin }) {
   const { artista, album, indice } = dados;
   const { carregando, faixas } = useFaixasDoAlbum(artista.id, album.titulo);
 
@@ -59,7 +59,7 @@ export function ModalAlbum({ dados, aoFechar, aoAbrirLogin }) {
                 <span className="album-faixas-nome">
                   {faixa.numero}. {faixa.titulo}
                 </span>
-                <AvaliacaoDisco
+                <SeletorDeNota
                   chaveItem={chaveDaFaixa(artista.id, indice, faixa.numero)}
                   obra={{
                     tipo: "faixa",

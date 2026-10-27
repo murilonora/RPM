@@ -21,6 +21,7 @@ export function Cabecalho({ aoClicarDescobrir, aoClicarEntrar }) {
   // Esc fecha o menu
   useEffect(() => {
     if (!menuAberto) return;
+    // Esc fecha o menu do celular
     function aoTeclar(evento) {
       if (evento.key === "Escape") setMenuAberto(false);
     }
@@ -28,6 +29,7 @@ export function Cabecalho({ aoClicarDescobrir, aoClicarEntrar }) {
     return () => document.removeEventListener("keydown", aoTeclar);
   }, [menuAberto]);
 
+  // "Descobrir" no menu do celular: fecha o menu e sorteia um artista
   function descobrir() {
     setMenuAberto(false);
     aoClicarDescobrir();

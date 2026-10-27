@@ -1,9 +1,13 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { listaDeArtistas } from "../dados/dadosMusicais";
-import { imagemNoTamanho, normalizarTexto, tratarErroImagem } from "../utilitarios/comuns";
+import { imagemNoTamanho, tratarErroImagem } from "../utilitarios/imagens";
+import { normalizarTexto } from "../utilitarios/texto";
 
 const MAX_POR_GRUPO = 6;
+const ALTURA_MAXIMA_LISTA = 420;
+const ALTURA_MINIMA_LISTA = 110;
+const FOLGA_BORDA_PX = 12;
 
 const GRUPOS = [
   { tipo: "artista", titulo: "Artistas", selo: "Artista" },
@@ -51,6 +55,7 @@ const INDICE_BUSCA = listaDeArtistas.flatMap((artista) => {
 export function BuscaUnificada({ termo, aoMudarTermo }) {
   const navigate = useNavigate();
   const raizRef = useRef(null);
+  const listaRef = useRef(null);
   const [aberto, setAberto] = useState(false);
   const [indiceAtivo, setIndiceAtivo] = useState(-1);
 
@@ -70,9 +75,28 @@ export function BuscaUnificada({ termo, aoMudarTermo }) {
 
   const mostrarResultados = aberto && termoNormalizado.length > 0;
 
+  // A lista cabe dentro do banner (.home-hero): a altura vai só até a borda de baixo dele,
+  // e o que não couber rola dentro da própria lista em vez de cobrir a seção seguinte
+  useLayoutEffect(() => {
+    if (!mostrarResultados) return;
+    // Mede o espaço entre a lista e a borda do banner e limita a altura a ele
+    function ajustarAltura() {
+      const lista = listaRef.current;
+      const banner = raizRef.current?.closest(".home-hero");
+      if (!lista || !banner) return;
+      const espaco = banner.getBoundingClientRect().bottom - lista.getBoundingClientRect().top - FOLGA_BORDA_PX;
+      const altura = Math.max(ALTURA_MINIMA_LISTA, Math.min(ALTURA_MAXIMA_LISTA, espaco));
+      lista.style.maxHeight = `${altura}px`;
+    }
+    ajustarAltura();
+    window.addEventListener("resize", ajustarAltura);
+    return () => window.removeEventListener("resize", ajustarAltura);
+  }, [mostrarResultados]);
+
   // Fecha ao clicar fora da busca
   useEffect(() => {
     if (!mostrarResultados) return;
+    // Clique fora da busca fecha a lista
     function aoPressionarFora(evento) {
       if (raizRef.current && !raizRef.current.contains(evento.target)) {
         setAberto(false);
@@ -82,11 +106,13 @@ export function BuscaUnificada({ termo, aoMudarTermo }) {
     return () => document.removeEventListener("pointerdown", aoPressionarFora);
   }, [mostrarResultados]);
 
+  // Fecha a lista e abre a página do resultado escolhido
   function irPara(item) {
     setAberto(false);
     navigate(item.destino);
   }
 
+  // Teclado: setas andam pelos resultados e Esc fecha a lista
   function aoTeclar(evento) {
     if (evento.key === "Escape") {
       setAberto(false);
@@ -103,6 +129,7 @@ export function BuscaUnificada({ termo, aoMudarTermo }) {
     }
   }
 
+  // Enter/botão: abre o resultado destacado (ou o primeiro)
   function aoEnviar(evento) {
     evento.preventDefault();
     const escolhido = planos[indiceAtivo] || planos[0];
@@ -135,7 +162,7 @@ export function BuscaUnificada({ termo, aoMudarTermo }) {
       <button type="submit" aria-label="Buscar">→</button>
 
       {mostrarResultados && (
-        <div className="busca-dropdown" id="busca-resultados" role="listbox" aria-label="Resultados da busca">
+        <div className="busca-dropdown" ref={listaRef} id="busca-resultados" role="listbox" aria-label="Resultados da busca">
           {planos.length === 0 ? (
             <p className="busca-vazio">Nada encontrado para "{termo}". Tente outro nome ou título.</p>
           ) : (

@@ -67,10 +67,10 @@ O **RPM** (Rotação Por Minuto) é uma enciclopédia interativa inspirada em ca
 ## ⭐️ Sistema de Avaliação & Coleção do Crítico
 
 ### 1. Avaliação em Vinis (1 a 5 Discos)
-- Componente dedicado (`AvaliacaoVinil.jsx`) que substitui estrelas convencionais por discos de vinil interativos com sulcos mecânicos e animação de rotação no hover.
-- Suporta leitura e escrita com toggle inteligente (clicar na nota atual desmarca).
-- Modal dedicado (`ModalAvaliacao.jsx`) permitindo redigir resenhas textuais para cada obra.
-- **Avaliação por faixa** (`ModalAlbum.jsx`, sistema da Mell): ao abrir um álbum aparecem as faixas reais do disco, cada uma com sua nota em vinis, além da nota e da resenha do álbum inteiro. A lista de faixas vem de `src/dados/faixasAlbuns.json` (104 dos 139 álbuns), levantada na API do Deezer, e só é baixada quando um álbum é aberto.
+- `SeletorDeNota.jsx`: a pílula "Sua nota:" (visual da Mell) com 5 discos de vinil. Clicar na nota atual desmarca; sem login, pede para entrar.
+- `NotaEmVinis.jsx`: mostra a nota em vinis, só leitura, nas fichas da Coleção.
+- `ModalAvaliacao.jsx`: nota e resenha de uma obra, com o botão para excluir a avaliação (e "Desfazer" na Coleção).
+- **Avaliação por faixa** (`ModalFaixasDoAlbum.jsx`, sistema da Mell): ao abrir um álbum aparecem as faixas reais do disco, cada uma com sua nota em vinis, além da nota e da resenha do álbum inteiro. A lista de faixas vem de `src/dados/faixasDosAlbuns.json` (104 dos 139 álbuns), levantada na API do Deezer, e só é baixada quando um álbum é aberto.
 
 ### 2. Arquivo Técnico do Crítico (`PaginaColecao.jsx`)
 - **Ficha Técnica & Credencial do Usuário**: Exibe número de série único (`ID: #...`), selo de certificação da coleção e métricas automáticas (total catalogado, média de notas, grau máximo e resenhas registradas).
@@ -94,34 +94,45 @@ RPM/
 │   └── fonts/                  # DM Sans e DM Serif Display hospedadas no projeto
 ├── src/
 │   ├── componentes/
-│   │   ├── AbaAlbuns.jsx        # Discografia do artista
-│   │   ├── AbaHistoria.jsx      # Biografia editorial
-│   │   ├── AbaMusicas.jsx       # Ranking de faixas
-│   │   ├── AvaliacaoVinil.jsx   # Seletor interativo de 1 a 5 vinis
-│   │   ├── Cabecalho.jsx        # Barra de navegação e autenticação
-│   │   ├── FundoMosaicoHero.jsx # Marquee infinito de colunas verticais
-│   │   ├── Logotipo.jsx         # Marca da aplicação
-│   │   ├── ModalAlbum.jsx       # Ficha do álbum com nota por faixa
-│   │   ├── ModalAutenticacao.jsx# Login e cadastro (validado pelo backend)
-│   │   ├── ModalAvaliacao.jsx   # Modal de nota e resenha crítica
-│   │   └── colecao/             # Partes da página Coleção
+│   │   ├── AbaAlbuns.jsx             # Discografia do artista, com nota por álbum
+│   │   ├── AbaHistoria.jsx           # Biografia editorial
+│   │   ├── AbaMusicas.jsx            # Mais ouvidas, com coluna de avaliação
+│   │   ├── BuscaUnificada.jsx        # Busca de artistas, músicas e álbuns da home
+│   │   ├── Cabecalho.jsx             # Navegação, login e menu do celular
+│   │   ├── FiltroAlfabetico.jsx      # Letras A–Z dos catálogos
+│   │   ├── FundoMosaicoHero.jsx      # Mosaico animado de capas no banner
+│   │   ├── HistoriasEmDestaque.jsx   # Carrossel de histórias da home
+│   │   ├── IconeDisco.jsx            # Desenho do disco usado no seletor de nota
+│   │   ├── ImagemComFallback.jsx     # Imagem com carregamento e troca por logo
+│   │   ├── Logotipo.jsx              # Marca da aplicação
+│   │   ├── ModalAutenticacao.jsx     # Login e cadastro (validado pelo backend)
+│   │   ├── ModalAvaliacao.jsx        # Nota, resenha e exclusão da avaliação
+│   │   ├── ModalFaixasDoAlbum.jsx    # Faixas do álbum com nota por faixa
+│   │   ├── NotaEmVinis.jsx           # Nota em vinis só para exibição
+│   │   ├── SeletorDeNota.jsx         # Pílula "Sua nota:" para dar a nota
+│   │   └── colecao/                  # Partes da página Coleção
 │   ├── contextos/
-│   │   └── ContextoUsuario.jsx  # Sessão e avaliações (backend + cópia local)
+│   │   └── ContextoUsuario.jsx       # Sessão e avaliações (backend + cópia local)
 │   ├── dados/
-│   │   ├── dadosMusicais.ts     # Banco de dados musical tipado (55 artistas)
-│   │   ├── faixas.js            # Carrega as faixas dos álbuns sob demanda
-│   │   └── faixasAlbuns.json    # Faixas reais de 104 álbuns (levantamento da Mell)
+│   │   ├── dadosMusicais.ts          # Banco de dados musical tipado (55 artistas)
+│   │   ├── faixasDosAlbuns.js        # Carrega as faixas dos álbuns sob demanda
+│   │   ├── faixasDosAlbuns.json      # Faixas reais de 104 álbuns (levantamento da Mell)
+│   │   └── historias.js              # Acervo de matérias do carrossel da home
 │   ├── servicos/
-│   │   └── api.js               # Cliente da API do backend
+│   │   └── api.js                    # Cliente da API do backend
+│   ├── utilitarios/
+│   │   ├── imagens.js                # Tamanho das capas do Deezer e imagem reserva
+│   │   ├── somVinil.js               # Som de clique ao dar nota
+│   │   └── texto.js                  # Busca sem acentos e siglas das capas
 │   ├── paginas/
-│   │   ├── PaginaArtista.jsx    # Perfil aprofundado do artista
-│   │   ├── PaginaColecao.jsx    # Fichário do crítico e Disco de Ouro
-│   │   ├── PaginaInicial.jsx    # Vitrine, busca unificada e destaques
-│   │   ├── PaginaTodosAlbuns.jsx# Crate digging de álbuns físicos
-│   │   └── PaginaTodosArtistas.jsx# Galeria editorial de artistas
-│   ├── Aplicativo.jsx           # Roteamento e orquestrador de estado global
-│   ├── estilosGlobais.css       # Design system brutalista e animações físicas
-│   └── principal.jsx            # Ponto de entrada do React DOM
+│   │   ├── PaginaArtista.jsx         # Perfil do artista (aba na URL: ?aba=historia)
+│   │   ├── PaginaColecao.jsx         # Fichário do crítico e Disco de Ouro
+│   │   ├── PaginaInicial.jsx         # Banner, busca, catálogo e histórias
+│   │   ├── PaginaTodosAlbuns.jsx     # Vitrine de álbuns com vinil animado
+│   │   └── PaginaTodosArtistas.jsx   # Galeria editorial de artistas
+│   ├── Aplicativo.jsx                # Rotas, modais e estado global
+│   ├── estilosGlobais.css            # Estilos do site inteiro
+│   └── principal.jsx                 # Ponto de entrada do React
 ├── index.html                   # HTML base com meta tags e favicon
 ├── package.json                 # Dependências e scripts npm
 ├── backend/                     # API Spring Boot + MySQL (Matheus e Gabriel)

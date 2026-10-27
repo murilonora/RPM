@@ -20,6 +20,7 @@ const AVALIACAO_VAZIA = Object.freeze({ nota: 0, comentario: "" });
 // Utilitarios de leitura e escrita no localStorage
 function obterDoStorage(chave, valorPadrao) {
   try {
+    // Tudo o que os componentes recebem pelo useUsuario(), memorizado para evitar re-render à toa
     const valor = localStorage.getItem(chave);
     return valor ? JSON.parse(valor) : valorPadrao;
   } catch {
@@ -48,7 +49,10 @@ export function ProvedorUsuario({ children }) {
   const [chaveFavoritoManual, setChaveFavoritoManual] = useState(null);
   // "verificando" | "online" | "offline"
   const [statusServidor, setStatusServidor] = useState("verificando");
+  // { chave, avaliacao } da última avaliação apagada, enquanto ainda dá para desfazer
+  const [ultimaExcluida, setUltimaExcluida] = useState(null);
 
+  // Dados do usuário da sessão atual (null quando ninguém entrou)
   const usuarioLogado = useMemo(
     () => usuarios.find((u) => u.id === idSessao) || null,
     [usuarios, idSessao]
@@ -59,6 +63,8 @@ export function ProvedorUsuario({ children }) {
   usuarioRef.current = usuarioLogado;
   const avaliacoesRef = useRef(avaliacoes);
   avaliacoesRef.current = avaliacoes;
+  const ultimaExcluidaRef = useRef(ultimaExcluida);
+  ultimaExcluidaRef.current = ultimaExcluida;
 
   // Descobre se o backend está no ar ao abrir o site
   useEffect(() => {
@@ -102,6 +108,7 @@ export function ProvedorUsuario({ children }) {
     });
   }, []);
 
+  // Manda a avaliação ao backend; se ele estiver fora do ar, ela fica pendente no navegador
   const enviarParaServidor = useCallback(
     async (chaveItem, avaliacao) => {
       const usuario = usuarioRef.current;
@@ -180,6 +187,7 @@ export function ProvedorUsuario({ children }) {
   const sairDaConta = useCallback(() => {
     setIdSessao(null);
     setAvaliacoes({});
+    setUltimaExcluida(null);
     setChaveFavoritoManual(null);
   }, []);
 
@@ -216,6 +224,39 @@ export function ProvedorUsuario({ children }) {
     [idSessao, enviarParaServidor]
   );
 
+  // Apaga nota e resenha de um item (só no navegador: o backend ainda não tem rota de exclusão).
+  // Guarda o que foi apagado em ultimaExcluida, para a Coleção oferecer "Desfazer".
+  const removerAvaliacao = useCallback(
+    (chaveItem) => {
+      if (!idSessao) return;
+      const removida = avaliacoesRef.current[chaveItem];
+      if (!removida) return;
+      setAvaliacoes((anteriores) => {
+        const restantes = { ...anteriores };
+        delete restantes[chaveItem];
+        salvarNoStorage(`rpm_avaliacoes_${idSessao}`, restantes);
+        return restantes;
+      });
+      setUltimaExcluida({ chave: chaveItem, avaliacao: removida });
+    },
+    [idSessao]
+  );
+
+  // Devolve a última avaliação apagada exatamente como estava (sem reenviar ao backend)
+  const desfazerExclusao = useCallback(() => {
+    if (!idSessao || !ultimaExcluidaRef.current) return;
+    const { chave, avaliacao } = ultimaExcluidaRef.current;
+    setAvaliacoes((anteriores) => {
+      const novas = { ...anteriores, [chave]: avaliacao };
+      salvarNoStorage(`rpm_avaliacoes_${idSessao}`, novas);
+      return novas;
+    });
+    setUltimaExcluida(null);
+  }, [idSessao]);
+
+  // Esquece a última exclusão (o aviso de desfazer saiu da tela)
+  const descartarExclusao = useCallback(() => setUltimaExcluida(null), []);
+
   // Retorna a nota e comentario atual de um item
   const obterAvaliacao = useCallback(
     (chaveItem) => avaliacoes[chaveItem] || AVALIACAO_VAZIA,
@@ -244,6 +285,10 @@ export function ProvedorUsuario({ children }) {
       entrarComEmail,
       sairDaConta,
       avaliarItem,
+      removerAvaliacao,
+      ultimaExcluida,
+      desfazerExclusao,
+      descartarExclusao,
       obterAvaliacao,
     }),
     [
@@ -259,6 +304,10 @@ export function ProvedorUsuario({ children }) {
       entrarComEmail,
       sairDaConta,
       avaliarItem,
+      removerAvaliacao,
+      ultimaExcluida,
+      desfazerExclusao,
+      descartarExclusao,
       obterAvaliacao,
     ]
   );

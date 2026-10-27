@@ -1,3 +1,4 @@
+// Testes do contexto do usuário com um backend simulado (cadastro, login, avaliações e reenvio)
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, cleanup, renderHook, waitFor } from "@testing-library/react";
 import { ProvedorUsuario, useUsuario } from "./ContextoUsuario";

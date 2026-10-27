@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { imagemNoTamanho, tratarErroImagem } from "../utilitarios/comuns";
+import { imagemNoTamanho, tratarErroImagem } from "../utilitarios/imagens";
 
 /**
  * Componente de imagem otimizado com skeleton brutalista e fallback automático.

@@ -1,3 +1,4 @@
+// Testes das funções que montam as fichas da Coleção a partir das avaliações salvas
 import { describe, expect, it } from "vitest";
 import {
   ABAS_COLECAO,
