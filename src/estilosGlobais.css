@@ -3411,6 +3411,34 @@ button.cartao-link {
   color: #6f6876;
 }
 
+.historias-cabecalho {
+  align-items: center;
+}
+
+.historias-sortear {
+  padding: 8px 14px;
+  border: 1px solid #191525;
+  border-radius: 999px;
+  background: transparent;
+  color: #191525;
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 200ms ease, color 200ms ease;
+}
+
+.historias-sortear:hover {
+  background: #191525;
+  color: #f7f4ed;
+}
+
+.historias-sortear:focus-visible {
+  outline: 2px solid #ff0004;
+  outline-offset: 3px;
+}
+
 .historias-palco {
   position: relative;
   display: grid;
@@ -3795,7 +3823,8 @@ button.cartao-link {
 
   .historias-cabecalho {
     flex-direction: column;
-    gap: 6px;
+    align-items: flex-start;
+    gap: 12px;
   }
 
   .historias-palco {

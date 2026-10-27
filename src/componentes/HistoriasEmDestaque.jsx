@@ -1,72 +1,31 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { listaDeArtistas } from "../dados/dadosMusicais";
+import { ACERVO_HISTORIAS } from "../dados/historias";
 import { imagemNoTamanho, tratarErroImagem } from "../utilitarios/comuns";
 
 const DURACAO_SLIDE_MS = 9000;
 const DISTANCIA_SWIPE_PX = 50;
+const QUANTIDADE_POR_VEZ = 5;
 
 // Cada história é um disco: a foto do artista faz o papel da capa e o vinil
 // (com a capa do álbum no rótulo) desliza para fora dela a cada troca.
-const HISTORIAS = [
-  {
-    artistaId: "racionais-mcs",
-    album: "Sobrevivendo no Inferno",
-    vertente: "Rap nacional",
-    manchete: "Sobrevivendo no Inferno, a bíblia do rap brasileiro",
-    linhaFina:
-      "Da periferia de São Paulo para a lista de leituras da Unicamp: a trajetória, as letras e o impacto do grupo que deu voz à quebrada.",
-    fato: "1,5 milhão de cópias vendidas de forma independente",
-    leitura: 10,
-  },
-  {
-    artistaId: "sabotage",
-    album: "Rap e Compromisso",
-    vertente: "Rap nacional",
-    manchete: "O Maestro do Canão e o disco que bastou",
-    linhaFina:
-      "Um único álbum lançado em vida foi suficiente para mudar a métrica, o vocabulário e o sotaque do rap paulistano.",
-    fato: "Rap é Compromisso, de 2000, o único disco lançado em vida",
-    leitura: 8,
-  },
-  {
-    artistaId: "emicida",
-    album: "AmarElo",
-    vertente: "Rap e MPB",
-    manchete: "AmarElo: quando o rap pediu licença ao samba",
-    linhaFina:
-      "Do Theatro Municipal ao documentário, o disco que costurou Belchior, Pabllo Vittar e Zeca Pagodinho numa mesma ideia de Brasil.",
-    fato: "O show no Theatro Municipal virou documentário em 2020",
-    leitura: 9,
-  },
-  {
-    artistaId: "chico-buarque",
-    album: "Construcao",
-    vertente: "MPB",
-    manchete: "Construção: um operário em versos proparoxítonos",
-    linhaFina:
-      "Em plena ditadura, Chico Buarque fechou cada verso numa proparoxítona e transformou a rotina de um trabalhador num retrato duro do país.",
-    fato: "Lançado em 1971, no auge da censura",
-    leitura: 7,
-  },
-  {
-    artistaId: "legiao-urbana",
-    album: "Dois",
-    vertente: "Rock nacional",
-    manchete: "Dois: o disco que fez Brasília falar pelo país",
-    linhaFina:
-      "Eduardo e Mônica, Tempo Perdido e Índios saíram do mesmo vinil de 1986 e viraram a trilha de uma geração inteira.",
-    fato: "Três clássicos da banda no mesmo lado do vinil",
-    leitura: 8,
-  },
-]
-  .map((historia) => {
-    const artista = listaDeArtistas.find((a) => a.id === historia.artistaId);
-    if (!artista) return null;
-    const album = artista.albuns.find((a) => a.titulo === historia.album);
-    return { ...historia, artista, capa: album?.capa || artista.foto, ano: album?.ano };
-  })
-  .filter(Boolean);
+const TODAS_HISTORIAS = ACERVO_HISTORIAS.map((historia) => {
+  const artista = listaDeArtistas.find((a) => a.id === historia.artistaId);
+  if (!artista) return null;
+  const album = artista.albuns.find((a) => a.titulo === historia.album);
+  return { ...historia, artista, capa: album?.capa || artista.foto, ano: album?.ano };
+}).filter(Boolean);
+
+// Fisher-Yates: sorteia histórias diferentes a cada visita (e a cada clique em "Outras histórias")
+function sortearHistorias(quantidade = QUANTIDADE_POR_VEZ) {
+  const copia = [...TODAS_HISTORIAS];
+  for (let i = copia.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copia[i], copia[j]] = [copia[j], copia[i]];
+  }
+  return copia.slice(0, quantidade);
+}
 
 const doisDigitos = (n) => String(n).padStart(2, "0");
 
@@ -77,14 +36,15 @@ function prefereMenosMovimento() {
 // Carrossel editorial da página inicial. Avança sozinho (a barra de progresso
 // da miniatura ativa é quem dispara a troca), pausa com o mouse em cima, com o
 // foco do teclado dentro dele ou com a aba escondida, e aceita setas e swipe.
-export function HistoriasEmDestaque() {
+export function HistoriasEmDestaque({ historiasIniciais }) {
+  const [historias, setHistorias] = useState(() => historiasIniciais ?? sortearHistorias());
   const [ativa, setAtiva] = useState(0);
   const [pausado, setPausado] = useState(false);
   const [direcao, setDirecao] = useState(1);
   const [semAutoplay] = useState(prefereMenosMovimento);
   const inicioToque = useRef(null);
   const tiraRef = useRef(null);
-  const total = HISTORIAS.length;
+  const total = historias.length;
 
   const irPara = useCallback(
     (indice, sentido) => {
@@ -94,6 +54,11 @@ export function HistoriasEmDestaque() {
     },
     [ativa, total]
   );
+  function sortearOutras() {
+    setHistorias(sortearHistorias());
+    setDirecao(1);
+    setAtiva(0);
+  }
   const proxima = () => irPara(ativa + 1, 1);
   const anterior = () => irPara(ativa - 1, -1);
 
@@ -125,7 +90,7 @@ export function HistoriasEmDestaque() {
     else anterior();
   }
 
-  const historia = HISTORIAS[ativa];
+  const historia = historias[ativa];
   const rodando = !pausado && !semAutoplay;
 
   return (
@@ -144,14 +109,16 @@ export function HistoriasEmDestaque() {
     >
       <div className="historias-cabecalho">
         <p className="eyebrow">Histórias em destaque</p>
-        <span className="edition">Edição especial: cinco discos, cinco histórias</span>
+        <button type="button" className="historias-sortear" onClick={sortearOutras}>
+          Outras histórias ⟳
+        </button>
       </div>
 
       <div className="historias-palco">
         {/* Foto do artista como capa do disco, com o vinil saindo dela */}
         <div className="historias-disco">
           <div
-            key={`vinil-${ativa}`}
+            key={`vinil-${historia.artistaId}`}
             className="historias-vinil"
             style={{ "--direcao": direcao }}
             aria-hidden="true"
@@ -165,7 +132,7 @@ export function HistoriasEmDestaque() {
             />
           </div>
           <div className="historias-capa">
-            {HISTORIAS.map((h, indice) => (
+            {historias.map((h, indice) => (
               <img
                 key={h.artistaId}
                 src={imagemNoTamanho(h.artista.foto, 1000)}
@@ -184,7 +151,7 @@ export function HistoriasEmDestaque() {
         </div>
 
         <div
-          key={`texto-${ativa}`}
+          key={`texto-${historia.artistaId}`}
           className="historias-texto"
           style={{ "--direcao": direcao }}
           aria-live={rodando ? "off" : "polite"}
@@ -216,7 +183,7 @@ export function HistoriasEmDestaque() {
 
       {/* Tira de miniaturas: escolhe a história e mostra o tempo até a próxima */}
       <div className="historias-tira" ref={tiraRef} role="tablist" aria-label="Escolher história">
-        {HISTORIAS.map((h, indice) => (
+        {historias.map((h, indice) => (
           <button
             key={h.artistaId}
             type="button"
@@ -238,7 +205,7 @@ export function HistoriasEmDestaque() {
             </span>
             {indice === ativa && (
               <span
-                key={`progresso-${ativa}`}
+                key={`progresso-${historia.artistaId}`}
                 className="historias-progresso"
                 onAnimationEnd={() => irPara(ativa + 1, 1)}
                 aria-hidden="true"
