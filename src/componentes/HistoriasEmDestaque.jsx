@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { listaDeArtistas } from "../dados/dadosMusicais";
+import { useCatalogo } from "../contextos/ContextoCatalogo";
 import { ACERVO_HISTORIAS } from "../dados/historias";
 import { imagemNoTamanho, tratarErroImagem } from "../utilitarios/imagens";
 
@@ -10,16 +10,19 @@ const QUANTIDADE_POR_VEZ = 5;
 
 // Cada história é um disco: a foto do artista faz o papel da capa e o vinil
 // (com a capa do álbum no rótulo) desliza para fora dela a cada troca.
-const TODAS_HISTORIAS = ACERVO_HISTORIAS.map((historia) => {
-  const artista = listaDeArtistas.find((a) => a.id === historia.artistaId);
-  if (!artista) return null;
-  const album = artista.albuns.find((a) => a.titulo === historia.album);
-  return { ...historia, artista, capa: album?.capa || artista.foto, ano: album?.ano };
-}).filter(Boolean);
+// Liga cada história do acervo ao artista e ao álbum do catálogo atual (pula as que não existirem)
+function montarHistorias(artistasPorId) {
+  return ACERVO_HISTORIAS.map((historia) => {
+    const artista = artistasPorId.get(historia.artistaId);
+    if (!artista) return null;
+    const album = artista.albuns.find((a) => a.titulo === historia.album);
+    return { ...historia, artista, capa: album?.capa || artista.foto, ano: album?.ano };
+  }).filter(Boolean);
+}
 
 // Fisher-Yates: sorteia histórias diferentes a cada visita (e a cada clique em "Outras histórias")
-function sortearHistorias(quantidade = QUANTIDADE_POR_VEZ) {
-  const copia = [...TODAS_HISTORIAS];
+function sortearHistorias(todas, quantidade = QUANTIDADE_POR_VEZ) {
+  const copia = [...todas];
   for (let i = copia.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [copia[i], copia[j]] = [copia[j], copia[i]];
@@ -37,7 +40,11 @@ function prefereMenosMovimento() {
 // da miniatura ativa é quem dispara a troca), pausa com o mouse em cima, com o
 // foco do teclado dentro dele ou com a aba escondida, e aceita setas e swipe.
 export function HistoriasEmDestaque({ historiasIniciais }) {
-  const [historias, setHistorias] = useState(() => historiasIniciais ?? sortearHistorias());
+  const { artistasPorId } = useCatalogo();
+  // Sorteia uma vez ao abrir; se o catálogo do servidor chegar depois, as histórias na tela não mudam
+  const [historias, setHistorias] = useState(
+    () => historiasIniciais ?? sortearHistorias(montarHistorias(artistasPorId))
+  );
   const [ativa, setAtiva] = useState(0);
   const [pausado, setPausado] = useState(false);
   const [direcao, setDirecao] = useState(1);
@@ -57,7 +64,7 @@ export function HistoriasEmDestaque({ historiasIniciais }) {
   );
   // "Outras histórias": sorteia um novo conjunto e volta para a primeira
   function sortearOutras() {
-    setHistorias(sortearHistorias());
+    setHistorias(sortearHistorias(montarHistorias(artistasPorId)));
     setDirecao(1);
     setAtiva(0);
   }

@@ -3872,32 +3872,38 @@ const bancoDeDadosArtistas: Artista[] = [
 // ==========================================
 // FUNÇÃO DE NORMALIZAÇÃO, HERANÇA EM CASCATA E ORDENAÇÃO
 // ==========================================
-export const listaDeArtistas: Artista[] = bancoDeDadosArtistas.map((artista) => {
-  // 1. Garante que todo álbum tenha capa (ou herda o retrato do artista caso falte)
-  const albunsMapeados = [...artista.albuns]
-    .map((alb) => ({
-      ...alb,
-      capa: alb.capa || artista.foto,
-    }))
-    .sort((a, b) => b.streams - a.streams);
+// Usada para os dados locais e também para a lista que vem do backend (buscarCatalogoDoServidor em servicos/api.js)
+export function prepararArtistas(artistas: Artista[]): Artista[] {
+  return artistas.map((artista) => {
+    // 1. Garante que todo álbum tenha capa (ou herda o retrato do artista caso falte)
+    const albunsMapeados = [...artista.albuns]
+      .map((alb) => ({
+        ...alb,
+        capa: alb.capa || artista.foto,
+      }))
+      .sort((a, b) => b.streams - a.streams);
 
-  // 2. Garante que toda faixa tenha capa com a hierarquia estrita:
-  // Se a faixa não tiver capa própria de single, herda a capa oficial do seu álbum pai.
-  const musicasMapeadas = [...artista.musicas]
-    .map((musica) => {
-      const albumPai = albunsMapeados.find(
-        (alb) => alb.titulo.trim().toLowerCase() === (musica.album || '').trim().toLowerCase()
-      );
-      return {
-        ...musica,
-        capa: musica.capa || (albumPai ? albumPai.capa : artista.foto),
-      };
-    })
-    .sort((a, b) => b.streams - a.streams);
+    // 2. Garante que toda faixa tenha capa com a hierarquia estrita:
+    // Se a faixa não tiver capa própria de single, herda a capa oficial do seu álbum pai.
+    const musicasMapeadas = [...artista.musicas]
+      .map((musica) => {
+        const albumPai = albunsMapeados.find(
+          (alb) => alb.titulo.trim().toLowerCase() === (musica.album || '').trim().toLowerCase()
+        );
+        return {
+          ...musica,
+          capa: musica.capa || (albumPai ? albumPai.capa : artista.foto),
+        };
+      })
+      .sort((a, b) => b.streams - a.streams);
 
-  return {
-    ...artista,
-    albuns: albunsMapeados,
-    musicas: musicasMapeadas,
-  };
-});
+    return {
+      ...artista,
+      albuns: albunsMapeados,
+      musicas: musicasMapeadas,
+    };
+  });
+}
+
+// Catálogo local: é o que o site usa quando o backend não tem (ou não responde) GET /api/artistas
+export const listaDeArtistas: Artista[] = prepararArtistas(bancoDeDadosArtistas);

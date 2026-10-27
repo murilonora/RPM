@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { listaDeArtistas } from "../dados/dadosMusicais";
+import { useCatalogo } from "../contextos/ContextoCatalogo";
 import { imagemNoTamanho, tratarErroImagem } from "../utilitarios/imagens";
 
 /**
@@ -8,10 +8,12 @@ import { imagemNoTamanho, tratarErroImagem } from "../utilitarios/imagens";
  * e capas de álbuns emblemáticas do acervo musical.
  */
 export function FundoMosaicoHero() {
+  const { artistas } = useCatalogo();
+
   // Monta itens ricos (fotos de artistas + capas de álbuns icônicos)
   const colunas = useMemo(() => {
     // Lista de artistas com foto
-    const artistasComFoto = listaDeArtistas
+    const artistasComFoto = artistas
       .filter((a) => !!a.foto)
       .map((a) => ({
         tipo: "artista",
@@ -24,7 +26,7 @@ export function FundoMosaicoHero() {
 
     // Capas de álbuns
     const capasAlbuns = [];
-    listaDeArtistas.forEach((a) => {
+    artistas.forEach((a) => {
       a.albuns.forEach((alb) => {
         if (alb.capa) {
           capasAlbuns.push({
@@ -56,7 +58,7 @@ export function FundoMosaicoHero() {
     });
 
     return cols;
-  }, []);
+  }, [artistas]);
 
   // O recorte fica só no mosaico (que é maior e inclinado), e não no hero inteiro:
   // assim a lista de resultados da busca pode passar da borda do hero sem ser cortada.

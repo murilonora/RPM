@@ -3,12 +3,15 @@
 //
 // Contrato usado (backend/teste.http):
 //   GET  /api/status                         -> { status: "ok" }
+//   GET  /api/artistas                       -> catálogo (rota ainda a ser criada; ver README)
 //   POST /api/usuarios                       { nome, email, senha }
 //   POST /api/avaliacoes/albuns              { artistaId, tituloAlbum, nota, usuario }
 //   POST /api/avaliacoes/albuns/comentarios  { ...igual, texto }
 //   POST /api/avaliacoes/musicas             { artistaId, tituloMusica, nota, usuario }
 //   POST /api/avaliacoes/musicas/comentarios { ...igual, texto }
 // Erros de validação voltam como 400 { campo: "mensagem" } ou { erro: "mensagem" }.
+
+import { prepararArtistas } from "../dados/dadosMusicais";
 
 const BASE = "/api";
 
@@ -88,5 +91,44 @@ export async function enviarAvaliacao({ obra, nota, comentario, usuario }) {
   await requisitar(rota, { metodo: "POST", corpo });
   if (comentario?.trim()) {
     await requisitar(`${rota}/comentarios`, { metodo: "POST", corpo: { ...corpo, texto: comentario.trim() } });
+  }
+}
+
+// ---------- Catálogo de artistas ----------
+// Formato esperado: o mesmo do backend/src/main/resources/dados/artistas.json
+// (artistas com "albuns" e "musicas" dentro). Enquanto a rota não existir, devolve null
+// e o site segue com os dados locais de dadosMusicais.ts.
+
+// Um artista só é aceito se tiver o mínimo que as páginas usam
+function artistaValido(artista) {
+  return (
+    artista &&
+    typeof artista.id === "string" &&
+    typeof artista.nome === "string" &&
+    Array.isArray(artista.albuns) &&
+    Array.isArray(artista.musicas)
+  );
+}
+
+// No banco a biografia é um TEXT; o site espera uma lista de parágrafos
+function paragrafos(biografia) {
+  if (Array.isArray(biografia)) return biografia;
+  if (typeof biografia === "string" && biografia.trim()) {
+    return biografia.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+  }
+  return [];
+}
+
+/**
+ * Devolve a lista de artistas pronta para o site, ou null se não der para usar a do servidor
+ * (rota inexistente, servidor fora do ar, resposta vazia ou em formato diferente).
+ */
+export async function buscarCatalogoDoServidor() {
+  try {
+    const dados = await requisitar("/artistas");
+    if (!Array.isArray(dados) || dados.length === 0 || !dados.every(artistaValido)) return null;
+    return prepararArtistas(dados.map((artista) => ({ ...artista, biografia: paragrafos(artista.biografia) })));
+  } catch {
+    return null;
   }
 }

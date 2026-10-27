@@ -112,6 +112,7 @@ RPM/
 │   │   ├── SeletorDeNota.jsx         # Pílula "Sua nota:" para dar a nota
 │   │   └── colecao/                  # Partes da página Coleção
 │   ├── contextos/
+│   │   ├── ContextoCatalogo.jsx      # Catálogo de artistas (backend ou dados locais)
 │   │   └── ContextoUsuario.jsx       # Sessão e avaliações (backend + cópia local)
 │   ├── dados/
 │   │   ├── dadosMusicais.ts          # Banco de dados musical tipado (55 artistas)
@@ -119,7 +120,7 @@ RPM/
 │   │   ├── faixasDosAlbuns.json      # Faixas reais de 104 álbuns (levantamento da Mell)
 │   │   └── historias.js              # Acervo de matérias do carrossel da home
 │   ├── servicos/
-│   │   └── api.js                    # Cliente da API do backend
+│   │   └── api.js                    # Cliente da API do backend (inclui o catálogo GET /api/artistas)
 │   ├── utilitarios/
 │   │   ├── imagens.js                # Tamanho das capas do Deezer e imagem reserva
 │   │   ├── somVinil.js               # Som de clique ao dar nota
@@ -149,6 +150,7 @@ O backend fica em `backend/` (Spring Boot + MySQL, por Matheus e Gabriel). Em de
 | Ação no site | Rota | Corpo enviado |
 | :--- | :--- | :--- |
 | Ao abrir o site | `GET /api/status` | — |
+| Ao abrir o site | `GET /api/artistas` *(ainda não existe no backend)* | — |
 | Criar conta | `POST /api/usuarios` | `{ nome, email, senha }` |
 | Nota de álbum | `POST /api/avaliacoes/albuns` | `{ artistaId, tituloAlbum, nota, usuario }` |
 | Nota de música ou faixa | `POST /api/avaliacoes/musicas` | `{ artistaId, tituloMusica, nota, usuario }` |
@@ -157,6 +159,32 @@ O backend fica em `backend/` (Spring Boot + MySQL, por Matheus e Gabriel). Em de
 - **Validação**: as mensagens de erro do backend (400 `{ campo: "mensagem" }`) aparecem embaixo de cada campo do cadastro.
 - **Servidor desligado**: o site continua funcionando com os dados no navegador; as notas ficam marcadas como pendentes e são reenviadas quando o servidor volta.
 - **O que o backend ainda precisa** para o front deixar de depender do navegador: salvar usuários e avaliações no MySQL (hoje as rotas só validam), rota de login (`POST /api/login`), rotas de leitura (`GET` das avaliações do usuário) e atualizar a nota quando o mesmo usuário avalia a mesma obra de novo, em vez de duplicar.
+
+### Catálogo de artistas: backend com reserva local
+O front já está pronto para ler artistas, álbuns e músicas do banco (`buscarCatalogoDoServidor` em `src/servicos/api.js` e `src/contextos/ContextoCatalogo.jsx`):
+
+- O site abre sempre com os dados locais de `src/dados/dadosMusicais.ts`, então nunca aparece vazio.
+- Ao mesmo tempo ele chama `GET /api/artistas`. Se a resposta for uma lista válida, o site passa a usar a lista do banco.
+- Se a rota não existir (como hoje), o servidor estiver desligado ou o formato vier diferente, o site continua com os dados locais.
+
+**O que o backend precisa entregar** em `GET /api/artistas`: uma lista no mesmo formato do `backend/src/main/resources/dados/artistas.json`, com os álbuns e as músicas dentro de cada artista:
+
+```json
+[
+  {
+    "id": "matue", "nome": "Matue", "categoria": "Trap Brasileiro", "genero": "Trap / Hip Hop",
+    "origem": "Fortaleza, CE, Brasil", "periodoAtivo": "2015 - presente", "ouvintesMensais": "11.8 mi",
+    "foto": "https://...", "legendaFoto": "...", "resumo": "...", "citacao": "...",
+    "biografia": "Primeiro parágrafo.\n\nSegundo parágrafo.",
+    "albuns":  [{ "titulo": "333", "ano": "2024", "faixas": "12 faixas", "reproducoes": "...", "streams": 0, "capa": "https://..." }],
+    "musicas": [{ "titulo": "...", "album": "333", "ano": "2024", "reproducoes": "...", "streams": 0, "capa": "https://..." }]
+  }
+]
+```
+
+- `id`, `nome`, `albuns` e `musicas` são obrigatórios. Sem eles, a lista do banco é ignorada.
+- `biografia` pode vir como texto (parágrafos separados por linha em branco) ou como lista.
+- Os `id` precisam continuar iguais aos de hoje (`"matue"`, `"racionais-mcs"`...), porque as avaliações salvas usam esse id.
 
 ### Rodando os dois juntos
 1. Backend: abrir `backend/` no IntelliJ (Java 21), definir `DB_PASSWORD` (e `DB_USER`, se não for `root`) e rodar `RpmApplication`. O banco `sitemusica` precisa existir no MySQL.

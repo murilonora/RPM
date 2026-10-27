@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useUsuario } from "../contextos/ContextoUsuario";
+import { useCatalogo } from "../contextos/ContextoCatalogo";
 import { ColecaoDeslogada } from "../componentes/colecao/ColecaoDeslogada";
 import { FichaCritico } from "../componentes/colecao/FichaCritico";
 import { PlacaDiscoOuro } from "../componentes/colecao/PlacaDiscoOuro";
@@ -41,7 +42,11 @@ export function PaginaColecao({ aoAvaliar, aoAbrirLogin }) {
   }, [ultimaExcluida, descartarExclusao]);
 
   // Mapeia as avaliações salvas para itens detalhados com capa, títulos e artista
-  const itensAvaliados = useMemo(() => montarItensAvaliados(avaliacoes), [avaliacoes]);
+  const { artistasPorId } = useCatalogo();
+  const itensAvaliados = useMemo(
+    () => montarItensAvaliados(avaliacoes, artistasPorId),
+    [avaliacoes, artistasPorId]
+  );
 
   // Números das abas de filtro e da ficha do crítico
   const contagens = useMemo(

@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { listaDeArtistas } from "../dados/dadosMusicais";
+import { useCatalogo } from "../contextos/ContextoCatalogo";
 import { imagemNoTamanho, tratarErroImagem } from "../utilitarios/imagens";
 import { normalizarTexto } from "../utilitarios/texto";
 
@@ -15,45 +15,49 @@ const GRUPOS = [
   { tipo: "album", titulo: "Álbuns", selo: "Álbum" },
 ];
 
-// Índice montado uma única vez: o texto já vem normalizado, então cada tecla
-// só faz "includes" em vez de remover acentos de todo o acervo de novo
-const INDICE_BUSCA = listaDeArtistas.flatMap((artista) => {
-  const destino = `/artista/${artista.id}`;
-  return [
-    {
-      tipo: "artista",
-      chave: `artista-${artista.id}`,
-      texto: normalizarTexto(`${artista.nome} ${artista.genero} ${artista.categoria}`),
-      foto: artista.foto,
-      titulo: artista.nome,
-      subtitulo: `${artista.categoria} · ${artista.origem}`,
-      destino,
-    },
-    ...artista.musicas.map((musica, idx) => ({
-      tipo: "musica",
-      chave: `musica-${artista.id}-${idx}`,
-      texto: normalizarTexto(musica.titulo),
-      foto: musica.capa || artista.foto,
-      titulo: musica.titulo,
-      subtitulo: `${musica.album} · ${artista.nome}`,
-      destino,
-    })),
-    ...artista.albuns.map((album, idx) => ({
-      tipo: "album",
-      chave: `album-${artista.id}-${idx}`,
-      texto: normalizarTexto(album.titulo),
-      foto: album.capa || artista.foto,
-      titulo: album.titulo,
-      subtitulo: `${album.ano} · ${artista.nome}`,
-      destino,
-    })),
-  ];
-});
+// Índice de busca: o texto já vem normalizado, então cada tecla só faz "includes"
+// em vez de remover acentos de todo o acervo de novo. Montado uma vez por catálogo.
+function montarIndiceBusca(artistas) {
+  return artistas.flatMap((artista) => {
+    const destino = `/artista/${artista.id}`;
+    return [
+      {
+        tipo: "artista",
+        chave: `artista-${artista.id}`,
+        texto: normalizarTexto(`${artista.nome} ${artista.genero} ${artista.categoria}`),
+        foto: artista.foto,
+        titulo: artista.nome,
+        subtitulo: `${artista.categoria} · ${artista.origem}`,
+        destino,
+      },
+      ...artista.musicas.map((musica, idx) => ({
+        tipo: "musica",
+        chave: `musica-${artista.id}-${idx}`,
+        texto: normalizarTexto(musica.titulo),
+        foto: musica.capa || artista.foto,
+        titulo: musica.titulo,
+        subtitulo: `${musica.album} · ${artista.nome}`,
+        destino,
+      })),
+      ...artista.albuns.map((album, idx) => ({
+        tipo: "album",
+        chave: `album-${artista.id}-${idx}`,
+        texto: normalizarTexto(album.titulo),
+        foto: album.capa || artista.foto,
+        titulo: album.titulo,
+        subtitulo: `${album.ano} · ${artista.nome}`,
+        destino,
+      })),
+    ];
+  });
+}
 
 // Barra de busca da página inicial: artistas, músicas e álbuns num só lugar,
 // navegável por teclado (setas, Enter e Esc) no padrão combobox
 export function BuscaUnificada({ termo, aoMudarTermo }) {
   const navigate = useNavigate();
+  const { artistas } = useCatalogo();
+  const indiceBusca = useMemo(() => montarIndiceBusca(artistas), [artistas]);
   const raizRef = useRef(null);
   const listaRef = useRef(null);
   const [aberto, setAberto] = useState(false);
@@ -66,12 +70,12 @@ export function BuscaUnificada({ termo, aoMudarTermo }) {
     if (!termoNormalizado) return { grupos: [], planos: [] };
     const grupos = GRUPOS.map((grupo) => ({
       ...grupo,
-      itens: INDICE_BUSCA.filter(
+      itens: indiceBusca.filter(
         (item) => item.tipo === grupo.tipo && item.texto.includes(termoNormalizado)
       ).slice(0, MAX_POR_GRUPO),
     })).filter((grupo) => grupo.itens.length > 0);
     return { grupos, planos: grupos.flatMap((grupo) => grupo.itens) };
-  }, [termoNormalizado]);
+  }, [termoNormalizado, indiceBusca]);
 
   const mostrarResultados = aberto && termoNormalizado.length > 0;
 
