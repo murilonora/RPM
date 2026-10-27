@@ -180,7 +180,7 @@ export function HistoriasEmDestaque({ historiasIniciais }) {
             <b>{historia.artista.nome}</b>
             {historia.fato}
           </p>
-          <Link className="historias-ler" to={`/artista/${historia.artistaId}?aba=historia`}>
+          <Link className="historias-ler" to={`/artista/${historia.artistaId}?aba=historia`} viewTransition>
             Ler a história de {historia.artista.nome}
           </Link>
         </div>

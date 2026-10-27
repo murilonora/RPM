@@ -1,4 +1,4 @@
-// Testes da Coleção: excluir a avaliação pelo modal e desfazer
+// Testes da Coleção: excluir a avaliação pelo modal, desfazer e o retrato do crítico
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, useState } from "react";
 import { cleanup, render, screen } from "@testing-library/react";
@@ -119,5 +119,14 @@ describe("ModalAvaliacao (botão Excluir)", () => {
     );
     await act(() => contexto.registrarUsuario("Mell", "mell@rpm.test", "12345678"));
     expect(screen.queryByRole("button", { name: "Excluir avaliação" })).toBeNull();
+  });
+});
+
+describe("PaginaColecao (retrato do crítico)", () => {
+  it("mostra quantas obras têm cada nota, a vertente e o artista mais avaliados", async () => {
+    await renderizarComAvaliacao();
+    expect(screen.getByRole("img", { name: /1 com nota 4/ })).toBeTruthy();
+    expect(screen.getByText("VERTENTE_FAVORITA").nextSibling.textContent).toBe(matue.categoria);
+    expect(screen.getByText("ARTISTA_MAIS_AVALIADO").nextSibling.textContent).toBe(matue.nome);
   });
 });

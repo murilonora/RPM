@@ -59,8 +59,86 @@ body {
 }
 
 /* Espaço reservado enquanto o código de uma página carrega, para o rodapé não pular */
+/* Enquanto a página (carregada sob demanda) baixa: esqueleto com título e blocos, com brilho passando */
 .carregando-pagina {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  align-content: start;
+  gap: 20px;
   min-height: calc(100vh - 76px);
+  padding: 56px 6vw;
+}
+
+.carregando-pagina::before,
+.carregando-pagina span {
+  border-radius: 2px;
+  background: linear-gradient(90deg, #ebe6da 0%, #f5f1e8 50%, #ebe6da 100%) 0 0 / 200% 100%;
+  animation: esqueleto-brilho 1.2s linear infinite;
+}
+
+.carregando-pagina::before {
+  content: "";
+  grid-column: 1 / -1;
+  width: min(420px, 70%);
+  height: 48px;
+}
+
+.carregando-pagina span {
+  height: 260px;
+}
+
+@keyframes esqueleto-brilho {
+  to { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carregando-pagina::before,
+  .carregando-pagina span {
+    animation: none;
+  }
+}
+
+/* Página de endereço inexistente, com o mascote do vinil triste */
+.pagina-nao-encontrada {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 14px;
+  min-height: calc(100vh - 76px);
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.pagina-nao-encontrada img {
+  width: min(220px, 60vw);
+}
+
+.pagina-nao-encontrada h1 {
+  margin: 0;
+  font-family: "DM Serif Display:Regular", serif;
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 400;
+  line-height: 1;
+}
+
+.pagina-nao-encontrada p {
+  max-width: 42ch;
+  margin: 0;
+  color: #6f6876;
+}
+
+.pagina-nao-encontrada a {
+  margin-top: 8px;
+  padding: 12px 22px;
+  border: 1px solid #191525;
+  color: #191525;
+  font-family: "DM Sans:Bold", sans-serif;
+  text-decoration: none;
+}
+
+.pagina-nao-encontrada a:hover {
+  background: #191525;
+  color: #f7f4ed;
 }
 
 button,
@@ -88,7 +166,28 @@ button {
   min-height: 100vh;
 }
 
+/* View Transitions: a foto/capa com o mesmo nome nas duas telas "voa" de uma para a outra.
+   O cabeçalho tem nome próprio para ficar parado enquanto o resto da página troca. */
+::view-transition-group(*) {
+  animation-duration: 0.45s;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.25s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
 .site-header {
+  view-transition-name: cabecalho;
   position: sticky;
   z-index: 30;
   top: 0;
@@ -167,18 +266,35 @@ button {
   cursor: pointer;
 }
 
+/* Menu do celular: painel que desliza da direita, com o resto da tela escurecido */
 .site-header .menu-celular {
   position: absolute;
   top: 100%;
   right: 0;
-  left: 0;
   display: flex;
   flex-direction: column;
   gap: 0;
+  width: min(320px, 86vw);
+  height: calc(100dvh - 100%);
+  max-height: calc(100dvh - 64px);
+  overflow-y: auto;
   padding: 8px 24px 20px;
-  border-bottom: 2px solid #191525;
+  border-left: 2px solid #191525;
   background: #f7f4ed;
-  box-shadow: 0 18px 30px rgb(0 0 0 / 18%);
+  box-shadow: 0 0 0 100vmax rgb(14 13 21 / 45%);
+  animation: menu-deslizar 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Revela da direita para a esquerda com clip-path: nada sai da tela, então o celular não ganha rolagem lateral */
+@keyframes menu-deslizar {
+  from { clip-path: inset(0 0 0 100%); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header .menu-celular {
+    animation: none;
+  }
 }
 
 .site-header .menu-celular a,
@@ -422,6 +538,35 @@ button {
   padding: 14px 12px;
   color: #6f6876;
   font-size: 14px;
+}
+
+/* Sugestões quando a busca não acha nada */
+.busca-sugestoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px 14px;
+  font-size: 13px;
+  color: #6f6876;
+}
+
+.busca-sugestoes button {
+  padding: 6px 12px;
+  border: 1px solid #191525;
+  border-radius: 999px;
+  background: transparent;
+  color: #191525;
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.busca-sugestoes button:hover,
+.busca-sugestoes button:focus-visible {
+  background: #191525;
+  color: #f7f4ed;
+  outline: none;
 }
 
 .quick-search {
@@ -695,6 +840,53 @@ button.cartao-link {
   font-weight: 500;
 }
 
+/* Dentro da lista: título à esquerda e duração à direita */
+.album-faixas-item .album-faixas-nome {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.album-faixas-duracao {
+  flex: none;
+  color: #a1a1aa;
+  font-family: "Courier New", monospace;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* "12 faixas / 38 min" abaixo do ano */
+.album-faixas-resumo {
+  margin: 10px 0 0;
+  color: #71717a;
+  font-family: "Courier New", monospace;
+  font-size: 13px;
+}
+
+/* Cabeçalho de cada lado do LP: "Lado A ............ 19 min" */
+.album-faixas-lado + .album-faixas-lado {
+  margin-top: 24px;
+}
+
+.album-faixas-lado-titulo {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 0 0 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed #d4d4d8;
+  color: #18181b;
+  font-family: "DM Serif Display:Italic", serif;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.album-faixas-lado-titulo small {
+  color: #a1a1aa;
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+}
+
 .album-faixas-aviso {
   color: #52525b;
   font-size: 14px;
@@ -893,6 +1085,23 @@ button.cartao-link {
   filter: grayscale(0) drop-shadow(0 0 8px rgba(244, 63, 94, 0.6));
   opacity: 1;
   transform: scale(1.1);
+}
+
+/* O disco recém-escolhido dá uma volta e "assenta" (mantém o scale do estado aceso) */
+.avaliacao-disco-botao.girando {
+  animation: disco-assentar 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes disco-assentar {
+  0% { transform: rotate(0) scale(1.1); }
+  45% { transform: rotate(220deg) scale(1.35); }
+  100% { transform: rotate(360deg) scale(1.1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .avaliacao-disco-botao.girando {
+    animation: none;
+  }
 }
 
 .avaliacao-disco-botao svg {
@@ -1126,6 +1335,7 @@ button.cartao-link {
   flex-shrink: 0;
   border-radius: 4px;
 }
+
 
 .list-header {
   padding: 12px 0;
@@ -2651,6 +2861,89 @@ button.cartao-link {
   letter-spacing: 0.06em;
 }
 
+/* Retrato do crítico: barras por nota + vertente e artista mais avaliados */
+.retrato-critico {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  border: 1px solid #08080a;
+  border-top: 0;
+  background: #ffffff;
+}
+
+.retrato-critico > .metrica-quadro {
+  border-right: 0;
+  border-left: 1px solid #08080a;
+  justify-content: center;
+}
+
+.retrato-notas {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 16px 20px;
+}
+
+.retrato-barra-linha {
+  display: grid;
+  grid-template-columns: 14px 1fr 28px;
+  align-items: center;
+  gap: 10px;
+  font-family: monospace;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.retrato-barra-trilho {
+  height: 10px;
+  background: #eeeae1;
+}
+
+.retrato-barra {
+  display: block;
+  height: 100%;
+  background: #ff0004;
+  transform-origin: left;
+  animation: retrato-barra-crescer 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.retrato-barra-total {
+  text-align: right;
+  color: #666;
+}
+
+.retrato-destaque {
+  margin: 4px 0;
+  font-family: "DM Serif Display:Regular", serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.05;
+}
+
+@keyframes retrato-barra-crescer {
+  from { transform: scaleX(0); }
+}
+
+@media (max-width: 860px) {
+  .retrato-critico {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .retrato-notas {
+    grid-column: 1 / -1;
+    border-bottom: 1px solid #08080a;
+  }
+
+  .retrato-critico > .metrica-quadro:nth-child(2) {
+    border-left: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .retrato-barra {
+    animation: none;
+  }
+}
+
 /* 2. O TEMPLO DO DISCO DE OURO (PLACA GEOMÉTRICA) */
 .templo-ouro-arquivo {
   margin: 36px 48px 0;
@@ -3272,8 +3565,8 @@ button.ficha-card-comentario--vazio:focus-visible {
   outline-offset: 2px;
 }
 
-/* Aviso "Avaliação excluída — Desfazer" no rodapé da Coleção */
-.colecao-aviso-regiao {
+/* Aviso no rodapé da tela: "Salvo na sua Coleção" (ao dar nota) e "Avaliação excluída / Desfazer" */
+.aviso-rodape-regiao {
   position: fixed;
   left: 50%;
   bottom: 24px;
@@ -3283,7 +3576,7 @@ button.ficha-card-comentario--vazio:focus-visible {
   transform: translateX(-50%);
 }
 
-.colecao-aviso {
+.aviso-rodape {
   display: flex;
   align-items: center;
   gap: 18px;
@@ -3295,15 +3588,17 @@ button.ficha-card-comentario--vazio:focus-visible {
   font-family: monospace;
   font-size: 0.78rem;
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
-  animation: colecao-aviso-entrar 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation: aviso-rodape-entrar 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.colecao-aviso strong {
+.aviso-rodape strong {
   color: #ffffff;
 }
 
-.colecao-aviso button {
+.aviso-rodape button,
+.aviso-rodape a {
   flex: none;
+  text-decoration: none;
   padding: 6px 12px;
   border: 1px solid #ff0004;
   background: transparent;
@@ -3315,14 +3610,16 @@ button.ficha-card-comentario--vazio:focus-visible {
   cursor: pointer;
 }
 
-.colecao-aviso button:hover,
-.colecao-aviso button:focus-visible {
+.aviso-rodape button:hover,
+.aviso-rodape button:focus-visible,
+.aviso-rodape a:hover,
+.aviso-rodape a:focus-visible {
   background: #ff0004;
   color: #ffffff;
   outline: none;
 }
 
-@keyframes colecao-aviso-entrar {
+@keyframes aviso-rodape-entrar {
   from {
     opacity: 0;
     transform: translateY(12px);
@@ -3330,7 +3627,7 @@ button.ficha-card-comentario--vazio:focus-visible {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .colecao-aviso {
+  .aviso-rodape {
     animation: none;
   }
 }

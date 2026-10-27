@@ -58,6 +58,14 @@ export function BuscaUnificada({ termo, aoMudarTermo }) {
   const navigate = useNavigate();
   const { artistas } = useCatalogo();
   const indiceBusca = useMemo(() => montarIndiceBusca(artistas), [artistas]);
+  // Sugestões para busca sem resultado: os 4 artistas com a música mais tocada do acervo
+  const sugestoes = useMemo(
+    () =>
+      [...artistas]
+        .sort((a, b) => (b.musicas[0]?.streams || 0) - (a.musicas[0]?.streams || 0))
+        .slice(0, 4),
+    [artistas]
+  );
   const raizRef = useRef(null);
   const listaRef = useRef(null);
   const [aberto, setAberto] = useState(false);
@@ -168,7 +176,21 @@ export function BuscaUnificada({ termo, aoMudarTermo }) {
       {mostrarResultados && (
         <div className="busca-dropdown" ref={listaRef} id="busca-resultados" role="listbox" aria-label="Resultados da busca">
           {planos.length === 0 ? (
-            <p className="busca-vazio">Nada encontrado para "{termo}". Tente outro nome ou título.</p>
+            <>
+              <p className="busca-vazio">Nada encontrado para "{termo}". Tente outro nome ou título.</p>
+              <div className="busca-sugestoes">
+                <span>Que tal:</span>
+                {sugestoes.map((artista) => (
+                  <button
+                    key={artista.id}
+                    type="button"
+                    onClick={() => irPara({ destino: `/artista/${artista.id}` })}
+                  >
+                    {artista.nome}
+                  </button>
+                ))}
+              </div>
+            </>
           ) : (
             grupos.map((grupo) => (
               <div key={grupo.tipo} role="group" aria-label={grupo.titulo}>

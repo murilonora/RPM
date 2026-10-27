@@ -87,6 +87,7 @@ export function PaginaColecao({ aoAvaliar, aoAbrirLogin }) {
     <main className="colecao-brutal-root">
       <FichaCritico
         usuario={usuarioLogado}
+        itens={itensAvaliados}
         totalAvaliacoes={totalAvaliacoes}
         mediaAvaliacoes={mediaAvaliacoes}
         totalObrasPrimas={contagens.obrasPrimas}
@@ -159,9 +160,9 @@ export function PaginaColecao({ aoAvaliar, aoAbrirLogin }) {
       </section>
 
       {/* Aviso de exclusão com opção de desfazer */}
-      <div className="colecao-aviso-regiao" role="status" aria-live="polite">
+      <div className="aviso-rodape-regiao" role="status" aria-live="polite">
         {ultimaExcluida && (
-          <div className="colecao-aviso">
+          <div className="aviso-rodape">
             <span>
               Avaliação de <strong>{ultimaExcluida.avaliacao.obra?.titulo || "obra"}</strong> excluída.
             </span>

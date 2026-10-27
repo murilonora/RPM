@@ -82,13 +82,14 @@ export function PaginaTodosArtistas() {
             const totalFaixas = artista.musicas ? artista.musicas.length : 0;
 
             return (
-              <Link key={artista.id} to={`/artista/${artista.id}`} className="artista-quadro-card">
+              <Link key={artista.id} to={`/artista/${artista.id}`} className="artista-quadro-card" viewTransition>
                 {/* Imagem do Artista em Moldura Reta com Aspecto Retrato */}
                 <div className="artista-moldura-foto">
                   <ImagemComFallback
                     src={artista.foto}
                     alt={artista.nome}
                     className="artista-foto-img w-full h-full"
+                    style={{ viewTransitionName: `artista-foto-${artista.id}` }}
                   />
                   <div className="artista-foto-filtro-sombra" />
                   <span className="artista-etiqueta-categoria">{artista.categoria}</span>

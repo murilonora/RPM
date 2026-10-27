@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { imagemNoTamanho, tratarErroImagem } from "../utilitarios/imagens";
 
+// Imagens que já carregaram nesta visita: aparecem direto, sem esqueleto nem fade.
+// Importante para a transição da foto do artista (cartão -> página do artista).
+const IMAGENS_CARREGADAS = new Set();
+
 /**
  * Componente de imagem otimizado com skeleton brutalista e fallback automático.
  * Elimina o salto de layout (CLS) durante o carregamento das capas em alta resolução.
@@ -15,7 +19,12 @@ export function ImagemComFallback({
   tamanho = 500,
   ...props
 }) {
-  const [carregada, setCarregada] = useState(false);
+  const url = imagemNoTamanho(src, tamanho);
+  const [carregada, setCarregada] = useState(() => IMAGENS_CARREGADAS.has(url));
+  // Enquanto a versão grande baixa, mostra uma menor que já esteja no cache (ex.: a do cartão)
+  const reserva = carregada
+    ? null
+    : [500, 250].map((t) => imagemNoTamanho(src, t)).find((u) => u !== url && IMAGENS_CARREGADAS.has(u));
 
   return (
     <div
@@ -26,7 +35,10 @@ export function ImagemComFallback({
       }}
     >
       {/* Skeleton brutalista com textura técnica enquanto a imagem baixa */}
-      {!carregada && (
+      {reserva && (
+        <img src={reserva} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover" />
+      )}
+      {!carregada && !reserva && (
         <div
           className="absolute inset-0 bg-[#1e1b24] animate-pulse flex items-center justify-center pointer-events-none"
           style={{
@@ -42,17 +54,20 @@ export function ImagemComFallback({
       )}
 
       <img
-        src={imagemNoTamanho(src, tamanho)}
+        src={url}
         alt={alt}
         loading={loading}
         referrerPolicy="no-referrer"
         crossOrigin="anonymous"
-        onLoad={() => setCarregada(true)}
+        onLoad={() => {
+          IMAGENS_CARREGADAS.add(url);
+          setCarregada(true);
+        }}
         onError={(e) => {
           setCarregada(true);
           tratarErroImagem(e);
         }}
-        className={`w-full h-full object-cover transition-opacity duration-300 ${
+        className={`relative w-full h-full object-cover transition-opacity duration-300 ${
           carregada ? "opacity-100" : "opacity-0"
         }`}
         {...props}
