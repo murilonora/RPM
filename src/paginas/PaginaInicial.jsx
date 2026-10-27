@@ -4,6 +4,7 @@ import { listaDeArtistas, categoriasMusicais } from "../dados/dadosMusicais";
 import { FundoMosaicoHero } from "../componentes/FundoMosaicoHero";
 import { ImagemComFallback } from "../componentes/ImagemComFallback";
 import { BuscaUnificada } from "../componentes/BuscaUnificada";
+import { HistoriasEmDestaque } from "../componentes/HistoriasEmDestaque";
 import { normalizarTexto } from "../utilitarios/comuns";
 
 const INTERVALO_EXPLORAR_MS = 7000;
@@ -23,9 +24,6 @@ const TEXTO_BUSCA_ARTISTA = new Map(
     ),
   ])
 );
-
-const artistaEmDestaque =
-  listaDeArtistas.find((a) => a.id === "racionais-mcs") || listaDeArtistas[0];
 
 // Embaralhamento Fisher-Yates: cada ordem tem a mesma chance de sair
 function sortearArtistas(quantidade) {
@@ -155,31 +153,8 @@ export function PaginaInicial() {
         </div>
       </section>
 
-      {/* Matéria editorial em destaque */}
-      <section className="intro-section destaque-secao">
-        <div>
-          <p className="eyebrow">Histórias em destaque</p>
-          <span className="edition">Edição Especial — Movimento Hip Hop</span>
-        </div>
-        <h2>
-          Sobrevivendo no Inferno: A bíblia do <em>rap brasileiro.</em>
-        </h2>
-        <Link className="featured-artist" to={`/artista/${artistaEmDestaque.id}`}>
-          <span className="feature-number">01</span>
-          <div className="feature-image">
-            <img src={artistaEmDestaque.foto} alt="" />
-          </div>
-          <div className="feature-copy">
-            <span>Especial de Leitura · 10 min</span>
-            <h3>Como Racionais MC's transformaram a história da cultura nacional</h3>
-            <p>
-              Da periferia de São Paulo para a literatura clássica: entenda a
-              trajetória, as composições e o impacto revolucionário do grupo.
-            </p>
-            <b>Ler história completa e discografia →</b>
-          </div>
-        </Link>
-      </section>
+      {/* Matérias editoriais em destaque */}
+      <HistoriasEmDestaque />
     </main>
   );
 }
