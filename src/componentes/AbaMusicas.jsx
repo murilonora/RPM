@@ -1,5 +1,5 @@
 import { ImagemComFallback } from "./ImagemComFallback";
-import { AvaliacaoDisco } from "./AvaliacaoDisco";
+import { SeletorDeNota } from "./SeletorDeNota";
 
 // Lista com as músicas mais reproduzidas do artista selecionado.
 // Como no layout da Mell, a nota é dada direto na linha, na coluna "Avaliação".
@@ -32,7 +32,7 @@ export function AbaMusicas({ musicas = [], artistaId = "", aoAbrirLogin }) {
           <span>{musica.album}</span>
           <span>{musica.ano}</span>
           <b>{musica.reproducoes}</b>
-          <AvaliacaoDisco
+          <SeletorDeNota
             chaveItem={`musica-${artistaId}-${indice}`}
             obra={{ tipo: "musica", artistaId, titulo: musica.titulo }}
             rotulo={`Nota para ${musica.titulo}`}

@@ -43,6 +43,7 @@ export function PaginaColecao({ aoAvaliar, aoAbrirLogin }) {
   // Mapeia as avaliações salvas para itens detalhados com capa, títulos e artista
   const itensAvaliados = useMemo(() => montarItensAvaliados(avaliacoes), [avaliacoes]);
 
+  // Números das abas de filtro e da ficha do crítico
   const contagens = useMemo(
     () => ({
       albuns: itensAvaliados.filter((i) => i.tipo === "album").length,
@@ -53,11 +54,13 @@ export function PaginaColecao({ aoAvaliar, aoAbrirLogin }) {
     [itensAvaliados]
   );
 
+  // Fichas da aba escolhida (Todos, Álbuns, Faixas ou 5 vinis)
   const itensFiltrados = useMemo(
     () => filtrarPorAba(itensAvaliados, abaFiltro),
     [itensAvaliados, abaFiltro]
   );
 
+  // Obra do Disco de Ouro: a escolhida pelo usuário ou, sem escolha, a primeira
   const favoritoAbsoluto = useMemo(
     () => escolherFavorito(itensAvaliados, chaveFavoritoManual),
     [itensAvaliados, chaveFavoritoManual]

@@ -1,7 +1,8 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { listaDeArtistas } from "../dados/dadosMusicais";
-import { imagemNoTamanho, normalizarTexto, tratarErroImagem } from "../utilitarios/comuns";
+import { imagemNoTamanho, tratarErroImagem } from "../utilitarios/imagens";
+import { normalizarTexto } from "../utilitarios/texto";
 
 const MAX_POR_GRUPO = 6;
 const ALTURA_MAXIMA_LISTA = 420;
@@ -78,6 +79,7 @@ export function BuscaUnificada({ termo, aoMudarTermo }) {
   // e o que não couber rola dentro da própria lista em vez de cobrir a seção seguinte
   useLayoutEffect(() => {
     if (!mostrarResultados) return;
+    // Mede o espaço entre a lista e a borda do banner e limita a altura a ele
     function ajustarAltura() {
       const lista = listaRef.current;
       const banner = raizRef.current?.closest(".home-hero");
@@ -94,6 +96,7 @@ export function BuscaUnificada({ termo, aoMudarTermo }) {
   // Fecha ao clicar fora da busca
   useEffect(() => {
     if (!mostrarResultados) return;
+    // Clique fora da busca fecha a lista
     function aoPressionarFora(evento) {
       if (raizRef.current && !raizRef.current.contains(evento.target)) {
         setAberto(false);
@@ -103,11 +106,13 @@ export function BuscaUnificada({ termo, aoMudarTermo }) {
     return () => document.removeEventListener("pointerdown", aoPressionarFora);
   }, [mostrarResultados]);
 
+  // Fecha a lista e abre a página do resultado escolhido
   function irPara(item) {
     setAberto(false);
     navigate(item.destino);
   }
 
+  // Teclado: setas andam pelos resultados e Esc fecha a lista
   function aoTeclar(evento) {
     if (evento.key === "Escape") {
       setAberto(false);
@@ -124,6 +129,7 @@ export function BuscaUnificada({ termo, aoMudarTermo }) {
     }
   }
 
+  // Enter/botão: abre o resultado destacado (ou o primeiro)
   function aoEnviar(evento) {
     evento.preventDefault();
     const escolhido = planos[indiceAtivo] || planos[0];

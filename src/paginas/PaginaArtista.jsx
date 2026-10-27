@@ -27,6 +27,7 @@ export function PaginaArtista({ artista, aoAbrirAlbum, aoAbrirLogin }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [artista?.id]);
 
+  // Troca a aba gravando na URL (Mais ouvidas é o padrão, então limpa o parâmetro)
   function setAbaAtiva(aba) {
     setParametros(aba === "musicas" ? {} : { aba }, { replace: true });
   }

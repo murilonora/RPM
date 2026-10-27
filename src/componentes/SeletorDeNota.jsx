@@ -1,17 +1,18 @@
 import { useState } from "react";
 import { useUsuario } from "../contextos/ContextoUsuario";
 import { tocarCliqueVinil } from "../utilitarios/somVinil";
-import { DiscoSVG } from "./DiscoSVG";
+import { IconeDisco } from "./IconeDisco";
 
-// Avaliação com o visual criado pela Mell: pílula "Sua nota:" com 5 discos que
+// Seletor para dar a nota (interativo), com o visual criado pela Mell: pílula "Sua nota:" com 5 discos que
 // acendem no hover e na nota escolhida. Por baixo usa o mesmo sistema do site
 // (login, Coleção e envio ao backend). obra = { tipo, artistaId, titulo, ... }
 // escuro: versão para fundos pretos (estante de álbuns)
-export function AvaliacaoDisco({ chaveItem, obra, rotulo = "Sua nota", aoPedirLogin, escuro = false }) {
+export function SeletorDeNota({ chaveItem, obra, rotulo = "Sua nota", aoPedirLogin, escuro = false }) {
   const { estaLogado, obterAvaliacao, avaliarItem } = useUsuario();
   const [hover, setHover] = useState(0);
   const { nota = 0, comentario } = obterAvaliacao(chaveItem);
 
+  // Sem login pede para entrar; clicar na nota que já está dada desmarca (nota 0)
   function salvarNota(novaNota) {
     if (!estaLogado) {
       aoPedirLogin?.();
@@ -43,7 +44,7 @@ export function AvaliacaoDisco({ chaveItem, obra, rotulo = "Sua nota", aoPedirLo
             aria-label={`${estrela} ${estrela > 1 ? "vinis" : "vinil"}`}
             aria-pressed={estrela === nota}
           >
-            <DiscoSVG />
+            <IconeDisco />
           </button>
         ))}
       </div>

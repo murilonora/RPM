@@ -10,6 +10,7 @@ export function PlacaDiscoOuro({ favorito, nomeCritico, aoAvaliar, aoTrocarFavor
   const [mensagemCopiado, setMensagemCopiado] = useState(false);
   const placaRef = useRef(null);
 
+  // Gera um PNG da placa do Disco de Ouro e baixa no computador
   async function exportarCardPng() {
     if (!placaRef.current || exportando) return;
     try {
@@ -33,6 +34,7 @@ export function PlacaDiscoOuro({ favorito, nomeCritico, aoAvaliar, aoTrocarFavor
     }
   }
 
+  // Copia um texto pronto da avaliação para colar nas redes sociais
   function copiarResenhaTexto() {
     const estrelas = "★".repeat(favorito.nota) + "☆".repeat(5 - favorito.nota);
     const texto = `🏆 RPM // DISCO DE OURO DO MEU ACERVO\n` +

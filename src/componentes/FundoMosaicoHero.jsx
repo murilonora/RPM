@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { listaDeArtistas } from "../dados/dadosMusicais";
-import { imagemNoTamanho, tratarErroImagem } from "../utilitarios/comuns";
+import { imagemNoTamanho, tratarErroImagem } from "../utilitarios/imagens";
 
 /**
  * Componente que renderiza um fundo de mosaico com colunas infinitas

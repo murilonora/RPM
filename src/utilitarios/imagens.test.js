@@ -1,18 +1,6 @@
+// Testes do redimensionamento das capas do Deezer e da troca por logo quando a imagem falha
 import { describe, expect, it } from "vitest";
-import { extrairSiglas, imagemNoTamanho, normalizarTexto } from "./comuns";
-
-describe("normalizarTexto", () => {
-  it("remove acentos e deixa tudo minúsculo", () => {
-    expect(normalizarTexto("Matuê")).toBe("matue");
-    expect(normalizarTexto("  Legião Urbana ")).toBe("legiao urbana");
-    expect(normalizarTexto("MÚSICA")).toBe("musica");
-  });
-
-  it("aceita valores vazios", () => {
-    expect(normalizarTexto()).toBe("");
-    expect(normalizarTexto(null)).toBe("");
-  });
-});
+import { imagemNoTamanho, tratarErroImagem } from "./imagens";
 
 describe("imagemNoTamanho", () => {
   const capa = "https://cdn-images.dzcdn.net/images/cover/abc/1000x1000-000000-80-0-0.jpg";
@@ -31,9 +19,11 @@ describe("imagemNoTamanho", () => {
   });
 });
 
-describe("extrairSiglas", () => {
-  it("pega as iniciais das primeiras palavras", () => {
-    expect(extrairSiglas("Racionais MCs")).toBe("RM");
-    expect(extrairSiglas("")).toBe("LP");
+describe("tratarErroImagem", () => {
+  it("troca a imagem quebrada pelo logo do RPM", () => {
+    const img = document.createElement("img");
+    tratarErroImagem({ currentTarget: img });
+    expect(img.getAttribute("src")).toBe("/assets/rpm-mark.svg");
+    expect(img.onerror).toBeNull();
   });
 });

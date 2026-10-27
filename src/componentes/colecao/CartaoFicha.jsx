@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { AvaliacaoVinil } from "../AvaliacaoVinil";
+import { NotaEmVinis } from "../NotaEmVinis";
 import { ImagemComFallback } from "../ImagemComFallback";
 import { itemParaAvaliar } from "./itensColecao";
 
@@ -64,7 +64,7 @@ export function CartaoFicha({ item, ehFavorito, aoTornarFavorito, aoAvaliar }) {
 
       <div className="ficha-card-footer">
         <div className="ficha-vinis-rating">
-          <AvaliacaoVinil chaveItem={item.chave} tamanho="pequeno" apenasLeitura />
+          <NotaEmVinis nota={item.nota} />
         </div>
 
         <div className="ficha-botoes-acoes">

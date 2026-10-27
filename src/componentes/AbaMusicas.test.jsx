@@ -1,3 +1,4 @@
+// Testes da aba Mais ouvidas: dar nota na própria linha e pedir login quando não há conta
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act } from "react";
 import { cleanup, render, screen, within } from "@testing-library/react";

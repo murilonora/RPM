@@ -1,10 +1,11 @@
+// Testes da janela de faixas do álbum e da nota do álbum no cartão
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act } from "react";
 import { cleanup, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ProvedorUsuario, useUsuario } from "../contextos/ContextoUsuario";
 import { listaDeArtistas } from "../dados/dadosMusicais";
-import { ModalAlbum } from "./ModalAlbum";
+import { ModalFaixasDoAlbum } from "./ModalFaixasDoAlbum";
 import { AbaAlbuns } from "./AbaAlbuns";
 
 const matue = listaDeArtistas.find((a) => a.id === "matue");
@@ -21,7 +22,7 @@ function renderizar(album = matue.albuns[indice333], indice = indice333) {
   render(
     <ProvedorUsuario>
       <Espiao />
-      <ModalAlbum dados={{ artista: matue, album, indice }} aoFechar={() => {}} aoAbrirLogin={aoAbrirLogin} />
+      <ModalFaixasDoAlbum dados={{ artista: matue, album, indice }} aoFechar={() => {}} aoAbrirLogin={aoAbrirLogin} />
     </ProvedorUsuario>
   );
   return { aoAbrirLogin };
@@ -36,7 +37,7 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-describe("ModalAlbum (avaliação por faixa)", () => {
+describe("ModalFaixasDoAlbum (avaliação por faixa)", () => {
   it("lista as faixas reais do álbum em cartões numerados", async () => {
     renderizar();
     expect(await screen.findByText("1. Crack com Mussilon")).toBeTruthy();

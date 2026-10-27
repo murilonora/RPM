@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useUsuario } from "../contextos/ContextoUsuario";
-import { AvaliacaoDisco } from "./AvaliacaoDisco";
+import { SeletorDeNota } from "./SeletorDeNota";
 import { ImagemComFallback } from "./ImagemComFallback";
 
 // Nota + resenha de uma obra (usado na Coleção), com o visual da avaliação da Mell:
@@ -27,6 +27,7 @@ export function ModalAvaliacao({ visivel, aoFechar, item }) {
   const notaAtual = salva.nota || 0;
   const jaAvaliado = notaAtual > 0 || !!salva.comentario;
 
+  // Salva a nota atual com a resenha digitada e fecha
   function aoSalvar(evento) {
     evento.preventDefault();
     avaliarItem(item.chave, notaAtual, comentarioTemp, item.obra);
@@ -78,7 +79,7 @@ export function ModalAvaliacao({ visivel, aoFechar, item }) {
               <div className="avaliacao-janela-textos">
                 <span className="album-faixas-nome">{item.titulo}</span>
                 <span className="avaliacao-janela-sub">{item.subtitulo}</span>
-                <AvaliacaoDisco chaveItem={item.chave} obra={item.obra} rotulo={`Nota para ${item.titulo}`} />
+                <SeletorDeNota chaveItem={item.chave} obra={item.obra} rotulo={`Nota para ${item.titulo}`} />
               </div>
             </div>
 

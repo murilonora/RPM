@@ -19,6 +19,7 @@ export function ModalAutenticacao({ visivel, aoFechar }) {
 
   const cadastrando = modoAtivo === "cadastrar";
 
+  // Envia o login ou o cadastro e mostra os erros de cada campo
   async function aoSubmeterFormulario(evento) {
     evento.preventDefault();
     if (enviando) return;
@@ -46,6 +47,7 @@ export function ModalAutenticacao({ visivel, aoFechar }) {
     }
   }
 
+  // Limpa o formulário e fecha a janela
   function limparEFechar() {
     setNome("");
     setEmail("");
@@ -54,6 +56,7 @@ export function ModalAutenticacao({ visivel, aoFechar }) {
     aoFechar();
   }
 
+  // Alterna entre "Entrar" e "Criar conta" sem levar erros de um para o outro
   function trocarModo(modo) {
     setModoAtivo(modo);
     setErros(SEM_ERROS);

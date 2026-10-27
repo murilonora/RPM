@@ -1,3 +1,4 @@
+// Testes do carrossel de histórias: acervo, sorteio, navegação e avanço automático
 import { afterEach, describe, expect, it } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";

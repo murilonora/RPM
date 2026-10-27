@@ -1,4 +1,4 @@
-import { imagemNoTamanho, tratarErroImagem } from "../../utilitarios/comuns";
+import { imagemNoTamanho, tratarErroImagem } from "../../utilitarios/imagens";
 
 // Modal para escolher qual obra avaliada ocupa o pedestal do Disco de Ouro
 export function ModalSeletorFavorito({ itens, chaveAtual, aoEscolher, aoFechar }) {

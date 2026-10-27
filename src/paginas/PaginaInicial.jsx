@@ -5,7 +5,7 @@ import { FundoMosaicoHero } from "../componentes/FundoMosaicoHero";
 import { ImagemComFallback } from "../componentes/ImagemComFallback";
 import { BuscaUnificada } from "../componentes/BuscaUnificada";
 import { HistoriasEmDestaque } from "../componentes/HistoriasEmDestaque";
-import { normalizarTexto } from "../utilitarios/comuns";
+import { normalizarTexto } from "../utilitarios/texto";
 
 const INTERVALO_EXPLORAR_MS = 7000;
 

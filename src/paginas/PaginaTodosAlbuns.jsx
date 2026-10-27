@@ -1,59 +1,45 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { listaDeArtistas } from "../dados/dadosMusicais";
-import { imagemNoTamanho, normalizarTexto, tratarErroImagem } from "../utilitarios/comuns";
+import { imagemNoTamanho, tratarErroImagem } from "../utilitarios/imagens";
+import { normalizarTexto } from "../utilitarios/texto";
 import { FiltroAlfabetico } from "../componentes/FiltroAlfabetico";
 import { ImagemComFallback } from "../componentes/ImagemComFallback";
-import { AvaliacaoDisco } from "../componentes/AvaliacaoDisco";
+import { SeletorDeNota } from "../componentes/SeletorDeNota";
 
+// Todos os álbuns do acervo, com a referência do artista e o índice original
+// (o índice compõe a chave da avaliação). Calculado uma vez, quando o arquivo carrega.
+const ALBUNS_ORDENADOS = listaDeArtistas
+  .flatMap((artista) =>
+    artista.albuns.map((album, idx) => ({
+      ...album,
+      indiceOriginal: idx,
+      artistaRef: artista,
+      inicial: album.titulo.charAt(0).toUpperCase(),
+      textoBusca: normalizarTexto(`${album.titulo} ${artista.nome} ${artista.categoria} ${album.ano}`),
+    }))
+  )
+  .sort((a, b) => a.titulo.localeCompare(b.titulo));
+
+const LETRAS_DISPONIVEIS = [...new Set(ALBUNS_ORDENADOS.map((a) => a.inicial))]
+  .filter((letra) => /[A-Z]/.test(letra))
+  .sort();
+
+// Vitrine de todos os álbuns: busca, filtro por letra, nota direto no cartão
+// e botão para avaliar as faixas
 export function PaginaTodosAlbuns({ aoAbrirAlbum, aoAbrirLogin }) {
   const [termoBusca, setTermoBusca] = useState("");
   const [letraFiltro, setLetraFiltro] = useState("TODOS");
 
-  // Extrair todos os álbuns vinculando a referência do artista
-  const todosAlbuns = useMemo(() => {
-    const albuns = [];
-    listaDeArtistas.forEach((artista) => {
-      artista.albuns.forEach((album, idx) => {
-        albuns.push({
-          ...album,
-          indiceOriginal: idx,
-          artistaRef: artista,
-        });
-      });
-    });
-    return albuns.sort((a, b) => a.titulo.localeCompare(b.titulo));
-  }, []);
-
-  // Letras iniciais únicas dos álbuns
-  const letrasDisponiveis = useMemo(() => {
-    const letras = new Set();
-    todosAlbuns.forEach((alb) => {
-      const inicial = alb.titulo.charAt(0).toUpperCase();
-      if (/[A-Z]/.test(inicial)) {
-        letras.add(inicial);
-      }
-    });
-    return Array.from(letras).sort();
-  }, [todosAlbuns]);
-
-  // Filtro por texto e letra
+  // Álbuns que batem com a busca e com a letra escolhida
   const albunsFiltrados = useMemo(() => {
     const termo = normalizarTexto(termoBusca);
-    return todosAlbuns.filter((album) => {
-      const bateTexto =
-        !termo ||
-        normalizarTexto(album.titulo).includes(termo) ||
-        normalizarTexto(album.artistaRef.nome).includes(termo) ||
-        normalizarTexto(album.artistaRef.categoria).includes(termo) ||
-        album.ano.includes(termo);
-
-      const inicial = album.titulo.charAt(0).toUpperCase();
-      const bateLetra = letraFiltro === "TODOS" || inicial === letraFiltro;
-
-      return bateTexto && bateLetra;
-    });
-  }, [todosAlbuns, termoBusca, letraFiltro]);
+    return ALBUNS_ORDENADOS.filter(
+      (album) =>
+        (!termo || album.textoBusca.includes(termo)) &&
+        (letraFiltro === "TODOS" || album.inicial === letraFiltro)
+    );
+  }, [termoBusca, letraFiltro]);
 
   return (
     <main className="albuns-catalogo-root">
@@ -72,7 +58,7 @@ export function PaginaTodosAlbuns({ aoAbrirAlbum, aoAbrirLogin }) {
 
         {/* Filtro por Letras Unificado */}
         <FiltroAlfabetico
-          letrasDisponiveis={letrasDisponiveis}
+          letrasDisponiveis={LETRAS_DISPONIVEIS}
           letraAtiva={letraFiltro}
           aoSelecionarLetra={setLetraFiltro}
           classeContainer="albuns-letras-bloco"
@@ -84,7 +70,7 @@ export function PaginaTodosAlbuns({ aoAbrirAlbum, aoAbrirLogin }) {
         <div className="indice-tag-wrap">
           <span className="indice-ponto-red" />
           <span className="indice-titulo-mono">
-            DISCOGRAFIA OFICIAL // EXIBINDO {albunsFiltrados.length} DE {todosAlbuns.length} ÁLBUNS
+            DISCOGRAFIA OFICIAL // EXIBINDO {albunsFiltrados.length} DE {ALBUNS_ORDENADOS.length} ÁLBUNS
           </span>
         </div>
         <span className="indice-rotulo-sub">PASSE O MOUSE SOBRE O DISCO PARA LIBERAR O VINIL</span>
@@ -157,7 +143,7 @@ export function PaginaTodosAlbuns({ aoAbrirAlbum, aoAbrirLogin }) {
                   </div>
 
                   {/* Nota do álbum no cartão e botão para avaliar as faixas (layout da Mell) */}
-                  <AvaliacaoDisco
+                  <SeletorDeNota
                     chaveItem={chaveItem}
                     obra={{ tipo: "album", artistaId: album.artistaRef.id, titulo: album.titulo }}
                     rotulo={`Nota para ${album.titulo}`}

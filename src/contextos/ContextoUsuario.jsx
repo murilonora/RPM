@@ -20,6 +20,7 @@ const AVALIACAO_VAZIA = Object.freeze({ nota: 0, comentario: "" });
 // Utilitarios de leitura e escrita no localStorage
 function obterDoStorage(chave, valorPadrao) {
   try {
+    // Tudo o que os componentes recebem pelo useUsuario(), memorizado para evitar re-render à toa
     const valor = localStorage.getItem(chave);
     return valor ? JSON.parse(valor) : valorPadrao;
   } catch {
@@ -51,6 +52,7 @@ export function ProvedorUsuario({ children }) {
   // { chave, avaliacao } da última avaliação apagada, enquanto ainda dá para desfazer
   const [ultimaExcluida, setUltimaExcluida] = useState(null);
 
+  // Dados do usuário da sessão atual (null quando ninguém entrou)
   const usuarioLogado = useMemo(
     () => usuarios.find((u) => u.id === idSessao) || null,
     [usuarios, idSessao]
@@ -106,6 +108,7 @@ export function ProvedorUsuario({ children }) {
     });
   }, []);
 
+  // Manda a avaliação ao backend; se ele estiver fora do ar, ela fica pendente no navegador
   const enviarParaServidor = useCallback(
     async (chaveItem, avaliacao) => {
       const usuario = usuarioRef.current;

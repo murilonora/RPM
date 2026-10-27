@@ -1,3 +1,4 @@
+// Testes da página do artista: a aba aberta vem da URL (?aba=...)
 import { afterEach, describe, expect, it } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
