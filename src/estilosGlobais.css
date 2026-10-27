@@ -1279,8 +1279,33 @@ button.cartao-link {
   content: "";
 }
 
+/* As abas do artista se ajustam ao espaço da coluna da direita, não à tela inteira:
+   em notebook (ou com zoom do Windows) a foto lateral ocupa boa parte da largura */
 .tab-content {
   padding-top: 20px;
+  container: aba-artista / inline-size;
+}
+
+/* Pílula "Sua nota" nunca passa da largura de onde está: se faltar espaço,
+   o rótulo desce e os discos encolhem (ver a regra dos cartões de álbum) */
+.avaliacao-disco {
+  max-width: 100%;
+  flex-wrap: wrap;
+}
+
+/* Cartões de álbum na página do artista: os discos dividem a largura do cartão */
+.album-card {
+  container-type: inline-size;
+}
+
+.album-card .avaliacao-disco {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.album-card .avaliacao-disco-botao {
+  width: min(28px, calc((100cqw - 24px - 24px) / 5));
+  height: min(28px, calc((100cqw - 24px - 24px) / 5));
 }
 
 .list-header,
@@ -1381,6 +1406,7 @@ button.cartao-link {
 
 .album-grid {
   display: grid;
+  /* 3 colunas no PC; no notebook a coluna é estreita e passa para 2 (regra @container no fim) */
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 26px;
   padding-top: 18px;
@@ -4274,5 +4300,55 @@ button.ficha-card-comentario--vazio:focus-visible {
 
   .historias-progresso {
     display: none;
+  }
+}
+
+/* Fica no fim do arquivo para valer sobre as regras normais da tabela (mesma especificidade) */
+/* Coluna estreita demais para a tabela de 5 colunas: vira a lista empilhada do celular */
+@container aba-artista (max-width: 720px) {
+  .list-header {
+    display: none;
+  }
+
+  .ranking-row {
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+    padding: 14px 0;
+  }
+
+  .ranking-row .rank {
+    display: block;
+    color: #ff0004;
+    font-family: "DM Serif Display:Italic", serif;
+    font-size: 18px;
+  }
+
+  .ranking-row > span:nth-of-type(3),
+  .ranking-row > span:nth-of-type(4) {
+    display: none;
+  }
+
+  .ranking-row > b {
+    grid-column: 3;
+  }
+
+  .ranking-row > .avaliacao-disco {
+    grid-column: 2 / -1;
+    justify-self: start;
+    margin: 4px 0 0;
+  }
+
+  .track-title {
+    font-size: 20px;
+  }
+
+  .album-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Coluna muito estreita (celular): um álbum por linha */
+@container aba-artista (max-width: 420px) {
+  .album-grid {
+    grid-template-columns: 1fr;
   }
 }
