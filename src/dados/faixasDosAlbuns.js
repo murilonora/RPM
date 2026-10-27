@@ -56,18 +56,3 @@ export function formatarTempoTotal(faixas = []) {
   if (minutos < 60) return `${minutos} min`;
   return `${Math.floor(minutos / 60)} h ${String(minutos % 60).padStart(2, "0")} min`;
 }
-
-// Soma exata de um lado do LP, no formato "20:47" (minutos:segundos)
-export function somarDuracao(faixas = []) {
-  const total = faixas.reduce((soma, f) => soma + duracaoEmSegundos(f.duracao), 0);
-  return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, "0")}`;
-}
-
-// Divide as faixas em Lado A e Lado B como num LP (o lado A fica com a faixa extra se for ímpar)
-export function dividirEmLados(faixas = []) {
-  const meio = Math.ceil(faixas.length / 2);
-  return [
-    { lado: "A", faixas: faixas.slice(0, meio) },
-    { lado: "B", faixas: faixas.slice(meio) },
-  ].filter((lado) => lado.faixas.length > 0);
-}

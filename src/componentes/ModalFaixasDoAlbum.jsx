@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { chaveDaFaixa, dividirEmLados, formatarTempoTotal, somarDuracao, useFaixasDoAlbum } from "../dados/faixasDosAlbuns";
+import { chaveDaFaixa, formatarTempoTotal, useFaixasDoAlbum } from "../dados/faixasDosAlbuns";
 import { SeletorDeNota } from "./SeletorDeNota";
 import { ImagemComFallback } from "./ImagemComFallback";
 import { extrairSiglas } from "../utilitarios/texto";
@@ -59,36 +59,27 @@ export function ModalFaixasDoAlbum({ dados, aoFechar, aoAbrirLogin }) {
               A lista de faixas deste álbum ainda não foi catalogada.
             </p>
           ) : (
-            // Como num LP: metade das faixas no Lado A e o resto no Lado B
-            dividirEmLados(faixas).map(({ lado, faixas: faixasDoLado }) => (
-              <section key={lado} className="album-faixas-lado" aria-label={`Lado ${lado}`}>
-                <h4 className="album-faixas-lado-titulo">
-                  <span>Lado {lado}</span>
-                  <small>{somarDuracao(faixasDoLado)}</small>
-                </h4>
-                {faixasDoLado.map((faixa) => (
-                  <div key={faixa.numero} className="album-faixas-item">
-                    <span className="album-faixas-nome">
-                      <span>
-                        {faixa.numero}. {faixa.titulo}
-                      </span>
-                      {faixa.duracao && <span className="album-faixas-duracao">{faixa.duracao}</span>}
-                    </span>
-                    <SeletorDeNota
-                      chaveItem={chaveDaFaixa(artista.id, indice, faixa.numero)}
-                      obra={{
-                        tipo: "faixa",
-                        artistaId: artista.id,
-                        titulo: faixa.titulo,
-                        album: album.titulo,
-                        numero: faixa.numero,
-                      }}
-                      rotulo={`Nota para ${faixa.titulo}`}
-                      aoPedirLogin={aoAbrirLogin}
-                    />
-                  </div>
-                ))}
-              </section>
+            faixas.map((faixa) => (
+              <div key={faixa.numero} className="album-faixas-item">
+                <span className="album-faixas-nome">
+                  <span>
+                    {faixa.numero}. {faixa.titulo}
+                  </span>
+                  {faixa.duracao && <span className="album-faixas-duracao">{faixa.duracao}</span>}
+                </span>
+                <SeletorDeNota
+                  chaveItem={chaveDaFaixa(artista.id, indice, faixa.numero)}
+                  obra={{
+                    tipo: "faixa",
+                    artistaId: artista.id,
+                    titulo: faixa.titulo,
+                    album: album.titulo,
+                    numero: faixa.numero,
+                  }}
+                  rotulo={`Nota para ${faixa.titulo}`}
+                  aoPedirLogin={aoAbrirLogin}
+                />
+              </div>
             ))
           )}
         </div>

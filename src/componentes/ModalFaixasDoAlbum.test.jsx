@@ -6,7 +6,7 @@ import userEvent from "@testing-library/user-event";
 import { ProvedorUsuario, useUsuario } from "../contextos/ContextoUsuario";
 import { listaDeArtistas } from "../dados/dadosMusicais";
 import { ModalFaixasDoAlbum } from "./ModalFaixasDoAlbum";
-import { dividirEmLados, duracaoEmSegundos, formatarTempoTotal, somarDuracao } from "../dados/faixasDosAlbuns";
+import { duracaoEmSegundos, formatarTempoTotal } from "../dados/faixasDosAlbuns";
 import { AbaAlbuns } from "./AbaAlbuns";
 
 const matue = listaDeArtistas.find((a) => a.id === "matue");
@@ -92,11 +92,9 @@ describe("ModalFaixasDoAlbum (avaliação por faixa)", () => {
     expect(aoAbrirAlbum).toHaveBeenCalledWith(expect.objectContaining({ indice: indice333 }));
   });
 
-  it("divide as faixas em Lado A e Lado B, com duração de cada faixa e do disco", async () => {
+  it("mostra a duração de cada faixa e o tempo total do disco", async () => {
     renderizar();
-    expect(await screen.findByRole("region", { name: "Lado A" })).toBeTruthy();
-    expect(screen.getByRole("region", { name: "Lado B" })).toBeTruthy();
-    expect(screen.getByText("2:34")).toBeTruthy();
+    expect(await screen.findByText("2:34")).toBeTruthy();
     expect(screen.getByText(/12 faixas/)).toBeTruthy();
   });
 
@@ -106,18 +104,11 @@ describe("ModalFaixasDoAlbum (avaliação por faixa)", () => {
   });
 });
 
-describe("duração e lados do LP", () => {
+describe("duração das faixas", () => {
   it("converte e soma as durações", () => {
     expect(duracaoEmSegundos("2:34")).toBe(154);
     expect(duracaoEmSegundos("x")).toBe(0);
     expect(formatarTempoTotal([{ duracao: "30:00" }, { duracao: "8:10" }])).toBe("38 min");
     expect(formatarTempoTotal([{ duracao: "40:00" }, { duracao: "25:00" }])).toBe("1 h 05 min");
-    expect(somarDuracao([{ duracao: "2:34" }, { duracao: "2:35" }])).toBe("5:09");
-  });
-
-  it("o Lado A fica com a faixa extra quando o total é ímpar", () => {
-    const lados = dividirEmLados([1, 2, 3].map((numero) => ({ numero })));
-    expect(lados.map((l) => l.faixas.length)).toEqual([2, 1]);
-    expect(dividirEmLados([{ numero: 1 }])).toHaveLength(1);
   });
 });

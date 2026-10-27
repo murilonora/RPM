@@ -863,30 +863,6 @@ button.cartao-link {
   font-size: 13px;
 }
 
-/* Cabeçalho de cada lado do LP: "Lado A ............ 19 min" */
-.album-faixas-lado + .album-faixas-lado {
-  margin-top: 24px;
-}
-
-.album-faixas-lado-titulo {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin: 0 0 12px;
-  padding-bottom: 6px;
-  border-bottom: 1px dashed #d4d4d8;
-  color: #18181b;
-  font-family: "DM Serif Display:Italic", serif;
-  font-size: 20px;
-  font-weight: 400;
-}
-
-.album-faixas-lado-titulo small {
-  color: #a1a1aa;
-  font-family: "Courier New", monospace;
-  font-size: 12px;
-}
-
 .album-faixas-aviso {
   color: #52525b;
   font-size: 14px;
