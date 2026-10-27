@@ -71,4 +71,14 @@ describe("BuscaUnificada", () => {
     expect(screen.queryByRole("listbox")).toBeNull();
     expect(campo.getAttribute("aria-expanded")).toBe("false");
   });
+
+  it("sem resultado, sugere artistas e abre o escolhido", async () => {
+    const campo = renderizarBusca();
+    await userEvent.type(campo, "zzzqqq");
+    expect(screen.getByText(/Nada encontrado/)).toBeTruthy();
+    const sugestoes = screen.getAllByRole("button").filter((b) => b.closest(".busca-sugestoes"));
+    expect(sugestoes).toHaveLength(4);
+    await userEvent.click(sugestoes[0]);
+    expect(screen.getByText(/Página do artista/)).toBeTruthy();
+  });
 });

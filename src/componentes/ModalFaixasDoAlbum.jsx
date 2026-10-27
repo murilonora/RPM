@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { chaveDaFaixa, useFaixasDoAlbum } from "../dados/faixasDosAlbuns";
+import { chaveDaFaixa, dividirEmLados, formatarTempoTotal, somarDuracao, useFaixasDoAlbum } from "../dados/faixasDosAlbuns";
 import { SeletorDeNota } from "./SeletorDeNota";
 import { ImagemComFallback } from "./ImagemComFallback";
 import { extrairSiglas } from "../utilitarios/texto";
@@ -42,6 +42,11 @@ export function ModalFaixasDoAlbum({ dados, aoFechar, aoAbrirLogin }) {
           )}
           <h2 id="album-faixas-titulo" className="album-faixas-titulo">{album.titulo}</h2>
           <p className="album-faixas-ano">{album.ano}</p>
+          {faixas && (
+            <p className="album-faixas-resumo">
+              {faixas.length} faixas <span aria-hidden="true">/</span> {formatarTempoTotal(faixas)}
+            </p>
+          )}
         </div>
 
         <div className="album-faixas-lista">
@@ -54,24 +59,36 @@ export function ModalFaixasDoAlbum({ dados, aoFechar, aoAbrirLogin }) {
               A lista de faixas deste álbum ainda não foi catalogada.
             </p>
           ) : (
-            faixas.map((faixa) => (
-              <div key={faixa.numero} className="album-faixas-item">
-                <span className="album-faixas-nome">
-                  {faixa.numero}. {faixa.titulo}
-                </span>
-                <SeletorDeNota
-                  chaveItem={chaveDaFaixa(artista.id, indice, faixa.numero)}
-                  obra={{
-                    tipo: "faixa",
-                    artistaId: artista.id,
-                    titulo: faixa.titulo,
-                    album: album.titulo,
-                    numero: faixa.numero,
-                  }}
-                  rotulo={`Nota para ${faixa.titulo}`}
-                  aoPedirLogin={aoAbrirLogin}
-                />
-              </div>
+            // Como num LP: metade das faixas no Lado A e o resto no Lado B
+            dividirEmLados(faixas).map(({ lado, faixas: faixasDoLado }) => (
+              <section key={lado} className="album-faixas-lado" aria-label={`Lado ${lado}`}>
+                <h4 className="album-faixas-lado-titulo">
+                  <span>Lado {lado}</span>
+                  <small>{somarDuracao(faixasDoLado)}</small>
+                </h4>
+                {faixasDoLado.map((faixa) => (
+                  <div key={faixa.numero} className="album-faixas-item">
+                    <span className="album-faixas-nome">
+                      <span>
+                        {faixa.numero}. {faixa.titulo}
+                      </span>
+                      {faixa.duracao && <span className="album-faixas-duracao">{faixa.duracao}</span>}
+                    </span>
+                    <SeletorDeNota
+                      chaveItem={chaveDaFaixa(artista.id, indice, faixa.numero)}
+                      obra={{
+                        tipo: "faixa",
+                        artistaId: artista.id,
+                        titulo: faixa.titulo,
+                        album: album.titulo,
+                        numero: faixa.numero,
+                      }}
+                      rotulo={`Nota para ${faixa.titulo}`}
+                      aoPedirLogin={aoAbrirLogin}
+                    />
+                  </div>
+                ))}
+              </section>
             ))
           )}
         </div>

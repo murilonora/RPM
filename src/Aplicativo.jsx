@@ -1,13 +1,14 @@
 import { useState, useEffect, useCallback, lazy, Suspense } from "react";
 import {
   BrowserRouter,
+  Link,
   Routes,
   Route,
   useNavigate,
   useLocation,
   useParams,
 } from "react-router-dom";
-import { ProvedorUsuario } from "./contextos/ContextoUsuario";
+import { ProvedorUsuario, useUsuario } from "./contextos/ContextoUsuario";
 import { Cabecalho } from "./componentes/Cabecalho";
 import { ModalAutenticacao } from "./componentes/ModalAutenticacao";
 import { PaginaInicial } from "./paginas/PaginaInicial";
@@ -57,6 +58,51 @@ function PaginaArtistaComUrl({ aoAbrirAlbum, aoAbrirLogin }) {
       aoAbrirAlbum={aoAbrirAlbum}
       aoAbrirLogin={aoAbrirLogin}
     />
+  );
+}
+
+// Endereço que não existe: avisa (com o mascote) em vez de mostrar a home sem explicação
+function PaginaNaoEncontrada() {
+  useEffect(() => {
+    document.title = "Página não encontrada // RPM";
+  }, []);
+  return (
+    <main className="pagina-nao-encontrada">
+      <img src="/assets/vinil-triste.webp" alt="" />
+      <h1>Esse disco não está no acervo</h1>
+      <p>O endereço que você abriu não existe. Volte para o início e procure pelo artista, música ou álbum.</p>
+      <Link to="/">Voltar ao início</Link>
+    </main>
+  );
+}
+
+// Aviso "Salvo na sua Coleção" depois de dar uma nota, com atalho para a Coleção.
+// Some sozinho depois de alguns segundos e não aparece na própria Coleção.
+const TEMPO_AVISO_NOTA_MS = 3500;
+function AvisoNotaSalva() {
+  const { ultimaNotaSalva, descartarNotaSalva } = useUsuario();
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    if (!ultimaNotaSalva) return;
+    const temporizador = setTimeout(descartarNotaSalva, TEMPO_AVISO_NOTA_MS);
+    return () => clearTimeout(temporizador);
+  }, [ultimaNotaSalva, descartarNotaSalva]);
+
+  const visivel = ultimaNotaSalva && pathname !== "/colecao";
+  return (
+    <div className="aviso-rodape-regiao" role="status" aria-live="polite">
+      {visivel && (
+        <div className="aviso-rodape" key={ultimaNotaSalva.momento}>
+          <span>
+            {ultimaNotaSalva.nota}/5 para <strong>{ultimaNotaSalva.titulo || "a obra"}</strong>. Salvo na sua Coleção.
+          </span>
+          <Link to="/colecao" onClick={descartarNotaSalva}>
+            Ver coleção
+          </Link>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -120,7 +166,16 @@ function ShellAplicativo() {
         aoClicarEntrar={abrirModalDeAutenticacao}
       />
 
-      <Suspense fallback={<main className="carregando-pagina" aria-busy="true" />}>
+      {/* Esqueleto enquanto a página (carregada sob demanda) baixa */}
+      <Suspense
+        fallback={
+          <main className="carregando-pagina" aria-busy="true" aria-label="Carregando">
+            {Array.from({ length: 8 }, (_, i) => (
+              <span key={i} />
+            ))}
+          </main>
+        }
+      >
         <Routes>
           <Route path="/" element={<PaginaInicial />} />
           <Route path="/artistas" element={<PaginaTodosArtistas />} />
@@ -132,8 +187,8 @@ function ShellAplicativo() {
               <PaginaColecao aoAvaliar={abrirAvaliacao} aoAbrirLogin={abrirModalDeAutenticacao} />
             }
           />
-          {/* Qualquer endereço desconhecido mostra a página inicial */}
-          <Route path="*" element={<PaginaInicial />} />
+          {/* Qualquer endereço desconhecido */}
+          <Route path="*" element={<PaginaNaoEncontrada />} />
         </Routes>
       </Suspense>
 
@@ -150,6 +205,8 @@ function ShellAplicativo() {
         visivel={modalAutenticacaoVisivel}
         aoFechar={fecharModalDeAutenticacao}
       />
+
+      <AvisoNotaSalva />
 
       <ModalAvaliacao
         visivel={dadosAvaliacao.visivel}

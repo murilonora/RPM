@@ -10,6 +10,8 @@ import { IconeDisco } from "./IconeDisco";
 export function SeletorDeNota({ chaveItem, obra, rotulo = "Sua nota", aoPedirLogin, escuro = false }) {
   const { estaLogado, obterAvaliacao, avaliarItem } = useUsuario();
   const [hover, setHover] = useState(0);
+  // Disco que acabou de ser escolhido: gira uma vez e "assenta"
+  const [girando, setGirando] = useState(0);
   const { nota = 0, comentario } = obterAvaliacao(chaveItem);
 
   // Sem login pede para entrar; clicar na nota que já está dada desmarca (nota 0)
@@ -20,7 +22,9 @@ export function SeletorDeNota({ chaveItem, obra, rotulo = "Sua nota", aoPedirLog
     }
     tocarCliqueVinil();
     // Clicar na nota já dada desmarca
-    avaliarItem(chaveItem, novaNota === nota ? 0 : novaNota, comentario, obra);
+    const notaFinal = novaNota === nota ? 0 : novaNota;
+    avaliarItem(chaveItem, notaFinal, comentario, obra);
+    setGirando(notaFinal);
   }
 
   return (
@@ -39,7 +43,10 @@ export function SeletorDeNota({ chaveItem, obra, rotulo = "Sua nota", aoPedirLog
             onClick={() => salvarNota(estrela)}
             onMouseEnter={() => setHover(estrela)}
             onMouseLeave={() => setHover(0)}
-            className={`avaliacao-disco-botao ${estrela <= (hover || nota) ? "aceso" : ""}`}
+            className={`avaliacao-disco-botao ${estrela <= (hover || nota) ? "aceso" : ""} ${
+              estrela === girando ? "girando" : ""
+            }`}
+            onAnimationEnd={() => setGirando(0)}
             title={estaLogado ? `Dar nota ${estrela}` : "Entre para avaliar"}
             aria-label={`${estrela} ${estrela > 1 ? "vinis" : "vinil"}`}
             aria-pressed={estrela === nota}

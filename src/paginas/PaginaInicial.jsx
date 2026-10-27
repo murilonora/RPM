@@ -133,12 +133,14 @@ export function PaginaInicial() {
             <Link
               key={artista.id}
               to={`/artista/${artista.id}`}
+              viewTransition
               className="cartao-artista-home bg-white border border-[#191525] transition-all duration-200 hover:-translate-y-1 hover:shadow-lg overflow-hidden group"
             >
               <ImagemComFallback
                 src={artista.foto}
                 alt=""
                 className="w-full h-44"
+                style={{ viewTransitionName: `artista-foto-${artista.id}` }}
               />
               <div className="p-4">
                 <span className="text-xs uppercase font-bold tracking-wider text-[#7e786b] block mb-1">

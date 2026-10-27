@@ -51,6 +51,8 @@ export function ProvedorUsuario({ children }) {
   const [statusServidor, setStatusServidor] = useState("verificando");
   // { chave, avaliacao } da última avaliação apagada, enquanto ainda dá para desfazer
   const [ultimaExcluida, setUltimaExcluida] = useState(null);
+  // { titulo, nota, momento } da última nota dada, para o aviso "Salvo na sua Coleção"
+  const [ultimaNotaSalva, setUltimaNotaSalva] = useState(null);
 
   // Dados do usuário da sessão atual (null quando ninguém entrou)
   const usuarioLogado = useMemo(
@@ -220,9 +222,13 @@ export function ProvedorUsuario({ children }) {
         return novasAvaliacoes;
       });
       enviarParaServidor(chaveItem, salva);
+      if (nota > 0) setUltimaNotaSalva({ titulo: salva.obra?.titulo, nota, momento: Date.now() });
     },
     [idSessao, enviarParaServidor]
   );
+
+  // Esquece a última nota (o aviso "Salvo na sua Coleção" saiu da tela)
+  const descartarNotaSalva = useCallback(() => setUltimaNotaSalva(null), []);
 
   // Apaga nota e resenha de um item (só no navegador: o backend ainda não tem rota de exclusão).
   // Guarda o que foi apagado em ultimaExcluida, para a Coleção oferecer "Desfazer".
@@ -289,6 +295,8 @@ export function ProvedorUsuario({ children }) {
       ultimaExcluida,
       desfazerExclusao,
       descartarExclusao,
+      ultimaNotaSalva,
+      descartarNotaSalva,
       obterAvaliacao,
     }),
     [
@@ -308,6 +316,8 @@ export function ProvedorUsuario({ children }) {
       ultimaExcluida,
       desfazerExclusao,
       descartarExclusao,
+      ultimaNotaSalva,
+      descartarNotaSalva,
       obterAvaliacao,
     ]
   );

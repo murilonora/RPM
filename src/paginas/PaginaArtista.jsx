@@ -54,6 +54,8 @@ export function PaginaArtista({ artista, aoAbrirAlbum, aoAbrirLogin }) {
           className="w-full h-full object-cover object-top"
           loading="eager"
           tamanho={1000}
+          // Mesmo nome da foto nos cartões: a foto "cresce" do cartão até aqui
+          style={{ viewTransitionName: `artista-foto-${artista.id}` }}
         />
         <div className="photo-caption">
           <span>{artista.legendaFoto || `${artista.nome} ao vivo`}</span>
@@ -62,7 +64,7 @@ export function PaginaArtista({ artista, aoAbrirAlbum, aoAbrirLogin }) {
       </aside>
 
       <section className="artist-main">
-        <Link className="back-button" to="/">
+        <Link className="back-button" to="/" viewTransition>
           ← Voltar à busca
         </Link>
 

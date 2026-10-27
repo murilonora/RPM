@@ -59,4 +59,13 @@ describe("SeletorDeNota", () => {
     renderizar();
     for (const botao of screen.getAllByRole("button")) expect(botao.getAttribute("type")).toBe("button");
   });
+
+  it("dar nota avisa a tela (\"Salvo na sua Coleção\") e faz o disco girar", async () => {
+    renderizar();
+    await act(() => contexto.registrarUsuario("Mell", "mell@rpm.test", "12345678"));
+    const disco = screen.getByRole("button", { name: "5 vinis" });
+    await userEvent.click(disco);
+    expect(contexto.ultimaNotaSalva).toMatchObject({ titulo: "333", nota: 5 });
+    expect(disco.className).toContain("girando");
+  });
 });

@@ -157,11 +157,7 @@ export function PaginaTodosAlbuns({ aoAbrirAlbum, aoAbrirLogin }) {
                       type="button"
                       className="album-btn-avaliar-disco"
                       onClick={() =>
-                        aoAbrirAlbum({
-                          artista: album.artistaRef,
-                          album,
-                          indice: album.indiceOriginal,
-                        })
+                        aoAbrirAlbum({ artista: album.artistaRef, album, indice: album.indiceOriginal })
                       }
                       title="Abrir a lista de faixas para avaliar"
                     >
