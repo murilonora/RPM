@@ -1,6 +1,7 @@
 import { listaDeArtistas } from "../../dados/dadosMusicais";
 
-// Busca de artista por id em O(1), em vez de percorrer a lista a cada avaliação
+// Busca de artista por id em O(1), em vez de percorrer a lista a cada avaliação.
+// É o padrão (dados locais); a Coleção passa o mapa do catálogo atual (que pode vir do backend).
 const ARTISTAS_POR_ID = new Map(listaDeArtistas.map((artista) => [artista.id, artista]));
 
 export const ABAS_COLECAO = {

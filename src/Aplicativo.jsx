@@ -11,7 +11,7 @@ import { ProvedorUsuario } from "./contextos/ContextoUsuario";
 import { Cabecalho } from "./componentes/Cabecalho";
 import { ModalAutenticacao } from "./componentes/ModalAutenticacao";
 import { PaginaInicial } from "./paginas/PaginaInicial";
-import { listaDeArtistas } from "./dados/dadosMusicais";
+import { ProvedorCatalogo, useCatalogo } from "./contextos/ContextoCatalogo";
 import { ModalAvaliacao } from "./componentes/ModalAvaliacao";
 import { ModalFaixasDoAlbum } from "./componentes/ModalFaixasDoAlbum";
 
@@ -42,7 +42,8 @@ function ScrollAoTopo() {
 // (antes abria o primeiro artista da lista e a tela de erro nunca aparecia)
 function PaginaArtistaComUrl({ aoAbrirAlbum, aoAbrirLogin }) {
   const { id } = useParams();
-  const artista = listaDeArtistas.find((a) => a.id === id);
+  const { artistasPorId } = useCatalogo();
+  const artista = artistasPorId.get(id);
 
   useEffect(() => {
     if (artista) {
@@ -63,6 +64,7 @@ function PaginaArtistaComUrl({ aoAbrirAlbum, aoAbrirLogin }) {
 function ShellAplicativo() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { artistas } = useCatalogo();
   const [modalAutenticacaoVisivel, setModalAutenticacaoVisivel] = useState(false);
   // Álbum aberto na ficha de faixas: { artista, album, indice }
   const [albumAberto, setAlbumAberto] = useState(null);
@@ -83,8 +85,7 @@ function ShellAplicativo() {
 
   // Botão "Descobrir": abre o perfil de um artista sorteado
   function sortearArtistaAleatorioENavegar() {
-    const indiceAleatorio = Math.floor(Math.random() * listaDeArtistas.length);
-    const sorteado = listaDeArtistas[indiceAleatorio];
+    const sorteado = artistas[Math.floor(Math.random() * artistas.length)];
     navigate(`/artista/${sorteado.id}`);
   }
 
@@ -159,13 +160,15 @@ function ShellAplicativo() {
   );
 }
 
-// Componente raiz exportado com provedor de autenticação e roteador
+// Componente raiz: catálogo (backend ou local), usuário e roteador
 export default function Aplicativo() {
   return (
-    <ProvedorUsuario>
-      <BrowserRouter>
-        <ShellAplicativo />
-      </BrowserRouter>
-    </ProvedorUsuario>
+    <ProvedorCatalogo>
+      <ProvedorUsuario>
+        <BrowserRouter>
+          <ShellAplicativo />
+        </BrowserRouter>
+      </ProvedorUsuario>
+    </ProvedorCatalogo>
   );
 }
