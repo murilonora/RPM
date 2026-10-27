@@ -3919,12 +3919,25 @@ button.ficha-card-comentario--vazio:focus-visible {
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  transition: opacity 900ms ease;
+  /* Só some depois que a nova já cobriu ela, para a troca não "piscar" o fundo */
+  transition: opacity 0s linear 900ms;
+}
+
+/* A que sai continua no mesmo zoom por baixo (sem voltar de repente ao tamanho
+   normal) enquanto a nova aparece por cima */
+.historias-foto.ativa,
+.historias-foto.saindo {
+  opacity: 1;
+  animation: historias-aproximar var(--duracao-slide) linear both;
+}
+
+.historias-foto.saindo {
+  z-index: 1;
 }
 
 .historias-foto.ativa {
-  opacity: 1;
-  animation: historias-aproximar var(--duracao-slide) linear both;
+  z-index: 2;
+  transition: opacity 900ms ease;
 }
 
 .historias--pausado .historias-foto.ativa,
@@ -3934,6 +3947,7 @@ button.ficha-card-comentario--vazio:focus-visible {
 
 .historias-contador {
   position: absolute;
+  z-index: 3;
   bottom: 14px;
   left: 18px;
   font-family: "DM Serif Display:Italic", serif;
@@ -3985,6 +3999,18 @@ button.ficha-card-comentario--vazio:focus-visible {
   border-radius: 50%;
   object-fit: cover;
   transform: translate(-50%, -50%);
+}
+
+/* Na troca, o vinil anterior volta para dentro da capa (sem parar de girar)
+   e só então o novo desliza para fora */
+.historias-vinil--saindo {
+  animation:
+    historias-vinil-recolher 450ms cubic-bezier(0.4, 0, 1, 1) both,
+    historias-girar 4.5s linear 900ms infinite;
+}
+
+.historias-vinil--saindo + .historias-vinil {
+  animation-delay: 350ms, 1250ms;
 }
 
 .historias--pausado .historias-vinil {
@@ -4217,6 +4243,10 @@ button.ficha-card-comentario--vazio:focus-visible {
   to { translate: var(--saida-vinil) 0; }
 }
 
+@keyframes historias-vinil-recolher {
+  to { translate: 0 0; }
+}
+
 @keyframes historias-girar {
   to { rotate: 360deg; }
 }
@@ -4293,6 +4323,7 @@ button.ficha-card-comentario--vazio:focus-visible {
 
 @media (prefers-reduced-motion: reduce) {
   .historias-foto.ativa,
+  .historias-foto.saindo,
   .historias-vinil,
   .historias-texto > * {
     animation: none;

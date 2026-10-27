@@ -36,9 +36,20 @@ function prefereMenosMovimento() {
   return typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 }
 
+// Foco vindo do teclado (Tab), e não de um clique ou toque numa seta/miniatura
+function focoDoTeclado(elemento) {
+  try {
+    return elemento.matches(":focus-visible");
+  } catch {
+    return true;
+  }
+}
+
 // Carrossel editorial da página inicial. Avança sozinho (a barra de progresso
-// da miniatura ativa é quem dispara a troca), pausa com o mouse em cima, com o
-// foco do teclado dentro dele ou com a aba escondida, e aceita setas e swipe.
+// da miniatura ativa é quem dispara a troca), pausa pelo botão, com o foco do
+// teclado dentro dele ou com a aba escondida, e aceita setas e swipe.
+// Mouse em cima não pausa: ao rolar a página o cursor quase sempre para em
+// cima dele, e o carrossel parecia travado.
 export function HistoriasEmDestaque({ historiasIniciais }) {
   const { artistasPorId } = useCatalogo();
   // Sorteia uma vez ao abrir; se o catálogo do servidor chegar depois, as histórias na tela não mudam
@@ -46,7 +57,11 @@ export function HistoriasEmDestaque({ historiasIniciais }) {
     () => historiasIniciais ?? sortearHistorias(montarHistorias(artistasPorId))
   );
   const [ativa, setAtiva] = useState(0);
+  // História que acabou de sair: a foto dela continua no zoom por baixo e o vinil volta para a capa
+  const [saindo, setSaindo] = useState(null);
   const [pausado, setPausado] = useState(false);
+  // Pausa escolhida pela pessoa no botão (a de cima é a automática: foco e aba escondida)
+  const [pausadoNoBotao, setPausadoNoBotao] = useState(false);
   const [direcao, setDirecao] = useState(1);
   const [semAutoplay] = useState(prefereMenosMovimento);
   const inicioToque = useRef(null);
@@ -57,7 +72,9 @@ export function HistoriasEmDestaque({ historiasIniciais }) {
   const irPara = useCallback(
     (indice, sentido) => {
       const proximo = (indice + total) % total;
+      if (proximo === ativa) return;
       setDirecao(sentido ?? (proximo > ativa ? 1 : -1));
+      setSaindo(ativa);
       setAtiva(proximo);
     },
     [ativa, total]
@@ -66,6 +83,7 @@ export function HistoriasEmDestaque({ historiasIniciais }) {
   function sortearOutras() {
     setHistorias(sortearHistorias(montarHistorias(artistasPorId)));
     setDirecao(1);
+    setSaindo(null);
     setAtiva(0);
   }
   // Avança uma história
@@ -105,16 +123,14 @@ export function HistoriasEmDestaque({ historiasIniciais }) {
   }
 
   const historia = historias[ativa];
-  const rodando = !pausado && !semAutoplay;
+  const rodando = !pausado && !pausadoNoBotao && !semAutoplay;
 
   return (
     <section
       className={`historias ${rodando ? "" : "historias--pausado"}`}
       aria-roledescription="carrossel"
       aria-label="Histórias em destaque"
-      onMouseEnter={() => setPausado(true)}
-      onMouseLeave={() => setPausado(false)}
-      onFocus={() => setPausado(true)}
+      onFocus={(e) => focoDoTeclado(e.target) && setPausado(true)}
       onBlur={(e) => !e.currentTarget.contains(e.relatedTarget) && setPausado(false)}
       onKeyDown={aoTeclar}
       onTouchStart={(e) => (inicioToque.current = e.touches[0].clientX)}
@@ -131,28 +147,36 @@ export function HistoriasEmDestaque({ historiasIniciais }) {
       <div className="historias-palco">
         {/* Foto do artista como capa do disco, com o vinil saindo dela */}
         <div className="historias-disco">
-          <div
-            key={`vinil-${historia.artistaId}`}
-            className="historias-vinil"
-            style={{ "--direcao": direcao }}
-            aria-hidden="true"
-          >
-            <img
-              src={imagemNoTamanho(historia.capa, 250)}
-              alt=""
-              className="historias-vinil-rotulo"
-              referrerPolicy="no-referrer"
-              onError={tratarErroImagem}
-            />
-          </div>
+          {/* O vinil da história anterior volta para dentro da capa antes do novo sair */}
+          {[saindo, ativa]
+            .filter((indice) => indice !== null)
+            .map((indice) => (
+              <div
+                key={`vinil-${historias[indice].artistaId}`}
+                className={`historias-vinil ${indice === ativa ? "" : "historias-vinil--saindo"}`}
+                aria-hidden="true"
+              >
+                <img
+                  src={imagemNoTamanho(historias[indice].capa, 250)}
+                  alt=""
+                  className="historias-vinil-rotulo"
+                  referrerPolicy="no-referrer"
+                  onError={tratarErroImagem}
+                />
+              </div>
+            ))}
           <div className="historias-capa">
             {historias.map((h, indice) => (
               <img
                 key={h.artistaId}
                 src={imagemNoTamanho(h.artista.foto, 1000)}
                 alt={indice === ativa ? h.artista.nome : ""}
-                className={`historias-foto ${indice === ativa ? "ativa" : ""}`}
-                loading={indice === 0 ? "eager" : "lazy"}
+                className={`historias-foto ${
+                  indice === ativa ? "ativa" : indice === saindo ? "saindo" : ""
+                }`}
+                // A atual e a próxima já ficam baixadas, para a troca não esperar a rede
+                loading={indice === ativa || indice === (ativa + 1) % total ? "eager" : "lazy"}
+                decoding="async"
                 referrerPolicy="no-referrer"
                 onError={tratarErroImagem}
               />
@@ -186,6 +210,17 @@ export function HistoriasEmDestaque({ historiasIniciais }) {
         </div>
 
         <div className="historias-setas">
+          {!semAutoplay && (
+            <button
+              type="button"
+              onClick={() => setPausadoNoBotao((p) => !p)}
+              aria-label={pausadoNoBotao ? "Continuar histórias" : "Pausar histórias"}
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d={pausadoNoBotao ? "M8 5l11 7-11 7z" : "M9 5v14M15 5v14"} />
+              </svg>
+            </button>
+          )}
           <button type="button" onClick={anterior} aria-label="História anterior">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
           </button>
