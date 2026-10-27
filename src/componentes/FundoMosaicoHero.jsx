@@ -58,44 +58,48 @@ export function FundoMosaicoHero() {
     return cols;
   }, []);
 
+  // O recorte fica só no mosaico (que é maior e inclinado), e não no hero inteiro:
+  // assim a lista de resultados da busca pode passar da borda do hero sem ser cortada.
   return (
-    <div className="hero-mosaic-container" aria-hidden="true">
-      {colunas.map((colunaItens, colIndex) => {
-        // Direção alternada: colunas pares sobem, ímpares descem
-        const direcaoClasse = colIndex % 2 === 0 ? "mover-cima" : "mover-baixo";
-        // Variação suave de duração para que as colunas fiquem orgânicas
-        const duracoes = [70, 85, 65, 90, 75, 80];
-        const duracao = duracoes[colIndex % duracoes.length];
+    <div className="hero-mosaic-recorte">
+      <div className="hero-mosaic-container" aria-hidden="true">
+        {colunas.map((colunaItens, colIndex) => {
+          // Direção alternada: colunas pares sobem, ímpares descem
+          const direcaoClasse = colIndex % 2 === 0 ? "mover-cima" : "mover-baixo";
+          // Variação suave de duração para que as colunas fiquem orgânicas
+          const duracoes = [70, 85, 65, 90, 75, 80];
+          const duracao = duracoes[colIndex % duracoes.length];
 
-        return (
-          <div key={`col-${colIndex}`} className="hero-mosaic-col">
-            <div
-              className={`hero-mosaic-track ${direcaoClasse}`}
-              style={{ animationDuration: `${duracao}s` }}
-            >
-              {/* Duplicamos o conteúdo 2x para o loop infinito sem descontinuidade */}
-              {[...colunaItens, ...colunaItens].map((item, idx) => (
-                <div
-                  key={`${item.id}-${idx}`}
-                  className="hero-mosaic-card"
-                >
-                  <img
-                    src={imagemNoTamanho(item.imagem, 250)}
-                    alt={item.nome}
-                    className="hero-mosaic-img"
-                    loading="lazy"
-                    onError={tratarErroImagem}
-                  />
-                </div>
-              ))}
+          return (
+            <div key={`col-${colIndex}`} className="hero-mosaic-col">
+              <div
+                className={`hero-mosaic-track ${direcaoClasse}`}
+                style={{ animationDuration: `${duracao}s` }}
+              >
+                {/* Duplicamos o conteúdo 2x para o loop infinito sem descontinuidade */}
+                {[...colunaItens, ...colunaItens].map((item, idx) => (
+                  <div
+                    key={`${item.id}-${idx}`}
+                    className="hero-mosaic-card"
+                  >
+                    <img
+                      src={imagemNoTamanho(item.imagem, 250)}
+                      alt={item.nome}
+                      className="hero-mosaic-img"
+                      loading="lazy"
+                      onError={tratarErroImagem}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
 
-      {/* Camada de textura de vinil e granulação cinematográfica */}
-      <div className="hero-mosaic-overlay-shade" />
-      <div className="hero-mosaic-vignette" />
+        {/* Camada de textura de vinil e granulação cinematográfica */}
+        <div className="hero-mosaic-overlay-shade" />
+        <div className="hero-mosaic-vignette" />
+      </div>
     </div>
   );
 }

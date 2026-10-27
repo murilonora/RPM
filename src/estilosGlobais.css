@@ -222,9 +222,9 @@ button {
 .home-hero {
   position: relative;
   display: grid;
+  z-index: 2; /* a lista da busca passa por cima da seção seguinte */
   min-height: calc(100vh - 76px);
   place-items: center;
-  overflow: hidden;
   background: #0e0d15;
   color: #f7f4ed;
 }
@@ -2294,6 +2294,14 @@ button.cartao-link {
 /* ========================================================
    FUNDO HERO — MOSAICO DINÂMICO DE COLUNAS INFINITAS
    ======================================================== */
+/* Recorta o mosaico nas bordas do hero (o hero em si não corta nada) */
+.hero-mosaic-recorte {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
 .hero-mosaic-container {
   position: absolute;
   inset: -40px;

@@ -1,9 +1,12 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { listaDeArtistas } from "../dados/dadosMusicais";
 import { imagemNoTamanho, normalizarTexto, tratarErroImagem } from "../utilitarios/comuns";
 
 const MAX_POR_GRUPO = 6;
+const ALTURA_MAXIMA_LISTA = 420;
+const ALTURA_MINIMA_LISTA = 110;
+const FOLGA_BORDA_PX = 12;
 
 const GRUPOS = [
   { tipo: "artista", titulo: "Artistas", selo: "Artista" },
@@ -51,6 +54,7 @@ const INDICE_BUSCA = listaDeArtistas.flatMap((artista) => {
 export function BuscaUnificada({ termo, aoMudarTermo }) {
   const navigate = useNavigate();
   const raizRef = useRef(null);
+  const listaRef = useRef(null);
   const [aberto, setAberto] = useState(false);
   const [indiceAtivo, setIndiceAtivo] = useState(-1);
 
@@ -69,6 +73,23 @@ export function BuscaUnificada({ termo, aoMudarTermo }) {
   }, [termoNormalizado]);
 
   const mostrarResultados = aberto && termoNormalizado.length > 0;
+
+  // A lista cabe dentro do banner (.home-hero): a altura vai só até a borda de baixo dele,
+  // e o que não couber rola dentro da própria lista em vez de cobrir a seção seguinte
+  useLayoutEffect(() => {
+    if (!mostrarResultados) return;
+    function ajustarAltura() {
+      const lista = listaRef.current;
+      const banner = raizRef.current?.closest(".home-hero");
+      if (!lista || !banner) return;
+      const espaco = banner.getBoundingClientRect().bottom - lista.getBoundingClientRect().top - FOLGA_BORDA_PX;
+      const altura = Math.max(ALTURA_MINIMA_LISTA, Math.min(ALTURA_MAXIMA_LISTA, espaco));
+      lista.style.maxHeight = `${altura}px`;
+    }
+    ajustarAltura();
+    window.addEventListener("resize", ajustarAltura);
+    return () => window.removeEventListener("resize", ajustarAltura);
+  }, [mostrarResultados]);
 
   // Fecha ao clicar fora da busca
   useEffect(() => {
@@ -135,7 +156,7 @@ export function BuscaUnificada({ termo, aoMudarTermo }) {
       <button type="submit" aria-label="Buscar">→</button>
 
       {mostrarResultados && (
-        <div className="busca-dropdown" id="busca-resultados" role="listbox" aria-label="Resultados da busca">
+        <div className="busca-dropdown" ref={listaRef} id="busca-resultados" role="listbox" aria-label="Resultados da busca">
           {planos.length === 0 ? (
             <p className="busca-vazio">Nada encontrado para "{termo}". Tente outro nome ou título.</p>
           ) : (
