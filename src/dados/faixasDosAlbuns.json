@@ -1598,6 +1598,806 @@
       "duracao": "2:56"
     }
   ],
+  "kanye-west|Graduation": [
+    {
+      "numero": 1,
+      "titulo": "Good Morning",
+      "duracao": "3:15"
+    },
+    {
+      "numero": 2,
+      "titulo": "Champion",
+      "duracao": "2:47"
+    },
+    {
+      "numero": 3,
+      "titulo": "Stronger",
+      "duracao": "5:12"
+    },
+    {
+      "numero": 4,
+      "titulo": "I Wonder",
+      "duracao": "4:03"
+    },
+    {
+      "numero": 5,
+      "titulo": "Good Life",
+      "duracao": "3:27"
+    },
+    {
+      "numero": 6,
+      "titulo": "Can't Tell Me Nothing",
+      "duracao": "4:34"
+    },
+    {
+      "numero": 7,
+      "titulo": "Barry Bonds",
+      "duracao": "3:24"
+    },
+    {
+      "numero": 8,
+      "titulo": "Drunk and Hot Girls",
+      "duracao": "5:13"
+    },
+    {
+      "numero": 9,
+      "titulo": "Flashing Lights",
+      "duracao": "3:57"
+    },
+    {
+      "numero": 10,
+      "titulo": "Everything I Am",
+      "duracao": "3:47"
+    },
+    {
+      "numero": 11,
+      "titulo": "The Glory",
+      "duracao": "3:32"
+    },
+    {
+      "numero": 12,
+      "titulo": "Homecoming",
+      "duracao": "3:23"
+    },
+    {
+      "numero": 13,
+      "titulo": "Big Brother",
+      "duracao": "4:47"
+    },
+    {
+      "numero": 14,
+      "titulo": "Good Night",
+      "duracao": "3:06"
+    }
+  ],
+  "kanye-west|My Beautiful Dark Twisted Fantasy": [
+    {
+      "numero": 1,
+      "titulo": "Dark Fantasy",
+      "duracao": "4:41"
+    },
+    {
+      "numero": 2,
+      "titulo": "Gorgeous",
+      "duracao": "5:58"
+    },
+    {
+      "numero": 3,
+      "titulo": "POWER",
+      "duracao": "4:52"
+    },
+    {
+      "numero": 4,
+      "titulo": "All Of The Lights (Interlude)",
+      "duracao": "1:02"
+    },
+    {
+      "numero": 5,
+      "titulo": "All Of The Lights",
+      "duracao": "5:00"
+    },
+    {
+      "numero": 6,
+      "titulo": "Monster",
+      "duracao": "6:20"
+    },
+    {
+      "numero": 7,
+      "titulo": "So Appalled",
+      "duracao": "6:38"
+    },
+    {
+      "numero": 8,
+      "titulo": "Devil In A New Dress",
+      "duracao": "5:52"
+    },
+    {
+      "numero": 9,
+      "titulo": "Runaway",
+      "duracao": "9:08"
+    },
+    {
+      "numero": 10,
+      "titulo": "Hell Of A Life",
+      "duracao": "5:28"
+    },
+    {
+      "numero": 11,
+      "titulo": "Blame Game",
+      "duracao": "7:50"
+    },
+    {
+      "numero": 12,
+      "titulo": "Lost In The World",
+      "duracao": "4:17"
+    },
+    {
+      "numero": 13,
+      "titulo": "Who Will Survive In America",
+      "duracao": "1:38"
+    }
+  ],
+  "kanye-west|808s & Heartbreak": [
+    {
+      "numero": 1,
+      "titulo": "Say You Will",
+      "duracao": "6:18"
+    },
+    {
+      "numero": 2,
+      "titulo": "Welcome To Heartbreak",
+      "duracao": "4:23"
+    },
+    {
+      "numero": 3,
+      "titulo": "Heartless",
+      "duracao": "3:30"
+    },
+    {
+      "numero": 4,
+      "titulo": "Amazing",
+      "duracao": "3:58"
+    },
+    {
+      "numero": 5,
+      "titulo": "Love Lockdown (Album Version)",
+      "duracao": "4:30"
+    },
+    {
+      "numero": 6,
+      "titulo": "Paranoid",
+      "duracao": "4:38"
+    },
+    {
+      "numero": 7,
+      "titulo": "RoboCop",
+      "duracao": "4:34"
+    },
+    {
+      "numero": 8,
+      "titulo": "Street Lights",
+      "duracao": "3:10"
+    },
+    {
+      "numero": 9,
+      "titulo": "Bad News",
+      "duracao": "3:59"
+    },
+    {
+      "numero": 10,
+      "titulo": "See You In My Nightmares",
+      "duracao": "4:18"
+    },
+    {
+      "numero": 11,
+      "titulo": "Coldest Winter",
+      "duracao": "2:46"
+    },
+    {
+      "numero": 12,
+      "titulo": "Pinocchio Story",
+      "duracao": "6:02"
+    }
+  ],
+  "kanye-west|The Life of Pablo": [
+    {
+      "numero": 1,
+      "titulo": "Ultralight Beam",
+      "duracao": "5:20"
+    },
+    {
+      "numero": 2,
+      "titulo": "Father Stretch My Hands Pt. 1",
+      "duracao": "2:15"
+    },
+    {
+      "numero": 3,
+      "titulo": "Pt. 2",
+      "duracao": "2:10"
+    },
+    {
+      "numero": 4,
+      "titulo": "Famous",
+      "duracao": "3:12"
+    },
+    {
+      "numero": 5,
+      "titulo": "Feedback",
+      "duracao": "2:27"
+    },
+    {
+      "numero": 6,
+      "titulo": "Low Lights",
+      "duracao": "2:11"
+    },
+    {
+      "numero": 7,
+      "titulo": "Highlights",
+      "duracao": "3:19"
+    },
+    {
+      "numero": 8,
+      "titulo": "Freestyle 4",
+      "duracao": "2:03"
+    },
+    {
+      "numero": 9,
+      "titulo": "I Love Kanye",
+      "duracao": "0:44"
+    },
+    {
+      "numero": 10,
+      "titulo": "Waves",
+      "duracao": "3:01"
+    },
+    {
+      "numero": 11,
+      "titulo": "FML",
+      "duracao": "3:56"
+    },
+    {
+      "numero": 12,
+      "titulo": "Real Friends",
+      "duracao": "4:11"
+    },
+    {
+      "numero": 13,
+      "titulo": "Wolves",
+      "duracao": "5:01"
+    },
+    {
+      "numero": 14,
+      "titulo": "Frank's Track",
+      "duracao": "0:38"
+    },
+    {
+      "numero": 15,
+      "titulo": "Siiiiiiiiilver Surffffeeeeer Intermission",
+      "duracao": "0:56"
+    },
+    {
+      "numero": 16,
+      "titulo": "30 Hours",
+      "duracao": "5:23"
+    },
+    {
+      "numero": 17,
+      "titulo": "No More Parties In LA",
+      "duracao": "6:14"
+    },
+    {
+      "numero": 18,
+      "titulo": "Facts (Charlie Heat Version)",
+      "duracao": "3:20"
+    },
+    {
+      "numero": 19,
+      "titulo": "Fade",
+      "duracao": "3:13"
+    },
+    {
+      "numero": 20,
+      "titulo": "Saint Pablo",
+      "duracao": "6:12"
+    }
+  ],
+  "kanye-west|Late Registration": [
+    {
+      "numero": 1,
+      "titulo": "Wake Up Mr. West",
+      "duracao": "0:41"
+    },
+    {
+      "numero": 2,
+      "titulo": "Heard 'Em Say",
+      "duracao": "3:24"
+    },
+    {
+      "numero": 3,
+      "titulo": "Touch The Sky",
+      "duracao": "3:56"
+    },
+    {
+      "numero": 4,
+      "titulo": "Gold Digger",
+      "duracao": "3:28"
+    },
+    {
+      "numero": 5,
+      "titulo": "Skit #1",
+      "duracao": "0:33"
+    },
+    {
+      "numero": 6,
+      "titulo": "Drive Slow",
+      "duracao": "4:32"
+    },
+    {
+      "numero": 7,
+      "titulo": "My Way Home",
+      "duracao": "1:43"
+    },
+    {
+      "numero": 8,
+      "titulo": "Crack Music",
+      "duracao": "4:31"
+    },
+    {
+      "numero": 9,
+      "titulo": "Roses",
+      "duracao": "4:05"
+    },
+    {
+      "numero": 10,
+      "titulo": "Bring Me Down",
+      "duracao": "3:19"
+    },
+    {
+      "numero": 11,
+      "titulo": "Addiction",
+      "duracao": "4:27"
+    },
+    {
+      "numero": 12,
+      "titulo": "Skit #2",
+      "duracao": "0:31"
+    },
+    {
+      "numero": 13,
+      "titulo": "Diamonds From Sierra Leone (Remix)",
+      "duracao": "3:53"
+    },
+    {
+      "numero": 14,
+      "titulo": "We Major",
+      "duracao": "7:28"
+    },
+    {
+      "numero": 15,
+      "titulo": "Skit #3",
+      "duracao": "0:24"
+    },
+    {
+      "numero": 16,
+      "titulo": "Hey Mama",
+      "duracao": "5:05"
+    },
+    {
+      "numero": 17,
+      "titulo": "Celebration",
+      "duracao": "3:18"
+    },
+    {
+      "numero": 18,
+      "titulo": "Skit #4",
+      "duracao": "1:19"
+    },
+    {
+      "numero": 19,
+      "titulo": "Gone",
+      "duracao": "5:33"
+    },
+    {
+      "numero": 20,
+      "titulo": "Diamonds From Sierra Leone (Bonus Track)",
+      "duracao": "4:00"
+    },
+    {
+      "numero": 21,
+      "titulo": "Late",
+      "duracao": "3:50"
+    }
+  ],
+  "kanye-west|The College Dropout": [
+    {
+      "numero": 1,
+      "titulo": "Intro",
+      "duracao": "0:18"
+    },
+    {
+      "numero": 2,
+      "titulo": "We Don't Care",
+      "duracao": "3:59"
+    },
+    {
+      "numero": 3,
+      "titulo": "Graduation Day",
+      "duracao": "1:21"
+    },
+    {
+      "numero": 4,
+      "titulo": "All Falls Down",
+      "duracao": "3:43"
+    },
+    {
+      "numero": 5,
+      "titulo": "I'll Fly Away",
+      "duracao": "1:09"
+    },
+    {
+      "numero": 6,
+      "titulo": "Spaceship",
+      "duracao": "5:24"
+    },
+    {
+      "numero": 7,
+      "titulo": "Jesus Walks",
+      "duracao": "3:13"
+    },
+    {
+      "numero": 8,
+      "titulo": "Never Let Me Down",
+      "duracao": "5:24"
+    },
+    {
+      "numero": 9,
+      "titulo": "Get Em High",
+      "duracao": "4:49"
+    },
+    {
+      "numero": 10,
+      "titulo": "Workout Plan",
+      "duracao": "0:46"
+    },
+    {
+      "numero": 11,
+      "titulo": "The New Workout Plan",
+      "duracao": "5:22"
+    },
+    {
+      "numero": 12,
+      "titulo": "Slow Jamz",
+      "duracao": "5:16"
+    },
+    {
+      "numero": 13,
+      "titulo": "Breathe In Breathe Out",
+      "duracao": "4:06"
+    },
+    {
+      "numero": 14,
+      "titulo": "School Spirit Skit 1",
+      "duracao": "1:18"
+    },
+    {
+      "numero": 15,
+      "titulo": "School Spirit",
+      "duracao": "3:02"
+    },
+    {
+      "numero": 16,
+      "titulo": "School Spirit Skit 2",
+      "duracao": "0:43"
+    },
+    {
+      "numero": 17,
+      "titulo": "Lil Jimmy Skit",
+      "duracao": "0:53"
+    },
+    {
+      "numero": 18,
+      "titulo": "Two Words",
+      "duracao": "4:26"
+    },
+    {
+      "numero": 19,
+      "titulo": "Through The Wire",
+      "duracao": "3:41"
+    },
+    {
+      "numero": 20,
+      "titulo": "Family Business",
+      "duracao": "4:38"
+    },
+    {
+      "numero": 21,
+      "titulo": "Last Call",
+      "duracao": "12:40"
+    }
+  ],
+  "kanye-west|Donda": [
+    {
+      "numero": 1,
+      "titulo": "Donda Chant",
+      "duracao": "0:52"
+    },
+    {
+      "numero": 2,
+      "titulo": "Jail",
+      "duracao": "4:57"
+    },
+    {
+      "numero": 3,
+      "titulo": "God Breathed",
+      "duracao": "5:33"
+    },
+    {
+      "numero": 4,
+      "titulo": "Off The Grid",
+      "duracao": "5:39"
+    },
+    {
+      "numero": 5,
+      "titulo": "Hurricane",
+      "duracao": "4:03"
+    },
+    {
+      "numero": 6,
+      "titulo": "Praise God",
+      "duracao": "3:46"
+    },
+    {
+      "numero": 7,
+      "titulo": "Jonah",
+      "duracao": "3:15"
+    },
+    {
+      "numero": 8,
+      "titulo": "Ok Ok",
+      "duracao": "3:24"
+    },
+    {
+      "numero": 9,
+      "titulo": "Junya",
+      "duracao": "2:27"
+    },
+    {
+      "numero": 10,
+      "titulo": "Believe What I Say",
+      "duracao": "4:02"
+    },
+    {
+      "numero": 11,
+      "titulo": "24",
+      "duracao": "3:17"
+    },
+    {
+      "numero": 12,
+      "titulo": "Remote Control",
+      "duracao": "3:18"
+    },
+    {
+      "numero": 13,
+      "titulo": "Moon",
+      "duracao": "2:36"
+    },
+    {
+      "numero": 14,
+      "titulo": "Heaven and Hell",
+      "duracao": "2:25"
+    },
+    {
+      "numero": 15,
+      "titulo": "Donda",
+      "duracao": "2:08"
+    },
+    {
+      "numero": 16,
+      "titulo": "Keep My Spirit Alive",
+      "duracao": "3:41"
+    },
+    {
+      "numero": 17,
+      "titulo": "Jesus Lord",
+      "duracao": "8:58"
+    },
+    {
+      "numero": 18,
+      "titulo": "New Again",
+      "duracao": "3:03"
+    },
+    {
+      "numero": 19,
+      "titulo": "Tell The Vision",
+      "duracao": "1:44"
+    },
+    {
+      "numero": 20,
+      "titulo": "Lord I Need You",
+      "duracao": "2:42"
+    },
+    {
+      "numero": 21,
+      "titulo": "Pure Souls",
+      "duracao": "5:58"
+    },
+    {
+      "numero": 22,
+      "titulo": "Come to Life",
+      "duracao": "5:10"
+    },
+    {
+      "numero": 23,
+      "titulo": "No Child Left Behind",
+      "duracao": "2:57"
+    },
+    {
+      "numero": 24,
+      "titulo": "Jail pt 2",
+      "duracao": "4:57"
+    },
+    {
+      "numero": 25,
+      "titulo": "Ok Ok pt 2",
+      "duracao": "3:24"
+    },
+    {
+      "numero": 26,
+      "titulo": "Junya pt 2",
+      "duracao": "3:02"
+    },
+    {
+      "numero": 27,
+      "titulo": "Jesus Lord pt 2",
+      "duracao": "11:30"
+    }
+  ],
+  "kanye-west|ye": [
+    {
+      "numero": 1,
+      "titulo": "I Thought About Killing You",
+      "duracao": "4:34"
+    },
+    {
+      "numero": 2,
+      "titulo": "Yikes",
+      "duracao": "3:09"
+    },
+    {
+      "numero": 3,
+      "titulo": "All Mine",
+      "duracao": "2:26"
+    },
+    {
+      "numero": 4,
+      "titulo": "Wouldn't Leave",
+      "duracao": "3:26"
+    },
+    {
+      "numero": 5,
+      "titulo": "No Mistakes",
+      "duracao": "2:03"
+    },
+    {
+      "numero": 6,
+      "titulo": "Ghost Town",
+      "duracao": "4:32"
+    },
+    {
+      "numero": 7,
+      "titulo": "Violent Crimes",
+      "duracao": "3:35"
+    }
+  ],
+  "kanye-west|Yeezus": [
+    {
+      "numero": 1,
+      "titulo": "On Sight",
+      "duracao": "2:38"
+    },
+    {
+      "numero": 2,
+      "titulo": "Black Skinhead",
+      "duracao": "3:08"
+    },
+    {
+      "numero": 3,
+      "titulo": "I Am A God",
+      "duracao": "3:51"
+    },
+    {
+      "numero": 4,
+      "titulo": "New Slaves",
+      "duracao": "4:16"
+    },
+    {
+      "numero": 5,
+      "titulo": "Hold My Liquor",
+      "duracao": "5:26"
+    },
+    {
+      "numero": 6,
+      "titulo": "I'm In It",
+      "duracao": "3:54"
+    },
+    {
+      "numero": 7,
+      "titulo": "Blood On The Leaves",
+      "duracao": "5:59"
+    },
+    {
+      "numero": 8,
+      "titulo": "Guilt Trip",
+      "duracao": "4:04"
+    },
+    {
+      "numero": 9,
+      "titulo": "Send It Up",
+      "duracao": "2:58"
+    },
+    {
+      "numero": 10,
+      "titulo": "Bound 2",
+      "duracao": "3:49"
+    }
+  ],
+  "kanye-west|JESUS IS KING": [
+    {
+      "numero": 1,
+      "titulo": "Every Hour",
+      "duracao": "1:53"
+    },
+    {
+      "numero": 2,
+      "titulo": "Selah",
+      "duracao": "2:44"
+    },
+    {
+      "numero": 3,
+      "titulo": "Follow God",
+      "duracao": "1:44"
+    },
+    {
+      "numero": 4,
+      "titulo": "Closed On Sunday",
+      "duracao": "2:32"
+    },
+    {
+      "numero": 5,
+      "titulo": "On God",
+      "duracao": "2:16"
+    },
+    {
+      "numero": 6,
+      "titulo": "Everything We Need",
+      "duracao": "1:56"
+    },
+    {
+      "numero": 7,
+      "titulo": "Water",
+      "duracao": "2:48"
+    },
+    {
+      "numero": 8,
+      "titulo": "God Is",
+      "duracao": "3:23"
+    },
+    {
+      "numero": 9,
+      "titulo": "Hands On",
+      "duracao": "3:23"
+    },
+    {
+      "numero": 10,
+      "titulo": "Use This Gospel",
+      "duracao": "3:33"
+    },
+    {
+      "numero": 11,
+      "titulo": "Jesus Is Lord",
+      "duracao": "0:49"
+    }
+  ],
   "j-cole|2014 Forest Hills Drive": [
     {
       "numero": 1,

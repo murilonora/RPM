@@ -232,4 +232,14 @@ export const ACERVO_HISTORIAS = [
     fato: "Primeiro álbum todo em espanhol indicado a Álbum do Ano no Grammy",
     leitura: 7,
   },
+  {
+    artistaId: "kanye-west",
+    album: "My Beautiful Dark Twisted Fantasy",
+    vertente: "Rap americano",
+    manchete: "My Beautiful Dark Twisted Fantasy e o exílio no Havaí",
+    linhaFina:
+      "Depois de um ano fora dos holofotes, Kanye levou dezenas de músicos e produtores para um estúdio em Honolulu e voltou com o disco mais ambicioso da carreira.",
+    fato: "Primeira nota 10 da Pitchfork para um disco inédito desde 2002",
+    leitura: 8,
+  },
 ];
