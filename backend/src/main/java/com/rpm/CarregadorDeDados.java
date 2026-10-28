@@ -47,11 +47,6 @@ public class CarregadorDeDados implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) throws Exception {
-        // É isto que impede a duplicação: se já tem artista, não carrega de novo.
-        if (artistaRepository.count() > 0) {
-            log.info("Dados musicais já carregados, pulando importação.");
-            return;
-        }
 
         List<ArtistaJson> artistasJson;
         try (InputStream entrada = new ClassPathResource(ARQUIVO).getInputStream()) {
@@ -60,8 +55,12 @@ public class CarregadorDeDados implements CommandLineRunner {
 
         List<Album> albuns = new ArrayList<>();
         List<Musica> musicas = new ArrayList<>();
-
+        int novos=0;
         for (ArtistaJson json : artistasJson) {
+            // pula artistas que ja estao no banco, so os novos entram
+            if (artistaRepository.existsById(json.id())) {
+                continue;
+            }
             Artista artista = artistaRepository.save(paraArtista(json));
 
             for (AlbumJson albumJson : json.albuns()) {
@@ -70,13 +69,14 @@ public class CarregadorDeDados implements CommandLineRunner {
             for (MusicaJson musicaJson : json.musicas()) {
                 musicas.add(paraMusica(musicaJson, artista));
             }
+            novos++; //conta cada artista salvo
         }
 
         albumRepository.saveAll(albuns);
         musicaRepository.saveAll(musicas);
 
         log.info("Importação concluída: {} artistas, {} álbuns, {} músicas.",
-                artistasJson.size(), albuns.size(), musicas.size());
+                novos,albuns.size(),musicas.size());
     }
 
     private Artista paraArtista(ArtistaJson json) {
