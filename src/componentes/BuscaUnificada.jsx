@@ -9,7 +9,20 @@ const ALTURA_MAXIMA_LISTA = 420;
 const ALTURA_MINIMA_LISTA = 110;
 const FOLGA_BORDA_PX = 12;
 
+// Resultado secreto: só o nome completo "Matheus Rocha" (idealizador do RPM) revela a
+// faixa bônus dele; "matheus" sozinho não mostra nada de especial.
+const NOME_SECRETO = "matheus rocha";
+const RESULTADO_MATHEUS = {
+  tipo: "bonus",
+  chave: "bonus-matheus",
+  foto: "/assets/matheus/foto-1.jpg",
+  titulo: "Matheus Rocha",
+  subtitulo: "Idealizador do RPM · Faixa bônus",
+  destino: "/faixa-bonus",
+};
+
 const GRUPOS = [
+  { tipo: "bonus", titulo: "Faixa bônus", selo: "Lado B" },
   { tipo: "artista", titulo: "Artistas", selo: "Artista" },
   { tipo: "musica", titulo: "Músicas", selo: "Música" },
   { tipo: "album", titulo: "Álbuns", selo: "Álbum" },
@@ -76,11 +89,15 @@ export function BuscaUnificada({ termo, aoMudarTermo }) {
   // Resultados agrupados e uma lista plana na mesma ordem, para as setas do teclado
   const { grupos, planos } = useMemo(() => {
     if (!termoNormalizado) return { grupos: [], planos: [] };
+    const achouMatheus = termoNormalizado.replace(/\s+/g, " ") === NOME_SECRETO;
     const grupos = GRUPOS.map((grupo) => ({
       ...grupo,
-      itens: indiceBusca.filter(
-        (item) => item.tipo === grupo.tipo && item.texto.includes(termoNormalizado)
-      ).slice(0, MAX_POR_GRUPO),
+      itens:
+        grupo.tipo === "bonus"
+          ? achouMatheus ? [RESULTADO_MATHEUS] : []
+          : indiceBusca
+              .filter((item) => item.tipo === grupo.tipo && item.texto.includes(termoNormalizado))
+              .slice(0, MAX_POR_GRUPO),
     })).filter((grupo) => grupo.itens.length > 0);
     return { grupos, planos: grupos.flatMap((grupo) => grupo.itens) };
   }, [termoNormalizado, indiceBusca]);

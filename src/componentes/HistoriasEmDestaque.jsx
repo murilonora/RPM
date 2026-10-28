@@ -263,6 +263,12 @@ export function HistoriasEmDestaque({ historiasIniciais }) {
           </button>
         ))}
       </div>
+
+      {/* Pista do easter egg do 45 RPM (ver RotacaoSecreta em Aplicativo.jsx); o CSS troca o número */}
+      <p className="historias-rotacao">
+        <span className="historias-rotacao-33">Este acervo gira a 33⅓ rpm. O teclado sabe trocar a rotação.</span>
+        <span className="historias-rotacao-45">Girando a 45 rpm, como o Matheus queria.</span>
+      </p>
     </section>
   );
 }

@@ -507,6 +507,24 @@ button {
   color: #f7f4ed;
 }
 
+/* Resultado secreto do Matheus: selo com brilho correndo e foto girando como disco */
+.busca-selo--bonus {
+  border-color: #ff0004;
+  background: linear-gradient(90deg, #ff0004 0 40%, #ffb3b4 50%, #ff0004 60% 100%) 0 0 / 250% 100%;
+  color: #fff;
+  animation: bonus-brilho 1.6s linear infinite;
+}
+
+.busca-item:has(.busca-selo--bonus) .busca-item-foto {
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px #ff0004;
+  animation: historias-girar 3s linear infinite;
+}
+
+@keyframes bonus-brilho {
+  to { background-position: -250% 0; }
+}
+
 .busca-selo--musica {
   border-color: #ff0004;
   background: #ff0004;
@@ -4233,6 +4251,56 @@ button.ficha-card-comentario--vazio:focus-visible {
   animation: historias-progresso var(--duracao-slide) linear both;
 }
 
+/* Pista do easter egg: discreta, com o vinil do rótulo girando devagar */
+.historias-rotacao {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 18px 0 0;
+  color: #8a8492;
+  font-family: monospace;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+.historias-rotacao::before {
+  content: "";
+  flex: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ff0004 0 22%, #191525 24% 100%);
+  animation: historias-girar 1.8s linear infinite;
+}
+
+.historias-rotacao-45,
+:root[data-rotacao="45"] .historias-rotacao-33 {
+  display: none;
+}
+
+:root[data-rotacao="45"] .historias-rotacao-45 {
+  display: inline;
+  color: #ff0004;
+}
+
+/* Easter egg 45 RPM: os discos giram bem mais rápido e o logo do cabeçalho também gira */
+:root[data-rotacao="45"] .historias-vinil {
+  animation-duration: 1100ms, 2s;
+}
+
+:root[data-rotacao="45"] .historias-vinil.historias-vinil--saindo {
+  animation-duration: 450ms, 2s;
+}
+
+:root[data-rotacao="45"] .album-crate-card .album-disco-vinil-fisico,
+:root[data-rotacao="45"] .historias-rotacao::before {
+  animation-duration: 1.33s;
+}
+
+:root[data-rotacao="45"] .brand img {
+  animation: historias-girar 1.33s linear infinite;
+}
+
 @keyframes historias-aproximar {
   from { transform: scale(1.02); }
   to { transform: scale(1.1); }
@@ -4325,7 +4393,9 @@ button.ficha-card-comentario--vazio:focus-visible {
   .historias-foto.ativa,
   .historias-foto.saindo,
   .historias-vinil,
-  .historias-texto > * {
+  .historias-texto > *,
+  .historias-rotacao::before,
+  :root[data-rotacao="45"] .brand img {
     animation: none;
   }
 
@@ -4381,5 +4451,530 @@ button.ficha-card-comentario--vazio:focus-visible {
 @container aba-artista (max-width: 420px) {
   .album-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ========================================================
+   FAIXA BÔNUS: homenagem ao Matheus Rocha (PaginaFaixaBonus.jsx)
+   Fundo com a foto dele em 3 painéis e, por cima, uma MPC tocável.
+   Os tokens abaixo são o design system da página: toda cor, raio,
+   sombra e fonte usada nos componentes vem deles.
+   ======================================================== */
+.bonus {
+  /* Cor */
+  --b-tinta: #0b0a10;
+  --b-osso: #efe9dc;
+  --b-osso-sombra: #cfc7b6;
+  --b-vermelho: #ff0004;
+  --b-vermelho-luz: rgb(255 0 4 / 55%);
+  --b-azul: #2034ff;
+  --b-pad: #29252f;
+  --b-pad-luz: #3a3542;
+  --b-texto-pad: #a9a3b3;
+  --b-lcd: #a9b96d;
+  --b-lcd-escuro: #8c9c55;
+  --b-lcd-texto: #1a220e;
+  /* Forma */
+  --b-raio-chassi: 18px;
+  --b-raio-controle: 999px;
+  --b-raio-pad: 8px;
+  --b-sombra-chassi: 0 50px 100px rgb(0 0 0 / 65%), 0 2px 0 rgb(255 255 255 / 60%) inset, 0 -6px 0 var(--b-osso-sombra) inset;
+  --b-sombra-pad: inset 0 -4px 0 rgb(0 0 0 / 45%), inset 0 1px 0 rgb(255 255 255 / 8%), 0 3px 6px rgb(0 0 0 / 35%);
+  /* Tipo */
+  --b-fonte-marca: "DM Serif Display:Italic", serif;
+  --b-fonte-ui: "DM Sans:Bold", sans-serif;
+  --b-fonte-lcd: "Courier New", monospace;
+  /* Ritmo */
+  --b-espaco: 8px;
+
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: var(--b-tinta);
+  color: var(--b-osso);
+  isolation: isolate;
+}
+
+/* ---------- Fundo: a foto em 3 painéis ---------- */
+.bonus-triptico {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: -1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  height: 100vh;
+  min-height: 760px;
+}
+
+.bonus-triptico::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 50% at 50% 50%, rgb(11 10 16 / 55%), transparent 80%),
+    linear-gradient(rgb(11 10 16 / 25%), transparent 30%, var(--b-tinta) 98%);
+}
+
+.bonus-painel {
+  position: relative;
+  overflow: hidden;
+  border-right: 1px solid rgb(0 0 0 / 60%);
+}
+
+.bonus-painel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 30%;
+  filter: grayscale(1) contrast(1.35);
+  animation: bonus-painel-respirar 18s ease-in-out infinite alternate;
+}
+
+/* Cada painel recebe um tom por cima (multiplica), como numa serigrafia */
+.bonus-painel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: multiply;
+}
+
+.bonus-painel--vermelho::after { background: var(--b-vermelho); }
+.bonus-painel--osso::after { background: var(--b-osso-sombra); }
+.bonus-painel--azul::after { background: var(--b-azul); }
+
+.bonus-painel--osso img { animation-delay: -6s; filter: grayscale(1) contrast(1.35) brightness(0.7); }
+.bonus-painel--azul img { animation-delay: -12s; scale: -1 1; }
+
+/* Batida forte: os painéis piscam em onda, da esquerda para a direita */
+.bonus--soco .bonus-painel {
+  animation: bonus-painel-flash 320ms ease-out;
+}
+
+.bonus--soco .bonus-painel:nth-child(2) { animation-delay: 50ms; }
+.bonus--soco .bonus-painel:nth-child(3) { animation-delay: 100ms; }
+
+/* ---------- Palco ---------- */
+.bonus-palco {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: calc(var(--b-espaco) * 2);
+  min-height: 100vh;
+  padding: calc(var(--b-espaco) * 4) 20px;
+}
+
+.bonus-etiqueta {
+  margin: 0;
+  padding: 6px 14px;
+  background: var(--b-tinta);
+  color: var(--b-vermelho);
+  font-family: var(--b-fonte-lcd);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  animation: bonus-surgir 600ms ease both;
+}
+
+.bonus-dica {
+  margin: 0;
+  padding: 6px 12px;
+  background: rgb(11 10 16 / 70%);
+  color: var(--b-texto-pad);
+  font-family: var(--b-fonte-lcd);
+  font-size: 12px;
+  text-align: center;
+}
+
+/* ---------- MPC: o chassi ---------- */
+.mpc {
+  width: min(560px, 100%);
+  padding: calc(var(--b-espaco) * 2.5);
+  border-radius: var(--b-raio-chassi);
+  background:
+    radial-gradient(120% 80% at 20% 0%, rgb(255 255 255 / 55%), transparent 60%),
+    var(--b-osso);
+  box-shadow: var(--b-sombra-chassi);
+  color: var(--b-tinta);
+  animation: bonus-mpc-entrar 900ms 150ms cubic-bezier(0.2, 0.9, 0.2, 1.05) both;
+}
+
+.mpc-topo {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: calc(var(--b-espaco) * 1.5);
+}
+
+.mpc-marca {
+  font-family: var(--b-fonte-marca);
+  font-size: 30px;
+  line-height: 1;
+}
+
+.mpc-marca b {
+  color: var(--b-vermelho);
+  font-weight: 400;
+}
+
+.mpc-modelo {
+  flex: 1;
+  font-family: var(--b-fonte-ui);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.mpc-led {
+  align-self: center;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #5b1214;
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / 50%);
+}
+
+.mpc-led.ligado {
+  background: var(--b-vermelho);
+  box-shadow: 0 0 10px var(--b-vermelho-luz);
+}
+
+/* ---------- Tela LCD e medidor ---------- */
+.mpc-painel {
+  display: grid;
+  grid-template-columns: 1fr 22px;
+  gap: 10px;
+}
+
+.mpc-tela {
+  position: relative;
+  overflow: hidden;
+  padding: 10px 12px;
+  border-radius: 4px;
+  background: linear-gradient(var(--b-lcd), var(--b-lcd-escuro));
+  box-shadow: inset 0 3px 8px rgb(0 0 0 / 45%), 0 0 0 4px var(--b-tinta);
+  color: var(--b-lcd-texto);
+  font-family: var(--b-fonte-lcd);
+  font-weight: 700;
+}
+
+/* Linhas de varredura do LCD */
+.mpc-tela::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(transparent 0 2px, rgb(0 0 0 / 7%) 2px 3px);
+}
+
+.mpc-tela-linha {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.mpc-tela-pad {
+  margin: 4px 0;
+  font-size: clamp(20px, 5vw, 28px);
+  letter-spacing: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mpc-tela-letreiro {
+  display: flex;
+  width: max-content;
+  font-size: 11px;
+  animation: bonus-letreiro 16s linear infinite;
+}
+
+.mpc-tela-letreiro span {
+  white-space: nowrap;
+}
+
+.mpc-vu {
+  position: relative;
+  border-radius: 3px;
+  background: var(--b-tinta);
+  box-shadow: 0 0 0 4px var(--b-tinta);
+  overflow: hidden;
+}
+
+/* Segmentos acesos até o nível do último pad, caindo em seguida */
+.mpc-vu-nivel {
+  position: absolute;
+  inset: 2px;
+  background: linear-gradient(to top, #7bd46a 0 55%, #ffc23d 55% 80%, var(--b-vermelho) 80%);
+  mask-image: repeating-linear-gradient(to top, #000 0 5px, transparent 5px 7px);
+  clip-path: inset(100% 0 0 0);
+  animation: bonus-vu-cair 600ms cubic-bezier(0.1, 0.6, 0.4, 1) both;
+}
+
+/* ---------- Controles: padrão, BPM e play ---------- */
+.mpc-controles {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: calc(var(--b-espaco) * 2);
+}
+
+.mpc-padroes {
+  display: flex;
+  flex: 1;
+  padding: 3px;
+  border-radius: var(--b-raio-controle);
+  background: var(--b-tinta);
+}
+
+.mpc-padroes button,
+.mpc-bpm button {
+  border: 0;
+  font-family: var(--b-fonte-ui);
+  cursor: pointer;
+}
+
+.mpc-padroes button {
+  flex: 1;
+  padding: 8px 6px;
+  border-radius: var(--b-raio-controle);
+  background: transparent;
+  color: var(--b-texto-pad);
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: background 150ms ease, color 150ms ease;
+}
+
+.mpc-padroes button.ativo {
+  background: var(--b-vermelho);
+  color: #fff;
+}
+
+.mpc-bpm {
+  display: flex;
+  gap: 4px;
+}
+
+.mpc-bpm button {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--b-osso-sombra);
+  color: var(--b-tinta);
+  font-size: 18px;
+  line-height: 1;
+  box-shadow: inset 0 -3px 0 rgb(0 0 0 / 18%);
+}
+
+.mpc-bpm button:active {
+  translate: 0 1px;
+  box-shadow: none;
+}
+
+.mpc-play {
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--b-tinta);
+  color: var(--b-osso);
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: inset 0 -4px 0 rgb(255 255 255 / 10%);
+  transition: background 150ms ease;
+}
+
+.mpc-play.ligado {
+  background: var(--b-vermelho);
+  box-shadow: 0 0 22px var(--b-vermelho-luz);
+}
+
+/* ---------- Sequenciador ---------- */
+.mpc-sequencia {
+  display: grid;
+  grid-template-columns: repeat(16, 1fr);
+  gap: 4px;
+  margin: calc(var(--b-espaco) * 2) 0;
+}
+
+.mpc-sequencia span {
+  height: 6px;
+  border-radius: 2px;
+  background: var(--b-osso-sombra);
+}
+
+.mpc-sequencia span:nth-child(4n + 1) {
+  background: #b3aa97;
+}
+
+.mpc-sequencia span.ativo {
+  background: var(--b-vermelho);
+  box-shadow: 0 0 10px var(--b-vermelho-luz);
+}
+
+/* ---------- Os 16 pads ---------- */
+.mpc-pads {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--b-tinta);
+}
+
+.mpc-pad {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  aspect-ratio: 4 / 3;
+  padding: 8px;
+  border: 0;
+  border-radius: var(--b-raio-pad);
+  background: radial-gradient(120% 120% at 30% 20%, var(--b-pad-luz), var(--b-pad));
+  box-shadow: var(--b-sombra-pad);
+  color: var(--b-texto-pad);
+  font-family: var(--b-fonte-ui);
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  text-align: left;
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+  transition: background 260ms ease, box-shadow 260ms ease, color 260ms ease, translate 90ms ease;
+}
+
+.mpc-pad kbd {
+  align-self: flex-end;
+  font-family: var(--b-fonte-lcd);
+  font-size: 10px;
+  opacity: 0.55;
+}
+
+.mpc-pad.aceso,
+.mpc-pad:active {
+  translate: 0 2px;
+  background: radial-gradient(120% 120% at 30% 20%, #ff6b6d, var(--b-vermelho));
+  box-shadow: inset 0 -2px 0 rgb(0 0 0 / 30%), 0 0 34px var(--b-vermelho-luz);
+  color: #fff;
+  transition-duration: 0ms;
+}
+
+/* Onda que se espalha a partir do pad tocado */
+.mpc-pad-onda {
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--b-vermelho);
+  border-radius: var(--b-raio-pad);
+  pointer-events: none;
+  animation: bonus-onda 450ms ease-out forwards;
+}
+
+.mpc-pad:focus-visible,
+.mpc button:focus-visible {
+  outline: 2px solid var(--b-vermelho);
+  outline-offset: 3px;
+}
+
+/* ---------- Animações ---------- */
+@keyframes bonus-surgir {
+  from {
+    opacity: 0;
+    translate: 0 16px;
+  }
+}
+
+@keyframes bonus-mpc-entrar {
+  from {
+    opacity: 0;
+    translate: 0 60px;
+    rotate: -4deg;
+    scale: 0.92;
+  }
+}
+
+@keyframes bonus-painel-respirar {
+  from { scale: 1.02; }
+  to { scale: 1.12; }
+}
+
+.bonus-painel--azul img {
+  animation-name: bonus-painel-respirar-espelhado;
+}
+
+@keyframes bonus-painel-respirar-espelhado {
+  from { scale: -1.02 1.02; }
+  to { scale: -1.12 1.12; }
+}
+
+@keyframes bonus-painel-flash {
+  30% { filter: brightness(1.9) saturate(1.4); }
+}
+
+@keyframes bonus-letreiro {
+  to { translate: -50% 0; }
+}
+
+@keyframes bonus-vu-cair {
+  from { clip-path: inset(calc(100% - var(--nivel) * 10%) 0 0 0); }
+  to { clip-path: inset(100% 0 0 0); }
+}
+
+@keyframes bonus-onda {
+  from {
+    opacity: 1;
+    scale: 1;
+  }
+  to {
+    opacity: 0;
+    scale: 1.35;
+  }
+}
+
+/* ---------- Celular ---------- */
+@media (max-width: 720px) {
+  .bonus-palco {
+    padding: 40px 12px;
+  }
+
+  .mpc {
+    padding: 14px;
+  }
+
+  .mpc-modelo {
+    display: none;
+  }
+
+  .mpc-controles {
+    flex-wrap: wrap;
+  }
+
+  .mpc-padroes {
+    flex-basis: 100%;
+  }
+
+  .mpc-pads {
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .mpc-pad {
+    padding: 6px;
+    font-size: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bonus *,
+  .bonus *::before,
+  .bonus *::after,
+  .busca-selo--bonus,
+  .busca-item:has(.busca-selo--bonus) .busca-item-foto {
+    animation: none !important;
   }
 }

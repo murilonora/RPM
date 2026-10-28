@@ -22,6 +22,7 @@ function renderizarBusca() {
       <Routes>
         <Route path="/" element={<BuscaComEstado />} />
         <Route path="/artista/:id" element={<PaginaDestino />} />
+        <Route path="/faixa-bonus" element={<p>Faixa bônus</p>} />
       </Routes>
     </MemoryRouter>
   );
@@ -70,6 +71,20 @@ describe("BuscaUnificada", () => {
     await userEvent.keyboard("{Escape}");
     expect(screen.queryByRole("listbox")).toBeNull();
     expect(campo.getAttribute("aria-expanded")).toBe("false");
+  });
+
+  it("buscar \"Matheus Rocha\" mostra a faixa bônus e o Enter abre ela", async () => {
+    const campo = renderizarBusca();
+    await userEvent.type(campo, "Matheus  Rocha");
+    expect(screen.getByRole("group", { name: "Faixa bônus" })).toBeTruthy();
+    await userEvent.keyboard("{Enter}");
+    expect(screen.getByText("Faixa bônus")).toBeTruthy();
+  });
+
+  it("só \"matheus\" não revela a faixa bônus", async () => {
+    const campo = renderizarBusca();
+    await userEvent.type(campo, "matheus");
+    expect(screen.queryByRole("group", { name: "Faixa bônus" })).toBeNull();
   });
 
   it("sem resultado, sugere artistas e abre o escolhido", async () => {

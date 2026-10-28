@@ -29,6 +29,9 @@ const PaginaTodosAlbuns = lazy(() =>
 const PaginaColecao = lazy(() =>
   import("./paginas/PaginaColecao").then((m) => ({ default: m.PaginaColecao }))
 );
+const PaginaFaixaBonus = lazy(() =>
+  import("./paginas/PaginaFaixaBonus").then((m) => ({ default: m.PaginaFaixaBonus }))
+);
 
 // Rola suavemente ao topo em qualquer transição de rota
 function ScrollAoTopo() {
@@ -100,6 +103,60 @@ function AvisoNotaSalva() {
           <Link to="/colecao" onClick={descartarNotaSalva}>
             Ver coleção
           </Link>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Easter egg em homenagem ao Matheus, que teve a ideia do RPM: digitar 45 em qualquer
+// página acelera os discos (como trocar a rotação da vitrola) e 33 volta ao normal.
+// A pista fica embaixo do carrossel da página inicial.
+const ROTACOES = {
+  45: "45 RPM. Rotação ajustada pelo Matheus, quem colocou o RPM para girar. Digite 33 para voltar.",
+  33: "33⅓ RPM. De volta à rotação original.",
+};
+const TEMPO_AVISO_ROTACAO_MS = 5000;
+
+function RotacaoSecreta() {
+  const [aviso, setAviso] = useState(null);
+
+  useEffect(() => {
+    let digitado = "";
+    function aoTeclar(evento) {
+      // Não atrapalha quem está escrevendo (busca, login, resenha) nem atalhos do navegador
+      const alvo = evento.target;
+      if (evento.ctrlKey || evento.metaKey || evento.altKey) return;
+      if (alvo.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(alvo.tagName)) return;
+      if (!/^\d$/.test(evento.key)) return;
+
+      digitado = (digitado + evento.key).slice(-2);
+      if (!ROTACOES[digitado]) return;
+      if (digitado === "45") document.documentElement.dataset.rotacao = "45";
+      else delete document.documentElement.dataset.rotacao;
+      setAviso({ rotacao: digitado, momento: Date.now() });
+      digitado = "";
+    }
+    document.addEventListener("keydown", aoTeclar);
+    return () => document.removeEventListener("keydown", aoTeclar);
+  }, []);
+
+  useEffect(() => {
+    if (!aviso) return;
+    const temporizador = setTimeout(() => setAviso(null), TEMPO_AVISO_ROTACAO_MS);
+    return () => clearTimeout(temporizador);
+  }, [aviso]);
+
+  return (
+    <div className="aviso-rodape-regiao" role="status" aria-live="polite">
+      {aviso && (
+        <div className="aviso-rodape" key={aviso.momento}>
+          <span>{ROTACOES[aviso.rotacao]}</span>
+          {aviso.rotacao === "45" && (
+            <Link to="/faixa-bonus" onClick={() => setAviso(null)}>
+              Lado B
+            </Link>
+          )}
         </div>
       )}
     </div>
@@ -187,6 +244,8 @@ function ShellAplicativo() {
               <PaginaColecao aoAvaliar={abrirAvaliacao} aoAbrirLogin={abrirModalDeAutenticacao} />
             }
           />
+          {/* Homenagem ao Matheus: só aparece buscando o nome dele ou pelo 45 RPM */}
+          <Route path="/faixa-bonus" element={<PaginaFaixaBonus />} />
           {/* Qualquer endereço desconhecido */}
           <Route path="*" element={<PaginaNaoEncontrada />} />
         </Routes>
@@ -207,6 +266,7 @@ function ShellAplicativo() {
       />
 
       <AvisoNotaSalva />
+      <RotacaoSecreta />
 
       <ModalAvaliacao
         visivel={dadosAvaliacao.visivel}
