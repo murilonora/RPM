@@ -2,11 +2,17 @@ package com.rpm;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+
+@Entity
 public class Usuario {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     @NotBlank(message= "Nome obrigatorio")
@@ -14,6 +20,7 @@ public class Usuario {
 
     @NotBlank(message="Email obrigatorio")
     @Email(message="Email invalido")
+    @Column(unique = true, nullable = false)
     private String email;
 
     @NotBlank(message="Senha obrigatoria")
