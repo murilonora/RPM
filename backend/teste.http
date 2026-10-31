@@ -237,3 +237,49 @@ Content-Type: application/json
   "tituloAlbum": "333",
   "nota": 4
 }
+
+###
+# =====================================================================
+#  LOGIN  —  POST /api/login  e  POST /api/logout
+#  Usa o mesmo usuario do teste [USUARIO] Cadastro valido (Matheus).
+#  O IntelliJ guarda o cookie JSESSIONID do login e reenvia nas proximas requisicoes.
+# =====================================================================
+
+### [LOGIN] Correto → esperado 200 com id, nome e email (sem a senha) e cookie JSESSIONID
+POST http://localhost:8080/api/login
+Content-Type: application/json
+
+{
+  "email": "matheus@rpm.com",
+  "senha": "12345678"
+}
+
+### [LOGIN] Senha errada → esperado 401 {"erro":"Email ou senha invalidos"}
+POST http://localhost:8080/api/login
+Content-Type: application/json
+
+{
+  "email": "matheus@rpm.com",
+  "senha": "senhaerrada"
+}
+
+### [LOGIN] Email que nao existe → esperado 401 com a MESMA mensagem
+POST http://localhost:8080/api/login
+Content-Type: application/json
+
+{
+  "email": "ninguem.existe@rpm.com",
+  "senha": "12345678"
+}
+
+### [LOGIN] Campos vazios → esperado 400 com erro em email e senha
+POST http://localhost:8080/api/login
+Content-Type: application/json
+
+{
+  "email": "",
+  "senha": ""
+}
+
+### [LOGOUT] Encerra a sessao → esperado 204
+POST http://localhost:8080/api/logout
