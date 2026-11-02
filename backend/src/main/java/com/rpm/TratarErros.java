@@ -32,6 +32,13 @@ public class TratarErros{
         return Map.of("erro", e.getMessage());
     }
 
+    // rota que exige login
+    @ExceptionHandler(NaoLogadoException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public Map<String, String> tratarNaoLogado(NaoLogadoException e) {
+        return Map.of("erro", e.getMessage());
+    }
+
     @ExceptionHandler({EmailJaCadastradoException.class, DataIntegrityViolationException.class})
     @ResponseStatus(HttpStatus.CONFLICT)
     public Map<String, String> tratarEmailRepetido(RuntimeException e) {

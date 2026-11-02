@@ -19,7 +19,7 @@ GET http://localhost:8080/api/status
 #  USUÁRIOS  —  POST /api/usuarios
 # =====================================================================
 
-### [USUARIO] Cadastro válido → esperado 200, sem a senha na resposta
+### [USUARIO] Cadastro válido → esperado 201 (ou 409 se ja estiver cadastrado), sem a senha na resposta
 POST http://localhost:8080/api/usuarios
 Content-Type: application/json
 
@@ -77,10 +77,57 @@ Content-Type: application/json
 
 ###
 # =====================================================================
-#  AVALIAÇÃO DE MÚSICA (só nota)  —  POST /api/avaliacoes/musicas
+#  LOGIN  —  POST /api/login
+#  Usa o mesmo usuario do teste [USUARIO] Cadastro valido (Matheus).
+#  O ultimo teste desta secao faz o login correto: o IntelliJ guarda o cookie
+#  JSESSIONID e reenvia nas proximas requisicoes, entao as avaliacoes abaixo
+#  sao feitas como esse usuario.
 # =====================================================================
 
-### [AVAL MUSICA] Válida → esperado 201 com dataAvaliacao preenchida
+### [LOGIN] Senha errada → esperado 401 {"erro":"Email ou senha invalidos"}
+POST http://localhost:8080/api/login
+Content-Type: application/json
+
+{
+  "email": "matheus@rpm.com",
+  "senha": "senhaerrada"
+}
+
+### [LOGIN] Email que nao existe → esperado 401 com a MESMA mensagem
+POST http://localhost:8080/api/login
+Content-Type: application/json
+
+{
+  "email": "ninguem.existe@rpm.com",
+  "senha": "12345678"
+}
+
+### [LOGIN] Campos vazios → esperado 400 com erro em email e senha
+POST http://localhost:8080/api/login
+Content-Type: application/json
+
+{
+  "email": "",
+  "senha": ""
+}
+
+### [LOGIN] Correto → esperado 200 com id, nome e email (sem a senha). Deixa logado para os testes abaixo
+POST http://localhost:8080/api/login
+Content-Type: application/json
+
+{
+  "email": "matheus@rpm.com",
+  "senha": "12345678"
+}
+
+
+
+###
+# =====================================================================
+#  AVALIAÇÃO DE MÚSICA (só nota)  —  POST /api/avaliacoes/musicas  (exige login)
+# =====================================================================
+
+### [AVAL MUSICA] Válida → esperado 201 com id, usuario e dataAvaliacao preenchidos
 POST http://localhost:8080/api/avaliacoes/musicas
 Content-Type: application/json
 
@@ -137,7 +184,7 @@ Content-Type: application/json
   "nota": 4
 }
 
-### [AVAL MUSICA] Data falsa → esperado 201 com a data de AGORA (READ_ONLY ignora a enviada)
+### [AVAL MUSICA] Data falsa → esperado 201 com a data de AGORA (READ_ONLY ignora a enviada) e o MESMO id da primeira
 POST http://localhost:8080/api/avaliacoes/musicas
 Content-Type: application/json
 
@@ -149,9 +196,20 @@ Content-Type: application/json
 }
 
 
+### [AVAL MUSICA] Avaliar de novo a mesma musica → esperado 201 com o MESMO id e nota 3 (atualiza, nao duplica)
+POST http://localhost:8080/api/avaliacoes/musicas
+Content-Type: application/json
+
+{
+  "artistaId": "matue",
+  "tituloMusica": "Anos Luz",
+  "nota": 3
+}
+
+
 ###
 # =====================================================================
-#  AVALIAÇÃO DE ÁLBUM (só nota)  —  POST /api/avaliacoes/albuns
+#  AVALIAÇÃO DE ÁLBUM (só nota)  —  POST /api/avaliacoes/albuns  (exige login)
 # =====================================================================
 
 ### [AVAL ALBUM] Válida → esperado 201
@@ -176,10 +234,10 @@ Content-Type: application/json
 
 ###
 # =====================================================================
-#  COMENTÁRIO DE MÚSICA  —  POST /api/avaliacoes/musicas/comentarios
+#  COMENTÁRIO DE MÚSICA  —  POST /api/avaliacoes/musicas/comentarios  (exige login)
 # =====================================================================
 
-### [COMENT MUSICA] Válido → esperado 201 com texto, nota, artistaId e tituloMusica
+### [COMENT MUSICA] Válido → esperado 201 com o MESMO id da avaliacao de Anos Luz, agora com texto e nota 5
 POST http://localhost:8080/api/avaliacoes/musicas/comentarios
 Content-Type: application/json
 
@@ -214,10 +272,10 @@ Content-Type: application/json
 
 ###
 # =====================================================================
-#  COMENTÁRIO DE ÁLBUM  —  POST /api/avaliacoes/albuns/comentarios
+#  COMENTÁRIO DE ÁLBUM  —  POST /api/avaliacoes/albuns/comentarios  (exige login)
 # =====================================================================
 
-### [COMENT ALBUM] Válido → esperado 201
+### [COMENT ALBUM] Válido → esperado 201 com o MESMO id da avaliacao do album 333, agora com texto
 POST http://localhost:8080/api/avaliacoes/albuns/comentarios
 Content-Type: application/json
 
@@ -238,48 +296,21 @@ Content-Type: application/json
   "nota": 4
 }
 
+
 ###
 # =====================================================================
-#  LOGIN  —  POST /api/login  e  POST /api/logout
-#  Usa o mesmo usuario do teste [USUARIO] Cadastro valido (Matheus).
-#  O IntelliJ guarda o cookie JSESSIONID do login e reenvia nas proximas requisicoes.
+#  LOGOUT  —  POST /api/logout
 # =====================================================================
-
-### [LOGIN] Correto → esperado 200 com id, nome e email (sem a senha) e cookie JSESSIONID
-POST http://localhost:8080/api/login
-Content-Type: application/json
-
-{
-  "email": "matheus@rpm.com",
-  "senha": "12345678"
-}
-
-### [LOGIN] Senha errada → esperado 401 {"erro":"Email ou senha invalidos"}
-POST http://localhost:8080/api/login
-Content-Type: application/json
-
-{
-  "email": "matheus@rpm.com",
-  "senha": "senhaerrada"
-}
-
-### [LOGIN] Email que nao existe → esperado 401 com a MESMA mensagem
-POST http://localhost:8080/api/login
-Content-Type: application/json
-
-{
-  "email": "ninguem.existe@rpm.com",
-  "senha": "12345678"
-}
-
-### [LOGIN] Campos vazios → esperado 400 com erro em email e senha
-POST http://localhost:8080/api/login
-Content-Type: application/json
-
-{
-  "email": "",
-  "senha": ""
-}
 
 ### [LOGOUT] Encerra a sessao → esperado 204
 POST http://localhost:8080/api/logout
+
+### [AVAL MUSICA] Sem login (depois do logout) → esperado 401 {"erro":"Faca login para avaliar"}
+POST http://localhost:8080/api/avaliacoes/musicas
+Content-Type: application/json
+
+{
+  "artistaId": "matue",
+  "tituloMusica": "Anos Luz",
+  "nota": 5
+}
