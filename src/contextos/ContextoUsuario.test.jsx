@@ -11,7 +11,9 @@ function simularServidor(rotas = {}) {
     vi.fn(async (url, opcoes = {}) => {
       const corpo = opcoes.body ? JSON.parse(opcoes.body) : undefined;
       chamadas.push({ url, metodo: opcoes.method || "GET", corpo });
-      const resposta = rotas[url] ?? { status: 404, corpo: {} };
+      // A rota pode ser uma função do corpo enviado (ex.: login que confere a senha)
+      const rota = rotas[url] ?? { status: 404, corpo: {} };
+      const resposta = typeof rota === "function" ? rota(corpo) : rota;
       if (resposta === "fora") throw new TypeError("Failed to fetch");
       return new Response(JSON.stringify(resposta.corpo ?? {}), { status: resposta.status ?? 200 });
     })
@@ -21,7 +23,12 @@ function simularServidor(rotas = {}) {
 
 const SERVIDOR_OK = {
   "/api/status": { corpo: { status: "ok" } },
-  "/api/usuarios": { corpo: {} },
+  "/api/usuarios": { status: 201, corpo: {} },
+  "/api/login": (corpo) =>
+    corpo.senha === "errada123"
+      ? { status: 401, corpo: { erro: "Email ou senha invalidos" } }
+      : { corpo: { id: 7, nome: "Do Servidor", email: corpo.email } },
+  "/api/logout": { status: 200 },
   "/api/avaliacoes/albuns": { status: 201 },
   "/api/avaliacoes/albuns/comentarios": { status: 201 },
   "/api/avaliacoes/musicas": { status: 201 },
@@ -54,9 +61,47 @@ describe("cadastro e login", () => {
     // A senha nunca fica em texto no navegador
     expect(localStorage.getItem("rpm_usuarios")).not.toContain("senha-forte");
 
+    // O cadastro já abre a sessão do backend
+    expect(chamadas.filter((c) => c.url === "/api/login")).toHaveLength(1);
+
     act(() => result.current.sairDaConta());
+    expect(chamadas.some((c) => c.url === "/api/logout")).toBe(true);
     await act(() => result.current.entrarComEmail("ana@rpm.test", "senha-forte"));
     expect(result.current.usuarioLogado.email).toBe("ana@rpm.test");
+    expect(chamadas.filter((c) => c.url === "/api/login")).toHaveLength(2);
+  });
+
+  it("entra com conta criada em outro navegador usando o nome que o backend devolve", async () => {
+    simularServidor(SERVIDOR_OK);
+    const { result } = renderizarContexto();
+    await act(() => result.current.entrarComEmail("novo@rpm.test", "12345678"));
+    expect(result.current.usuarioLogado).toMatchObject({ nome: "Do Servidor", email: "novo@rpm.test" });
+  });
+
+  it("leva para o backend a conta que só existia no navegador", async () => {
+    // Conta criada com o servidor fora: o backend ainda não conhece este e-mail
+    const cadastrados = new Set();
+    const chamadas = simularServidor({
+      "/api/status": { corpo: { status: "ok" } },
+      "/api/usuarios": (corpo) => {
+        cadastrados.add(corpo.email);
+        return { status: 201 };
+      },
+      "/api/login": (corpo) =>
+        cadastrados.has(corpo.email) ? { corpo: { id: 9, nome: "Gil", email: corpo.email } } : { status: 401 },
+      "/api/logout": { status: 200 },
+    });
+    const contaAntiga = { id: "gil-1", nome: "Gil", email: "gil@rpm.test", senhaHash: null };
+    localStorage.setItem("rpm_usuarios", JSON.stringify([contaAntiga]));
+
+    const { result } = renderizarContexto();
+    await act(() => result.current.entrarComEmail("gil@rpm.test", "12345678"));
+    expect(result.current.usuarioLogado.id).toBe("gil-1");
+    expect(chamadas.find((c) => c.url === "/api/usuarios").corpo).toEqual({
+      nome: "Gil",
+      email: "gil@rpm.test",
+      senha: "12345678",
+    });
   });
 
   it("mostra os erros de validação que o backend devolve", async () => {
@@ -82,8 +127,20 @@ describe("cadastro e login", () => {
     expect(result.current.usuarioLogado.nome).toBe("Caio");
   });
 
-  it("recusa senha errada e e-mail desconhecido", async () => {
+  it("recusa a senha errada que o backend rejeita, sem dizer se o e-mail existe", async () => {
     simularServidor(SERVIDOR_OK);
+    const { result } = renderizarContexto();
+    await act(() => result.current.registrarUsuario("Duda", "duda@rpm.test", "12345678"));
+    act(() => result.current.sairDaConta());
+
+    await expect(result.current.entrarComEmail("duda@rpm.test", "errada123")).rejects.toMatchObject({
+      campos: { senha: "E-mail ou senha incorretos." },
+    });
+    expect(result.current.estaLogado).toBe(false);
+  });
+
+  it("com o servidor fora, recusa senha errada e e-mail desconhecido", async () => {
+    simularServidor({ "/api/status": "fora", "/api/usuarios": "fora", "/api/login": "fora", "/api/logout": "fora" });
     const { result } = renderizarContexto();
     await act(() => result.current.registrarUsuario("Duda", "duda@rpm.test", "12345678"));
     act(() => result.current.sairDaConta());
@@ -130,9 +187,9 @@ describe("avaliação", () => {
     expect(result.current.mediaAvaliacoes).toBe("3.5");
 
     await waitFor(() => expect(result.current.obterAvaliacao("album-matue-0").sincronizado).toBe(true));
-    const corpoAlbum = chamadas.find((c) => c.url === "/api/avaliacoes/albuns").corpo;
-    expect(corpoAlbum).toMatchObject({ artistaId: "matue", tituloAlbum: "333", nota: 5 });
-    expect(chamadas.find((c) => c.url === "/api/avaliacoes/albuns/comentarios").corpo.texto).toBe("Clássico");
+    // Com comentário, nota e texto vão juntos; o usuário vem da sessão, não do corpo
+    const corpoAlbum = chamadas.find((c) => c.url === "/api/avaliacoes/albuns/comentarios").corpo;
+    expect(corpoAlbum).toEqual({ artistaId: "matue", tituloAlbum: "333", nota: 5, texto: "Clássico" });
     // Faixa de álbum vai pela rota de músicas
     expect(chamadas.find((c) => c.url === "/api/avaliacoes/musicas").corpo).toMatchObject({
       tituloMusica: "Isso é Sério",
@@ -148,6 +205,27 @@ describe("avaliação", () => {
     act(() => result.current.avaliarItem("album-matue-0", 4, "", { tipo: "album", artistaId: "matue", titulo: "333" }));
     await waitFor(() => expect(result.current.statusServidor).toBe("offline"));
     expect(result.current.obterAvaliacao("album-matue-0")).toMatchObject({ nota: 4, sincronizado: false });
+  });
+
+  it("se o backend perdeu a sessão, deixa a nota pendente e reenvia depois de entrar de novo", async () => {
+    let sessaoValida = true;
+    const chamadas = simularServidor({
+      ...SERVIDOR_OK,
+      "/api/avaliacoes/musicas": () => (sessaoValida ? { status: 201 } : { status: 401, corpo: { erro: "Faca login" } }),
+    });
+    const { result } = renderizarContexto();
+    await act(() => result.current.registrarUsuario("Ivo", "ivo@rpm.test", "12345678"));
+
+    sessaoValida = false; // backend reiniciado
+    act(() => result.current.avaliarItem("musica-matue-0", 4, "", { tipo: "musica", artistaId: "matue", titulo: "Kenny G" }));
+    await waitFor(() => expect(result.current.sessaoExpirada).toBe(true));
+    expect(result.current.obterAvaliacao("musica-matue-0").sincronizado).toBe(false);
+
+    sessaoValida = true;
+    await act(() => result.current.entrarComEmail("ivo@rpm.test", "12345678"));
+    await waitFor(() => expect(result.current.obterAvaliacao("musica-matue-0").sincronizado).toBe(true));
+    expect(result.current.sessaoExpirada).toBe(false);
+    expect(chamadas.filter((c) => c.url === "/api/avaliacoes/musicas")).toHaveLength(2);
   });
 
   it("devolve nota zero para itens nunca avaliados", () => {

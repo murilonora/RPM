@@ -1,10 +1,19 @@
 // Testes do cliente da API: erros de validação, servidor fora do ar e envio de avaliações
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ErroApi, ServidorIndisponivel, cadastrarUsuario, enviarAvaliacao, verificarServidor } from "./api";
+import {
+  ErroApi,
+  ServidorIndisponivel,
+  cadastrarUsuario,
+  entrar,
+  enviarAvaliacao,
+  sair,
+  verificarServidor,
+} from "./api";
 
 function responder(status, corpo, tipo = "json") {
   const texto = tipo === "json" ? JSON.stringify(corpo) : corpo;
-  return vi.fn(async () => new Response(texto, { status }));
+  // 204 não pode ter corpo
+  return vi.fn(async () => new Response(status === 204 ? null : texto, { status }));
 }
 
 afterEach(() => vi.unstubAllGlobals());
@@ -34,27 +43,36 @@ describe("api", () => {
     expect(erro.campos.senha).toContain("8 caracteres");
   });
 
-  it("envia nota e comentário de álbum nas rotas do backend", async () => {
+  it("com comentário, envia nota e texto juntos na rota de comentários (sem dados do usuário)", async () => {
     vi.stubGlobal("fetch", responder(201, {}));
     await enviarAvaliacao({
       obra: { tipo: "album", artistaId: "matue", titulo: "333" },
       nota: 5,
       comentario: "  Disco do ano  ",
-      usuario: { nome: "Ana", email: "ana@rpm.test", senhaHash: "nao-vai" },
     });
 
-    const [rotaNota, opcoesNota] = fetch.mock.calls[0];
-    expect(rotaNota).toBe("/api/avaliacoes/albuns");
-    expect(JSON.parse(opcoesNota.body)).toEqual({
+    expect(fetch).toHaveBeenCalledTimes(1);
+    const [rota, opcoes] = fetch.mock.calls[0];
+    expect(rota).toBe("/api/avaliacoes/albuns/comentarios");
+    expect(JSON.parse(opcoes.body)).toEqual({
       artistaId: "matue",
       tituloAlbum: "333",
       nota: 5,
-      usuario: { nome: "Ana", email: "ana@rpm.test" },
+      texto: "Disco do ano",
     });
+  });
 
-    const [rotaComentario, opcoesComentario] = fetch.mock.calls[1];
-    expect(rotaComentario).toBe("/api/avaliacoes/albuns/comentarios");
-    expect(JSON.parse(opcoesComentario.body).texto).toBe("Disco do ano");
+  it("entra e sai pelas rotas de sessão; login errado vira ErroApi 401", async () => {
+    vi.stubGlobal("fetch", responder(200, { id: 1, nome: "Ana", email: "ana@rpm.test" }));
+    expect(await entrar({ email: "ana@rpm.test", senha: "12345678" })).toMatchObject({ nome: "Ana" });
+    expect(fetch.mock.calls[0][0]).toBe("/api/login");
+
+    vi.stubGlobal("fetch", responder(204, "", "texto"));
+    await sair();
+    expect(fetch.mock.calls[0][0]).toBe("/api/logout");
+
+    vi.stubGlobal("fetch", responder(401, { erro: "Email ou senha invalidos" }));
+    await expect(entrar({ email: "ana@rpm.test", senha: "errada123" })).rejects.toMatchObject({ status: 401 });
   });
 
   it("não chama a rota de comentário quando não há texto", async () => {

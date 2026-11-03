@@ -3,7 +3,9 @@ import {
   ErroApi,
   ServidorIndisponivel,
   cadastrarUsuario,
+  entrar,
   enviarAvaliacao,
+  sair,
   verificarServidor,
 } from "../servicos/api";
 
@@ -32,11 +34,44 @@ function salvarNoStorage(chave, valor) {
   localStorage.setItem(chave, JSON.stringify(valor));
 }
 
-// A senha nunca é guardada em texto: só o hash SHA-256 (cópia local enquanto o
-// backend não tem rota de login; quando tiver, o login passa a ser feito por ele)
+// A senha nunca é guardada em texto: só o hash SHA-256, para entrar com o servidor fora do ar
+// (com ele no ar, quem confere a senha é o POST /api/login)
 async function gerarHashSenha(senha) {
   const bytes = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(senha));
   return Array.from(new Uint8Array(bytes), (b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+// Cópia local da conta, usada para guardar as notas no navegador
+async function criarContaLocal(nome, email, senha) {
+  return {
+    id: nome.toLowerCase().replace(/\s+/g, "-") + "-" + Date.now(),
+    nome,
+    email,
+    senhaHash: await gerarHashSenha(senha),
+    criadoEm: new Date().toISOString(),
+  };
+}
+
+// Login no backend. Contas criadas só no navegador (antes de o backend salvar usuários)
+// não existem lá: se a senha bater com a cópia local, a conta é cadastrada no servidor na hora.
+async function entrarNoServidor(email, senha, contaLocal) {
+  try {
+    return await entrar({ email, senha });
+  } catch (erro) {
+    if (!(erro instanceof ErroApi) || erro.status !== 401) throw erro;
+    const senhaConfere =
+      contaLocal && (!contaLocal.senhaHash || contaLocal.senhaHash === (await gerarHashSenha(senha)));
+    if (senhaConfere) {
+      try {
+        await cadastrarUsuario({ nome: contaLocal.nome, email, senha });
+        return await entrar({ email, senha });
+      } catch (erroMigracao) {
+        if (!(erroMigracao instanceof ErroApi)) throw erroMigracao;
+      }
+    }
+    // O backend não diz qual dos dois está errado, para não revelar quais e-mails existem
+    throw new ErroApi(401, { senha: "E-mail ou senha incorretos." });
+  }
 }
 
 // Provedor que envolve toda a aplicacao e fornece estado de usuario e avaliacoes.
@@ -53,6 +88,9 @@ export function ProvedorUsuario({ children }) {
   const [ultimaExcluida, setUltimaExcluida] = useState(null);
   // { titulo, nota, momento } da última nota dada, para o aviso "Salvo na sua Coleção"
   const [ultimaNotaSalva, setUltimaNotaSalva] = useState(null);
+  // O backend respondeu 401: a sessão dele acabou (ex.: servidor reiniciado) e as notas
+  // ficam pendentes até a pessoa entrar de novo
+  const [sessaoExpirada, setSessaoExpirada] = useState(false);
 
   // Dados do usuário da sessão atual (null quando ninguém entrou)
   const usuarioLogado = useMemo(
@@ -67,6 +105,8 @@ export function ProvedorUsuario({ children }) {
   avaliacoesRef.current = avaliacoes;
   const ultimaExcluidaRef = useRef(ultimaExcluida);
   ultimaExcluidaRef.current = ultimaExcluida;
+  const sessaoExpiradaRef = useRef(sessaoExpirada);
+  sessaoExpiradaRef.current = sessaoExpirada;
 
   // Descobre se o backend está no ar ao abrir o site
   useEffect(() => {
@@ -114,28 +154,29 @@ export function ProvedorUsuario({ children }) {
   const enviarParaServidor = useCallback(
     async (chaveItem, avaliacao) => {
       const usuario = usuarioRef.current;
-      if (!usuario || !avaliacao.obra || avaliacao.nota < 1) return;
+      if (!usuario || !avaliacao.obra || avaliacao.nota < 1 || sessaoExpiradaRef.current) return;
       try {
-        await enviarAvaliacao({ ...avaliacao, usuario });
+        await enviarAvaliacao(avaliacao);
         setStatusServidor("online");
         marcarSincronizado(usuario.id, chaveItem, true);
       } catch (erro) {
         if (erro instanceof ServidorIndisponivel) setStatusServidor("offline");
+        else if (erro instanceof ErroApi && erro.status === 401) setSessaoExpirada(true);
         else console.warn("Backend recusou a avaliação:", erro.campos || erro.message);
       }
     },
     [marcarSincronizado]
   );
 
-  // Quando o servidor volta, reenvia o que ficou só no navegador
+  // Quando o servidor volta (ou a pessoa entra de novo), reenvia o que ficou só no navegador
   useEffect(() => {
-    if (statusServidor !== "online") return;
+    if (statusServidor !== "online" || sessaoExpirada) return;
     Object.entries(avaliacoes)
       .filter(([, a]) => a.nota > 0 && a.obra && !a.sincronizado)
       .forEach(([chave, a]) => enviarParaServidor(chave, a));
     // só ao ficar online ou trocar de usuário, não a cada nota
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [statusServidor, idSessao]);
+  }, [statusServidor, idSessao, sessaoExpirada]);
 
   // Cadastra um novo usuario (validado pelo backend) e ja faz login automatico.
   // Lança ErroApi com as mensagens por campo quando algo está inválido.
@@ -146,6 +187,7 @@ export function ProvedorUsuario({ children }) {
       }
       try {
         await cadastrarUsuario({ nome, email, senha });
+        await entrar({ email, senha });
         setStatusServidor("online");
       } catch (erro) {
         if (!(erro instanceof ServidorIndisponivel)) throw erro;
@@ -156,25 +198,39 @@ export function ProvedorUsuario({ children }) {
         setStatusServidor("offline");
       }
 
-      const id = nome.toLowerCase().replace(/\s+/g, "-") + "-" + Date.now();
-      const novoUsuario = {
-        id,
-        nome,
-        email,
-        senhaHash: await gerarHashSenha(senha),
-        criadoEm: new Date().toISOString(),
-      };
+      const novoUsuario = await criarContaLocal(nome, email, senha);
       setUsuarios((anteriores) => [...anteriores, novoUsuario]);
-      setIdSessao(id);
+      setSessaoExpirada(false);
+      setIdSessao(novoUsuario.id);
       return novoUsuario;
     },
     [usuarios]
   );
 
-  // Login com e-mail e senha. Contas antigas, criadas antes da senha existir, entram só com o e-mail.
+  // Login com e-mail e senha pelo backend; com ele fora do ar, confere a cópia do navegador.
+  // Contas antigas, criadas antes da senha existir, entram só com o e-mail (só offline).
   const entrarComEmail = useCallback(
     async (email, senha = "") => {
-      const usuario = usuarios.find((u) => u.email === email);
+      const contaLocal = usuarios.find((u) => u.email === email);
+      try {
+        const doServidor = await entrarNoServidor(email, senha, contaLocal);
+        setStatusServidor("online");
+        // Conta criada em outro navegador ganha uma cópia local; a existente só atualiza o hash
+        const usuario = contaLocal
+          ? { ...contaLocal, senhaHash: await gerarHashSenha(senha) }
+          : await criarContaLocal(doServidor?.nome || email, email, senha);
+        setUsuarios((anteriores) =>
+          contaLocal ? anteriores.map((u) => (u.id === usuario.id ? usuario : u)) : [...anteriores, usuario]
+        );
+        setSessaoExpirada(false);
+        setIdSessao(usuario.id);
+        return usuario;
+      } catch (erro) {
+        if (!(erro instanceof ServidorIndisponivel)) throw erro;
+        setStatusServidor("offline");
+      }
+
+      const usuario = contaLocal;
       if (!usuario) throw new ErroApi(404, { email: "E-mail não encontrado. Cadastre-se primeiro." });
       if (usuario.senhaHash && usuario.senhaHash !== (await gerarHashSenha(senha))) {
         throw new ErroApi(401, { senha: "Senha incorreta." });
@@ -187,6 +243,9 @@ export function ProvedorUsuario({ children }) {
 
   // Encerra a sessao sem apagar dados
   const sairDaConta = useCallback(() => {
+    // Encerra também a sessão do backend; fora do ar, não há o que encerrar
+    sair().catch(() => {});
+    setSessaoExpirada(false);
     setIdSessao(null);
     setAvaliacoes({});
     setUltimaExcluida(null);
@@ -282,6 +341,7 @@ export function ProvedorUsuario({ children }) {
       usuarioLogado,
       estaLogado: !!idSessao,
       statusServidor,
+      sessaoExpirada,
       avaliacoes,
       totalAvaliacoes,
       mediaAvaliacoes,
@@ -303,6 +363,7 @@ export function ProvedorUsuario({ children }) {
       usuarioLogado,
       idSessao,
       statusServidor,
+      sessaoExpirada,
       avaliacoes,
       totalAvaliacoes,
       mediaAvaliacoes,

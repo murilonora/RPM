@@ -7,7 +7,7 @@ const SEM_ERROS = {};
 // O cadastro é validado pelo backend (POST /api/usuarios); as mensagens de erro
 // voltam por campo e aparecem embaixo de cada um.
 export function ModalAutenticacao({ visivel, aoFechar }) {
-  const { registrarUsuario, entrarComEmail, statusServidor } = useUsuario();
+  const { registrarUsuario, entrarComEmail, statusServidor, sessaoExpirada } = useUsuario();
   const [modoAtivo, setModoAtivo] = useState("entrar");
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
@@ -91,13 +91,19 @@ export function ModalAutenticacao({ visivel, aoFechar }) {
           </button>
         </div>
 
+        {sessaoExpirada && (
+          <p className="modal-aviso-servidor">
+            Sua sessão no servidor terminou. Entre de novo para enviar as notas que ficaram pendentes.
+          </p>
+        )}
+
         <form onSubmit={aoSubmeterFormulario} className="modal-formulario" noValidate>
           {cadastrando && (
             <Campo id="campo-nome" rotulo="Nome do Crítico" erro={erros.nome}>
               <input
                 id="campo-nome"
                 type="text"
-                placeholder="Ex: Murilo Nora"
+                placeholder="Ex: Matheus Rocha"
                 autoComplete="name"
                 value={nome}
                 onChange={(evento) => setNome(evento.target.value)}

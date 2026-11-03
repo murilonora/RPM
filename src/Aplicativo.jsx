@@ -168,7 +168,13 @@ function ShellAplicativo() {
   const navigate = useNavigate();
   const location = useLocation();
   const { artistas } = useCatalogo();
+  const { sessaoExpirada } = useUsuario();
   const [modalAutenticacaoVisivel, setModalAutenticacaoVisivel] = useState(false);
+
+  // O backend perdeu a sessão (ex.: foi reiniciado): pede para entrar de novo e enviar as notas
+  useEffect(() => {
+    if (sessaoExpirada) setModalAutenticacaoVisivel(true);
+  }, [sessaoExpirada]);
   // Álbum aberto na ficha de faixas: { artista, album, indice }
   const [albumAberto, setAlbumAberto] = useState(null);
   const [dadosAvaliacao, setDadosAvaliacao] = useState({ visivel: false, item: null });

@@ -3,12 +3,16 @@
 //
 // Contrato usado (backend/teste.http):
 //   GET  /api/status                         -> { status: "ok" }
-//   GET  /api/artistas                       -> catálogo (rota ainda a ser criada; ver README)
-//   POST /api/usuarios                       { nome, email, senha }
-//   POST /api/avaliacoes/albuns              { artistaId, tituloAlbum, nota, usuario }
-//   POST /api/avaliacoes/albuns/comentarios  { ...igual, texto }
-//   POST /api/avaliacoes/musicas             { artistaId, tituloMusica, nota, usuario }
+//   GET  /api/artistas                       -> catálogo completo
+//   POST /api/usuarios                       { nome, email, senha } -> 201 { id, nome, email } | 409 e-mail repetido
+//   POST /api/login                          { email, senha } -> { id, nome, email } e abre a sessão (cookie) | 401
+//   POST /api/logout                         -> 204, encerra a sessão
+//   POST /api/avaliacoes/albuns              { artistaId, tituloAlbum, nota }
+//   POST /api/avaliacoes/albuns/comentarios  { ...igual, texto } (grava nota e texto juntos)
+//   POST /api/avaliacoes/musicas             { artistaId, tituloMusica, nota }
 //   POST /api/avaliacoes/musicas/comentarios { ...igual, texto }
+// As avaliações exigem login: o backend pega o usuário da sessão e responde 401 sem ela.
+// O cookie da sessão vai sozinho porque o Vite serve /api no mesmo endereço do site.
 // Erros de validação voltam como 400 { campo: "mensagem" } ou { erro: "mensagem" }.
 
 import { prepararArtistas } from "../dados/dadosMusicais";
@@ -73,30 +77,39 @@ export function cadastrarUsuario({ nome, email, senha }) {
   return requisitar("/usuarios", { metodo: "POST", corpo: { nome, email, senha } });
 }
 
+// Confere e-mail e senha no backend e abre a sessão dele (cookie)
+export function entrar({ email, senha }) {
+  return requisitar("/login", { metodo: "POST", corpo: { email, senha } });
+}
+
+export function sair() {
+  return requisitar("/logout", { metodo: "POST" });
+}
+
 /**
  * Envia a nota (e o comentário, se houver) de um álbum, música ou faixa.
  * obra: { tipo: "album" | "musica" | "faixa", artistaId, titulo }
  * Faixas de álbum usam a mesma rota das músicas: o backend identifica pelo título.
  */
-export async function enviarAvaliacao({ obra, nota, comentario, usuario }) {
+export function enviarAvaliacao({ obra, nota, comentario }) {
   const ehAlbum = obra.tipo === "album";
   const rota = ehAlbum ? "/avaliacoes/albuns" : "/avaliacoes/musicas";
   const corpo = {
     artistaId: obra.artistaId,
     [ehAlbum ? "tituloAlbum" : "tituloMusica"]: obra.titulo,
     nota,
-    usuario: usuario ? { nome: usuario.nome, email: usuario.email } : undefined,
   };
 
-  await requisitar(rota, { metodo: "POST", corpo });
+  // Com texto, a rota de comentários grava nota e comentário de uma vez
   if (comentario?.trim()) {
-    await requisitar(`${rota}/comentarios`, { metodo: "POST", corpo: { ...corpo, texto: comentario.trim() } });
+    return requisitar(`${rota}/comentarios`, { metodo: "POST", corpo: { ...corpo, texto: comentario.trim() } });
   }
+  return requisitar(rota, { metodo: "POST", corpo });
 }
 
 // ---------- Catálogo de artistas ----------
 // Formato esperado: o mesmo do backend/src/main/resources/dados/artistas.json
-// (artistas com "albuns" e "musicas" dentro). Enquanto a rota não existir, devolve null
+// (artistas com "albuns" e "musicas" dentro). Com o servidor fora, devolve null
 // e o site segue com os dados locais de dadosMusicais.ts.
 
 // Um artista só é aceito se tiver o mínimo que as páginas usam
