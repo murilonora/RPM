@@ -299,6 +299,79 @@ Content-Type: application/json
 
 ###
 # =====================================================================
+#  EXCLUIR AVALIAÇÃO  —  DELETE /api/avaliacoes/{musicas|albuns}/{id}  (exige login)
+#  Antes, rode o GET abaixo e troque o 1 pelo "id" de uma avaliacao sua.
+# =====================================================================
+
+### [EXCLUIR] Ver os ids das minhas avaliacoes
+GET http://localhost:8080/api/avaliacoes
+
+### [AVAL MUSICA] Excluir -> esperado 204
+DELETE http://localhost:8080/api/avaliacoes/musicas/1
+
+### [AVAL MUSICA] Excluir de novo o mesmo id -> esperado 404 (ja foi apagada)
+DELETE http://localhost:8080/api/avaliacoes/musicas/1
+
+### [AVAL MUSICA] Excluir id que nao existe -> esperado 404
+DELETE http://localhost:8080/api/avaliacoes/musicas/99999
+
+### [AVAL ALBUM] Excluir id que nao existe -> esperado 404
+DELETE http://localhost:8080/api/avaliacoes/albuns/99999
+
+
+###
+# =====================================================================
+#  PERFIL  —  PUT /api/usuarios/me (exige login)  e  GET /api/usuarios/{id}/perfil (publico)
+# =====================================================================
+
+### [PERFIL] Editar bio e links → esperado 200 com bio, instagram, twitter e spotify
+PUT http://localhost:8080/api/usuarios/me
+Content-Type: application/json
+
+{
+  "bio": "Fa de trap e rap nacional",
+  "instagram": "https://instagram.com/matheus",
+  "twitter": "",
+  "spotify": "https://open.spotify.com/user/matheus"
+}
+
+### [PERFIL] Link perigoso → esperado 400 {"instagram":"Link deve comecar com https://"}
+PUT http://localhost:8080/api/usuarios/me
+Content-Type: application/json
+
+{
+  "instagram": "javascript:alert(1)"
+}
+
+### [PERFIL] Bio com mais de 500 caracteres → esperado 400 em "bio"
+PUT http://localhost:8080/api/usuarios/me
+Content-Type: application/json
+
+{
+  "bio": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+}
+
+### [PERFIL] Perfil publico (troque o 1 pelo seu id) → esperado 200 sem "email"
+GET http://localhost:8080/api/usuarios/1/perfil
+
+### [PERFIL] Perfil que nao existe → esperado 404 {"erro":"Usuario nao encontrado"}
+GET http://localhost:8080/api/usuarios/99999/perfil
+
+
+###
+# =====================================================================
+#  REVIEWS DO ARTISTA  —  GET /api/artistas/{id}/avaliacoes  (publico)
+# =====================================================================
+
+### [REVIEWS] Do Matue → esperado 200, lista com nomeUsuario, obra, nota e texto (sem email)
+GET http://localhost:8080/api/artistas/matue/avaliacoes
+
+### [REVIEWS] Artista sem reviews → esperado 200 com []
+GET http://localhost:8080/api/artistas/artista-que-nao-existe/avaliacoes
+
+
+###
+# =====================================================================
 #  LOGOUT  —  POST /api/logout
 # =====================================================================
 
@@ -314,3 +387,14 @@ Content-Type: application/json
   "tituloMusica": "Anos Luz",
   "nota": 5
 }
+
+### [PERFIL] Editar sem login (depois do logout) → esperado 401
+PUT http://localhost:8080/api/usuarios/me
+Content-Type: application/json
+
+{
+  "bio": "teste"
+}
+
+### [PERFIL] Perfil publico sem login → esperado 200 (rota publica)
+GET http://localhost:8080/api/usuarios/1/perfil

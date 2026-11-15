@@ -39,6 +39,20 @@ public class TratarErros{
         return Map.of("erro", e.getMessage());
     }
 
+    // avaliacao inexistente ou de outro usuario
+    @ExceptionHandler(AvaliacaoNaoEncontradaException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, String> tratarAvaliacaoNaoEncontrada(AvaliacaoNaoEncontradaException e) {
+        return Map.of("erro", e.getMessage());
+    }
+
+    // perfil de usuario que nao existe
+    @ExceptionHandler(UsuarioNaoEncontradoException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, String> tratarUsuarioNaoEncontrado(UsuarioNaoEncontradoException e) {
+        return Map.of("erro", e.getMessage());
+    }
+
     @ExceptionHandler({EmailJaCadastradoException.class, DataIntegrityViolationException.class})
     @ResponseStatus(HttpStatus.CONFLICT)
     public Map<String, String> tratarEmailRepetido(RuntimeException e) {

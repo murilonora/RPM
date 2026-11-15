@@ -3,7 +3,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -24,15 +23,15 @@ public class AvaliacaoController {
 
     private final AvaliacaoMusicaRepository avaliacaoMusicaRepository;
     private final AvaliacaoAlbumRepository avaliacaoAlbumRepository;
-    private final UsuarioRepository usuarioRepository;
+    private final SessaoUsuario sessaoUsuario;
 
     // injeção de dependência: o Spring entrega os repositories prontos
     public AvaliacaoController(AvaliacaoMusicaRepository avaliacaoMusicaRepository,
                                AvaliacaoAlbumRepository avaliacaoAlbumRepository,
-                               UsuarioRepository usuarioRepository) {
+                               SessaoUsuario sessaoUsuario) {
         this.avaliacaoMusicaRepository = avaliacaoMusicaRepository;
         this.avaliacaoAlbumRepository = avaliacaoAlbumRepository;
-        this.usuarioRepository = usuarioRepository;
+        this.sessaoUsuario = sessaoUsuario;
     }
 
     public record MinhasAvaliacoes(List<AvaliacaoAlbum> albuns, List<AvaliacaoMusica> musicas) {
@@ -89,16 +88,38 @@ public class AvaliacaoController {
         return avaliacaoAlbumRepository.save(salva);
     }
 
+    // DELETE /api/avaliacoes/musicas/{id}: apaga uma avaliacao de musica do usuario logado
+    @DeleteMapping("/musicas/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void excluirMusica(@PathVariable Long id, HttpServletRequest requisicao) {
+        Usuario usuario = usuarioLogado(requisicao);
+        AvaliacaoMusica avaliacao = avaliacaoMusicaRepository.findById(id)
+                .orElseThrow(AvaliacaoNaoEncontradaException::new);
+        // so o dono pode apagar; de outro usuario responde igual a "nao existe"
+        if (!avaliacao.getUsuario().getId().equals(usuario.getId())) {
+            throw new AvaliacaoNaoEncontradaException();
+        }
+        avaliacaoMusicaRepository.delete(avaliacao);
+    }
+
+    // DELETE /api/avaliacoes/albuns/{id}: mesma ideia para album
+    @DeleteMapping("/albuns/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void excluirAlbum(@PathVariable Long id, HttpServletRequest requisicao) {
+        Usuario usuario = usuarioLogado(requisicao);
+        AvaliacaoAlbum avaliacao = avaliacaoAlbumRepository.findById(id)
+                .orElseThrow(AvaliacaoNaoEncontradaException::new);
+        if (!avaliacao.getUsuario().getId().equals(usuario.getId())) {
+            throw new AvaliacaoNaoEncontradaException();
+        }
+        avaliacaoAlbumRepository.delete(avaliacao);
+    }
+
     // ---------- auxiliares ----------
 
-    // le o id guardado pelo LoginController na sessao; sem login, responde 401
+    // quem esta logado; sem login, responde 401 (a logica fica no SessaoUsuario)
     private Usuario usuarioLogado(HttpServletRequest requisicao) {
-        HttpSession sessao = requisicao.getSession(false);   // false: nao cria sessao nova
-        Long id = (sessao == null) ? null : (Long) sessao.getAttribute(LoginController.USUARIO_DA_SESSAO);
-        if (id == null) {
-            throw new NaoLogadoException();
-        }
-        return usuarioRepository.findById(id).orElseThrow(NaoLogadoException::new);
+        return sessaoUsuario.usuarioLogado(requisicao);
     }
 
     // se o usuario ja avaliou esta musica, devolve a avaliacao antiga (para atualizar);

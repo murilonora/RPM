@@ -28,6 +28,21 @@ public class Usuario {
     @JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
     private String senha;
 
+    // Perfil publico. READ_ONLY: aparecem nas respostas, mas o cadastro (POST /api/usuarios)
+    // ignora esses campos. So mudam pelo PUT /api/usuarios/me, que valida os links.
+    @Column(columnDefinition = "TEXT")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String bio;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String instagram;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String twitter;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String spotify;
+
     public Long getId(){
         return this.id;
     }
@@ -58,6 +73,38 @@ public class Usuario {
 
     public void setSenha(String senha){
         this.senha=senha;
+    }
+
+    public String getBio(){
+        return this.bio;
+    }
+
+    public void setBio(String bio){
+        this.bio=bio;
+    }
+
+    public String getInstagram(){
+        return this.instagram;
+    }
+
+    public void setInstagram(String instagram){
+        this.instagram=instagram;
+    }
+
+    public String getTwitter(){
+        return this.twitter;
+    }
+
+    public void setTwitter(String twitter){
+        this.twitter=twitter;
+    }
+
+    public String getSpotify(){
+        return this.spotify;
+    }
+
+    public void setSpotify(String spotify){
+        this.spotify=spotify;
     }
 
     public void trocarSenha(String novaSenha){
