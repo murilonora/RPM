@@ -211,7 +211,7 @@ function ShellAplicativo() {
     setModalAutenticacaoVisivel(false);
   }
 
-  // Abre o modal de nota e resenha para a obra escolhida na Coleção
+  // Abre o modal de nota e resenha para a obra escolhida na Coleção ou numa faixa do álbum
   function abrirAvaliacao(itemProps) {
     setDadosAvaliacao({ visivel: true, item: itemProps });
   }
@@ -267,6 +267,8 @@ function ShellAplicativo() {
           dados={albumAberto}
           aoFechar={fecharAlbum}
           aoAbrirLogin={abrirModalDeAutenticacao}
+          aoAvaliar={abrirAvaliacao}
+          emSegundoPlano={dadosAvaliacao.visivel}
         />
       )}
 

@@ -3,7 +3,7 @@ import { useUsuario } from "../contextos/ContextoUsuario";
 import { SeletorDeNota } from "./SeletorDeNota";
 import { ImagemComFallback } from "./ImagemComFallback";
 
-// Nota + resenha de uma obra (usado na Coleção), com o visual da avaliação da Mell:
+// Nota + resenha de uma obra (Coleção e faixas do álbum), com o visual da avaliação da Mell:
 // cartão creme arredondado, obra num cartão branco e a pílula "Sua nota:".
 export function ModalAvaliacao({ visivel, aoFechar, item }) {
   const { estaLogado, obterAvaliacao, avaliarItem, removerAvaliacao } = useUsuario();
@@ -20,6 +20,16 @@ export function ModalAvaliacao({ visivel, aoFechar, item }) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visivel, chaveItem]);
+
+  // Esc fecha a janela
+  useEffect(() => {
+    if (!visivel) return;
+    function aoTeclar(evento) {
+      if (evento.key === "Escape") aoFechar();
+    }
+    document.addEventListener("keydown", aoTeclar);
+    return () => document.removeEventListener("keydown", aoTeclar);
+  }, [visivel, aoFechar]);
 
   if (!visivel || !item) return null;
 

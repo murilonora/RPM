@@ -20,13 +20,19 @@ function Espiao() {
 
 function renderizar(album = matue.albuns[indice333], indice = indice333) {
   const aoAbrirLogin = vi.fn();
+  const aoAvaliar = vi.fn();
   render(
     <ProvedorUsuario>
       <Espiao />
-      <ModalFaixasDoAlbum dados={{ artista: matue, album, indice }} aoFechar={() => {}} aoAbrirLogin={aoAbrirLogin} />
+      <ModalFaixasDoAlbum
+        dados={{ artista: matue, album, indice }}
+        aoFechar={() => {}}
+        aoAbrirLogin={aoAbrirLogin}
+        aoAvaliar={aoAvaliar}
+      />
     </ProvedorUsuario>
   );
-  return { aoAbrirLogin };
+  return { aoAbrirLogin, aoAvaliar };
 }
 
 beforeEach(() => {
@@ -43,30 +49,46 @@ describe("ModalFaixasDoAlbum (avaliação por faixa)", () => {
     renderizar();
     expect(await screen.findByText("1. Crack com Mussilon")).toBeTruthy();
     expect(screen.getByRole("heading", { name: "Avaliar Faixas" })).toBeTruthy();
-    expect(screen.getAllByRole("group", { name: /^Nota para / }).length).toBeGreaterThan(5);
+    // Cada faixa tem o botão "Avaliar" (a nota é dada na janela de avaliação)
+    expect(screen.getAllByRole("button", { name: /^Avaliar / }).length).toBeGreaterThan(5);
+    expect(screen.queryByRole("group", { name: /^Nota para / })).toBeNull();
   });
 
-  it("pede login ao clicar num disco sem estar logado", async () => {
-    const { aoAbrirLogin } = renderizar();
-    const faixa = await screen.findByRole("group", { name: "Nota para Crack com Mussilon" });
-    await userEvent.click(within(faixa).getByRole("button", { name: "3 vinis" }));
+  it("pede login ao clicar em Avaliar sem estar logado", async () => {
+    const { aoAbrirLogin, aoAvaliar } = renderizar();
+    await userEvent.click(await screen.findByRole("button", { name: "Avaliar Crack com Mussilon" }));
     expect(aoAbrirLogin).toHaveBeenCalled();
-    expect(Object.keys(contexto.avaliacoes)).toHaveLength(0);
+    expect(aoAvaliar).not.toHaveBeenCalled();
   });
 
-  it("dá nota a uma faixa e guarda o título dela para a Coleção e o backend", async () => {
-    renderizar();
+  it("Avaliar abre a janela de nota e resenha com a faixa (chave e título para a Coleção e o backend)", async () => {
+    const { aoAvaliar } = renderizar();
     await act(() => contexto.registrarUsuario("Mell", "mell@rpm.test", "12345678"));
 
-    const faixa = await screen.findByRole("group", { name: "Nota para Crack com Mussilon" });
-    await userEvent.click(within(faixa).getByRole("button", { name: "4 vinis" }));
+    await userEvent.click(await screen.findByRole("button", { name: "Avaliar Crack com Mussilon" }));
+    const [item] = aoAvaliar.mock.calls[0];
+    expect(item.chave).toBe(`faixa-matue-${indice333}-1`);
+    expect(item.obra).toEqual({ tipo: "faixa", artistaId: "matue", titulo: "Crack com Mussilon", album: "333", numero: 1 });
+    expect(item.subtitulo).toContain("333");
+  });
 
-    const [chave, avaliacao] = Object.entries(contexto.avaliacoes)[0];
-    expect(chave).toMatch(/^faixa-matue-\d+-1$/);
-    expect(avaliacao).toMatchObject({
-      nota: 4,
-      obra: { tipo: "faixa", artistaId: "matue", titulo: "Crack com Mussilon", album: "333" },
-    });
+  it("faixa já avaliada mostra a nota e o botão vira Editar", async () => {
+    renderizar();
+    await act(() => contexto.registrarUsuario("Mell", "mell@rpm.test", "12345678"));
+    act(() =>
+      contexto.avaliarItem(`faixa-matue-${indice333}-1`, 4, "Abertura forte", {
+        tipo: "faixa",
+        artistaId: "matue",
+        titulo: "Crack com Mussilon",
+        album: "333",
+        numero: 1,
+      })
+    );
+
+    const botao = await screen.findByRole("button", { name: "Editar avaliação de Crack com Mussilon" });
+    const cartao = botao.closest(".album-faixas-item");
+    expect(within(cartao).getByRole("img", { name: "Nota 4 de 5" })).toBeTruthy();
+    expect(within(cartao).getByText("com resenha")).toBeTruthy();
   });
 
   it("o cartão do álbum avalia o disco sem abrir a janela de faixas", async () => {

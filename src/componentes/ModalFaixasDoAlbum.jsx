@@ -1,23 +1,43 @@
 import { useEffect } from "react";
 import { chaveDaFaixa, formatarTempoTotal, useFaixasDoAlbum } from "../dados/faixasDosAlbuns";
-import { SeletorDeNota } from "./SeletorDeNota";
+import { useUsuario } from "../contextos/ContextoUsuario";
+import { NotaEmVinis } from "./NotaEmVinis";
 import { ImagemComFallback } from "./ImagemComFallback";
 import { extrairSiglas } from "../utilitarios/texto";
 
 // Janela do álbum com o layout da Mell: capa à esquerda e, à direita,
 // "Avaliar Faixas" com um cartão por faixa. dados = { artista, album, indice }
-export function ModalFaixasDoAlbum({ dados, aoFechar, aoAbrirLogin }) {
+// Cada faixa tem o botão "Avaliar", que abre a janela de nota + resenha (aoAvaliar).
+// emSegundoPlano: a janela de avaliação está aberta por cima, então o Esc fecha só ela
+export function ModalFaixasDoAlbum({ dados, aoFechar, aoAbrirLogin, aoAvaliar, emSegundoPlano = false }) {
   const { artista, album, indice } = dados;
   const { carregando, faixas } = useFaixasDoAlbum(artista.id, album.titulo);
+  const { estaLogado, obterAvaliacao } = useUsuario();
 
-  // Esc fecha a janela
+  // Sem conta pede para entrar; com conta abre a janela de avaliação da faixa
+  function avaliarFaixa(faixa) {
+    if (!estaLogado) {
+      aoAbrirLogin?.();
+      return;
+    }
+    aoAvaliar?.({
+      chave: chaveDaFaixa(artista.id, indice, faixa.numero),
+      titulo: faixa.titulo,
+      subtitulo: `Faixa ${faixa.numero} de "${album.titulo}" • ${artista.nome}`,
+      capa: album.capa,
+      obra: { tipo: "faixa", artistaId: artista.id, titulo: faixa.titulo, album: album.titulo, numero: faixa.numero },
+    });
+  }
+
+  // Esc fecha a janela (menos quando a de avaliação está por cima)
   useEffect(() => {
+    if (emSegundoPlano) return;
     function aoTeclar(evento) {
       if (evento.key === "Escape") aoFechar();
     }
     document.addEventListener("keydown", aoTeclar);
     return () => document.removeEventListener("keydown", aoTeclar);
-  }, [aoFechar]);
+  }, [aoFechar, emSegundoPlano]);
 
   return (
     <div className="album-faixas-fundo" onClick={aoFechar}>
@@ -59,28 +79,38 @@ export function ModalFaixasDoAlbum({ dados, aoFechar, aoAbrirLogin }) {
               A lista de faixas deste álbum ainda não foi catalogada.
             </p>
           ) : (
-            faixas.map((faixa) => (
-              <div key={faixa.numero} className="album-faixas-item">
-                <span className="album-faixas-nome">
-                  <span>
-                    {faixa.numero}. {faixa.titulo}
+            faixas.map((faixa) => {
+              const { nota = 0, comentario } = obterAvaliacao(chaveDaFaixa(artista.id, indice, faixa.numero));
+              const avaliada = nota > 0;
+              return (
+                <div key={faixa.numero} className="album-faixas-item">
+                  <span className="album-faixas-nome">
+                    <span>
+                      {faixa.numero}. {faixa.titulo}
+                    </span>
+                    {faixa.duracao && <span className="album-faixas-duracao">{faixa.duracao}</span>}
                   </span>
-                  {faixa.duracao && <span className="album-faixas-duracao">{faixa.duracao}</span>}
-                </span>
-                <SeletorDeNota
-                  chaveItem={chaveDaFaixa(artista.id, indice, faixa.numero)}
-                  obra={{
-                    tipo: "faixa",
-                    artistaId: artista.id,
-                    titulo: faixa.titulo,
-                    album: album.titulo,
-                    numero: faixa.numero,
-                  }}
-                  rotulo={`Nota para ${faixa.titulo}`}
-                  aoPedirLogin={aoAbrirLogin}
-                />
-              </div>
-            ))
+                  <div className="album-faixas-acao">
+                    {avaliada ? (
+                      <span className="album-faixas-sua-nota">
+                        <NotaEmVinis nota={nota} />
+                        {comentario?.trim() && <span className="album-faixas-com-resenha">com resenha</span>}
+                      </span>
+                    ) : (
+                      <span className="album-faixas-sem-nota">Sem avaliação</span>
+                    )}
+                    <button
+                      type="button"
+                      className="album-faixas-avaliar"
+                      onClick={() => avaliarFaixa(faixa)}
+                      aria-label={`${avaliada ? "Editar avaliação de" : "Avaliar"} ${faixa.titulo}`}
+                    >
+                      {avaliada ? "Editar" : "Avaliar"}
+                    </button>
+                  </div>
+                </div>
+              );
+            })
           )}
         </div>
       </div>

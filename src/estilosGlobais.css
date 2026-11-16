@@ -5269,3 +5269,46 @@ button.ficha-card-comentario--vazio:focus-visible {
     font-size: 21px;
   }
 }
+
+/* Faixa do álbum: nota atual (ou "Sem avaliação") e o botão que abre a janela de avaliação */
+.album-faixas-acao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.album-faixas-sua-nota {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.album-faixas-sem-nota,
+.album-faixas-com-resenha {
+  color: #71717a;
+  font-size: 13px;
+}
+
+.album-faixas-avaliar {
+  padding: 8px 18px;
+  border: 0;
+  border-radius: 8px;
+  background: #18181b;
+  color: #f8f5ee;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.album-faixas-avaliar:hover {
+  background: #f43f5e;
+}
+
+.album-faixas-avaliar:focus-visible {
+  outline: 2px solid #f43f5e;
+  outline-offset: 2px;
+}
