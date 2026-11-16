@@ -3,9 +3,12 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   ErroApi,
   ServidorIndisponivel,
+  atualizarPerfil,
   cadastrarUsuario,
   entrar,
   enviarAvaliacao,
+  excluirAvaliacao,
+  listarMinhasAvaliacoes,
   sair,
   verificarServidor,
 } from "./api";
@@ -73,6 +76,33 @@ describe("api", () => {
 
     vi.stubGlobal("fetch", responder(401, { erro: "Email ou senha invalidos" }));
     await expect(entrar({ email: "ana@rpm.test", senha: "errada123" })).rejects.toMatchObject({ status: 401 });
+  });
+
+  it("lista as avaliações do usuário num formato só e apaga pela rota certa", async () => {
+    vi.stubGlobal(
+      "fetch",
+      responder(200, {
+        albuns: [{ id: 1, usuario: { id: 9, email: "x" }, artistaId: "matue", tituloAlbum: "333", nota: 5, texto: "Top" }],
+        musicas: [{ id: 2, usuario: { id: 9 }, artistaId: "matue", tituloMusica: "Kenny G", nota: 3, texto: null }],
+      })
+    );
+    expect(await listarMinhasAvaliacoes()).toEqual([
+      { rota: "albuns", id: 1, usuarioId: 9, artistaId: "matue", titulo: "333", nota: 5, texto: "Top" },
+      { rota: "musicas", id: 2, usuarioId: 9, artistaId: "matue", titulo: "Kenny G", nota: 3, texto: "" },
+    ]);
+
+    vi.stubGlobal("fetch", responder(204, "", "texto"));
+    await excluirAvaliacao("musicas", 2);
+    expect(fetch.mock.calls[0][0]).toBe("/api/avaliacoes/musicas/2");
+    expect(fetch.mock.calls[0][1].method).toBe("DELETE");
+  });
+
+  it("perfil: atualiza com PUT /usuarios/me e mostra os erros de link", async () => {
+    vi.stubGlobal("fetch", responder(400, { instagram: "Link deve comecar com https://" }));
+    const erro = await atualizarPerfil({ bio: "", instagram: "javascript:alert(1)", twitter: "", spotify: "" }).catch((e) => e);
+    expect(fetch.mock.calls[0][0]).toBe("/api/usuarios/me");
+    expect(fetch.mock.calls[0][1].method).toBe("PUT");
+    expect(erro.campos.instagram).toContain("https://");
   });
 
   it("não chama a rota de comentário quando não há texto", async () => {

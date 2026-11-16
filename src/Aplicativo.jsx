@@ -29,6 +29,9 @@ const PaginaTodosAlbuns = lazy(() =>
 const PaginaColecao = lazy(() =>
   import("./paginas/PaginaColecao").then((m) => ({ default: m.PaginaColecao }))
 );
+const PaginaPerfil = lazy(() =>
+  import("./paginas/PaginaPerfil").then((m) => ({ default: m.PaginaPerfil }))
+);
 const PaginaFaixaBonus = lazy(() =>
   import("./paginas/PaginaFaixaBonus").then((m) => ({ default: m.PaginaFaixaBonus }))
 );
@@ -250,6 +253,7 @@ function ShellAplicativo() {
               <PaginaColecao aoAvaliar={abrirAvaliacao} aoAbrirLogin={abrirModalDeAutenticacao} />
             }
           />
+          <Route path="/critico/:id" element={<PaginaPerfil aoAbrirLogin={abrirModalDeAutenticacao} />} />
           {/* Homenagem ao Matheus: só aparece buscando o nome dele ou pelo 45 RPM */}
           <Route path="/faixa-bonus" element={<PaginaFaixaBonus />} />
           {/* Qualquer endereço desconhecido */}

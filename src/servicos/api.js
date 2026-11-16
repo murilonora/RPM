@@ -11,11 +11,18 @@
 //   POST /api/avaliacoes/albuns/comentarios  { ...igual, texto } (grava nota e texto juntos)
 //   POST /api/avaliacoes/musicas             { artistaId, tituloMusica, nota }
 //   POST /api/avaliacoes/musicas/comentarios { ...igual, texto }
-// As avaliações exigem login: o backend pega o usuário da sessão e responde 401 sem ela.
+//   GET  /api/avaliacoes                     -> { albuns: [...], musicas: [...] } do usuário logado
+//   DELETE /api/avaliacoes/albuns/{id}       -> 204 (404 se não existe ou é de outra pessoa)
+//   DELETE /api/avaliacoes/musicas/{id}      -> 204
+//   PUT  /api/usuarios/me                    { bio, instagram, twitter, spotify } -> usuário atualizado
+//   GET  /api/usuarios/{id}/perfil           -> { id, nome, bio, links..., avaliacoes: [ReviewPublica] }
+//   GET  /api/artistas/{id}/avaliacoes       -> até 20 ReviewPublica com comentário, mais recentes primeiro
+// ReviewPublica = { id, usuarioId, nomeUsuario, artistaId, tipo: "album"|"musica", obra, nota, texto, dataAvaliacao }
+// As rotas de avaliação e o PUT exigem login: o backend pega o usuário da sessão e responde 401 sem ela.
 // O cookie da sessão vai sozinho porque o Vite serve /api no mesmo endereço do site.
 // Erros de validação voltam como 400 { campo: "mensagem" } ou { erro: "mensagem" }.
 
-import { prepararArtistas } from "../dados/dadosMusicais";
+import { listaDeArtistas, prepararArtistas } from "../dados/dadosMusicais";
 
 const BASE = "/api";
 
@@ -107,6 +114,47 @@ export function enviarAvaliacao({ obra, nota, comentario }) {
   return requisitar(rota, { metodo: "POST", corpo });
 }
 
+// Rota do backend de uma obra: álbum vai em "albuns"; música avulsa e faixa de álbum, em "musicas"
+export const rotaDaObra = (obra) => (obra?.tipo === "album" ? "albuns" : "musicas");
+
+/**
+ * Avaliações do usuário logado, num formato só: [{ rota, id, usuarioId, artistaId, titulo, nota, texto }]
+ */
+export async function listarMinhasAvaliacoes() {
+  const dados = await requisitar("/avaliacoes");
+  const doBanco = (rota, campoTitulo) => (a) => ({
+    rota,
+    id: a.id,
+    usuarioId: a.usuario?.id ?? null,
+    artistaId: a.artistaId,
+    titulo: a[campoTitulo],
+    nota: a.nota,
+    texto: a.texto || "",
+  });
+  return [
+    ...(dados?.albuns || []).map(doBanco("albuns", "tituloAlbum")),
+    ...(dados?.musicas || []).map(doBanco("musicas", "tituloMusica")),
+  ];
+}
+
+// Apaga uma avaliação do usuário logado; rota: "albuns" | "musicas"
+export function excluirAvaliacao(rota, id) {
+  return requisitar(`/avaliacoes/${rota}/${id}`, { metodo: "DELETE" });
+}
+
+// Bio e links do perfil público do usuário logado (vazio apaga o campo)
+export function atualizarPerfil({ bio, instagram, twitter, spotify }) {
+  return requisitar("/usuarios/me", { metodo: "PUT", corpo: { bio, instagram, twitter, spotify } });
+}
+
+export function buscarPerfil(idUsuario) {
+  return requisitar(`/usuarios/${encodeURIComponent(idUsuario)}/perfil`);
+}
+
+export function buscarCriticasDoArtista(artistaId) {
+  return requisitar(`/artistas/${encodeURIComponent(artistaId)}/avaliacoes`);
+}
+
 // ---------- Catálogo de artistas ----------
 // Formato esperado: o mesmo do backend/src/main/resources/dados/artistas.json
 // (artistas com "albuns" e "musicas" dentro). Com o servidor fora, devolve null
@@ -132,6 +180,15 @@ function paragrafos(biografia) {
   return [];
 }
 
+// Foto do banco que não é um link (ex.: "/artistas/nas.jpg", arquivo que o site não tem)
+// é trocada pela foto dos dados locais do mesmo artista, quando existe
+const FOTOS_LOCAIS = new Map(listaDeArtistas.map((a) => [a.id, a.foto]));
+const ehLink = (url) => typeof url === "string" && /^https?:\/\//.test(url);
+function fotoUtilizavel(artista) {
+  if (ehLink(artista.foto)) return artista.foto;
+  return FOTOS_LOCAIS.get(artista.id) || artista.foto;
+}
+
 /**
  * Devolve a lista de artistas pronta para o site, ou null se não der para usar a do servidor
  * (rota inexistente, servidor fora do ar, resposta vazia ou em formato diferente).
@@ -140,7 +197,9 @@ export async function buscarCatalogoDoServidor() {
   try {
     const dados = await requisitar("/artistas");
     if (!Array.isArray(dados) || dados.length === 0 || !dados.every(artistaValido)) return null;
-    return prepararArtistas(dados.map((artista) => ({ ...artista, biografia: paragrafos(artista.biografia) })));
+    return prepararArtistas(
+      dados.map((artista) => ({ ...artista, foto: fotoUtilizavel(artista), biografia: paragrafos(artista.biografia) }))
+    );
   } catch {
     return null;
   }

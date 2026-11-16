@@ -43,6 +43,14 @@ describe("buscarCatalogoDoServidor", () => {
     expect(artista.musicas[0].capa).toBe(ARTISTA_DO_SERVIDOR.foto);
   });
 
+  it("foto do banco que não é link (arquivo que o site não tem) vira a foto dos dados locais", async () => {
+    const nas = listaDeArtistas.find((a) => a.id === "nas");
+    responder(200, [{ ...ARTISTA_DO_SERVIDOR, id: "nas", foto: "/artistas/nas.jpg" }]);
+    const [artista] = await buscarCatalogoDoServidor();
+    expect(artista.foto).toBe(nas.foto);
+    expect(artista.foto).toMatch(/^https:\/\//);
+  });
+
   it("devolve null quando a rota não existe (404)", async () => {
     responder(404, { erro: "não encontrado" });
     expect(await buscarCatalogoDoServidor()).toBeNull();

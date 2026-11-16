@@ -26,6 +26,18 @@ async function carregarMapaFaixas() {
 export const chaveDaFaixa = (artistaId, indiceAlbum, numero) =>
   `faixa-${artistaId}-${indiceAlbum}-${numero}`;
 
+// Procura uma faixa pelo título nos álbuns do artista (o backend só guarda artista + título).
+// Devolve { indiceAlbum, numero, album } da primeira que bater, ou null.
+export async function localizarFaixa(artista, tituloFaixa) {
+  const mapa = await carregarMapaFaixas();
+  const alvo = normalizarTexto(tituloFaixa);
+  for (const [indiceAlbum, album] of (artista?.albuns || []).entries()) {
+    const faixa = mapa.get(chaveDoMapa(artista.id, album.titulo))?.find((f) => normalizarTexto(f.titulo) === alvo);
+    if (faixa) return { indiceAlbum, numero: faixa.numero, album: album.titulo };
+  }
+  return null;
+}
+
 // Faixas de um álbum; "faixas" fica null quando o álbum não está no levantamento
 export function useFaixasDoAlbum(artistaId, tituloAlbum) {
   const [estado, setEstado] = useState({ carregando: true, faixas: null });

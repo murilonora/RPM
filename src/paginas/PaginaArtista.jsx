@@ -3,12 +3,14 @@ import { Link, useSearchParams } from "react-router-dom";
 import { AbaMusicas } from "../componentes/AbaMusicas";
 import { AbaAlbuns } from "../componentes/AbaAlbuns";
 import { AbaHistoria } from "../componentes/AbaHistoria";
+import { AbaCriticas } from "../componentes/AbaCriticas";
 import { ImagemComFallback } from "../componentes/ImagemComFallback";
 
 const ROTULOS_ABAS = {
   musicas: "Mais ouvidas",
   albuns: "Álbuns",
   historia: "História",
+  criticas: "Críticas",
 };
 
 // Página de detalhes, músicas, álbuns e história do artista selecionado.
@@ -120,6 +122,7 @@ export function PaginaArtista({ artista, aoAbrirAlbum, aoAbrirLogin }) {
               resumo={artista.resumo}
             />
           )}
+          {abaAtiva === "criticas" && <AbaCriticas artistaId={artista.id} />}
         </div>
       </section>
     </main>

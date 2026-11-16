@@ -4978,3 +4978,294 @@ button.ficha-card-comentario--vazio:focus-visible {
     animation: none !important;
   }
 }
+
+/* =============================
+   CRÍTICAS DO PÚBLICO (aba do artista e perfil do crítico)
+   ============================= */
+.criticas-lista {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid #191525;
+}
+
+.criticas-aviso,
+.perfil-aviso {
+  margin: 0;
+  padding: 28px 0;
+  color: #514b59;
+  font-size: 15px;
+  line-height: 1.6;
+  max-width: 62ch;
+}
+
+.critica-cartao {
+  display: grid;
+  gap: 12px;
+  padding: 22px 0;
+  border-bottom: 1px solid #d9d2c4;
+}
+
+.critica-topo {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px 24px;
+  flex-wrap: wrap;
+}
+
+.critica-tipo {
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 10px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: #ff0004;
+}
+
+.critica-obra {
+  margin: 4px 0 0;
+  font-family: "DM Serif Display:Regular", serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.critica-artista {
+  display: inline-block;
+  margin-top: 4px;
+  color: #514b59;
+  font-size: 13px;
+}
+
+.critica-texto {
+  margin: 0;
+  max-width: 68ch;
+  font-family: "DM Serif Display:Italic", serif;
+  font-style: italic;
+  font-size: 19px;
+  line-height: 1.45;
+  color: #191525;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.critica-rodape {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  font-size: 12px;
+  color: #6f6878;
+}
+
+.critica-autor {
+  font-family: "DM Sans:Bold", sans-serif;
+  font-weight: 700;
+  color: #191525;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.critica-autor:hover,
+.critica-artista:hover {
+  color: #ff0004;
+}
+
+/* =============================
+   PERFIL PÚBLICO DO CRÍTICO (/critico/:id)
+   ============================= */
+.perfil-pagina {
+  max-width: 1080px;
+  min-height: calc(100vh - 76px);
+  margin: 0 auto;
+  padding: 64px 6vw 96px;
+}
+
+.perfil-cabeca {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 40px;
+  align-items: end;
+  padding-bottom: 36px;
+  border-bottom: 1px solid #191525;
+}
+
+.perfil-identidade h1 {
+  margin: 14px 0 0;
+  font-family: "DM Serif Display:Regular", serif;
+  font-size: clamp(44px, 7vw, 88px);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -2px;
+  overflow-wrap: anywhere;
+}
+
+.perfil-bio {
+  margin: 22px 0 0;
+  max-width: 60ch;
+  font-size: 17px;
+  line-height: 1.6;
+  color: #3c3644;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.perfil-bio--vazia {
+  color: #8f8a99;
+}
+
+.perfil-redes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.perfil-redes a {
+  display: inline-block;
+  padding: 7px 14px;
+  border: 1px solid #191525;
+  border-radius: 999px;
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 12px;
+  color: #191525;
+}
+
+.perfil-redes a:hover,
+.perfil-redes a:focus-visible {
+  background: #191525;
+  color: #f7f4ed;
+}
+
+.perfil-botao {
+  margin-top: 22px;
+  padding: 10px 18px;
+  border: 1px solid #191525;
+  background: transparent;
+  color: inherit;
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.perfil-botao:hover {
+  border-color: #ff0004;
+  color: #ff0004;
+}
+
+.perfil-numeros {
+  display: flex;
+  gap: 32px;
+  margin: 0;
+}
+
+.perfil-numeros div {
+  display: grid;
+  gap: 4px;
+}
+
+.perfil-numeros dt {
+  font-family: "DM Sans:Bold", sans-serif;
+  font-size: 10px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: #6f6878;
+}
+
+.perfil-numeros dd {
+  margin: 0;
+  font-family: "DM Serif Display:Regular", serif;
+  font-size: 44px;
+  line-height: 1;
+}
+
+.perfil-avaliacoes h2,
+.perfil-formulario h2 {
+  margin: 48px 0 18px;
+  font-family: "DM Serif Display:Regular", serif;
+  font-size: 30px;
+  font-weight: 400;
+}
+
+/* Edição do perfil: mesmo painel escuro do login */
+.perfil-formulario {
+  display: grid;
+  gap: 18px;
+  margin-top: 36px;
+  padding: 8px 32px 32px;
+  background: #121016;
+  color: #f7f4ed;
+}
+
+.perfil-formulario h2 {
+  margin: 20px 0 0;
+}
+
+.campo-formulario textarea {
+  width: 100%;
+  background: #08080a;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 12px 16px;
+  border-radius: 0;
+  color: #f7f4ed;
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.campo-formulario textarea:focus {
+  outline: none;
+  border-color: #ff0004;
+}
+
+.perfil-formulario-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.perfil-formulario-acoes .botao-principal {
+  margin-top: 0;
+  padding: 12px 22px;
+}
+
+.perfil-formulario-acoes .perfil-botao {
+  margin-top: 0;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.ficha-link-perfil {
+  display: inline-block;
+  margin-top: 10px;
+  font-family: monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #ff0004;
+}
+
+.ficha-link-perfil:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 720px) {
+  .perfil-pagina {
+    padding: 40px 16px 72px;
+  }
+
+  .perfil-cabeca {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .perfil-formulario {
+    padding: 4px 18px 24px;
+  }
+
+  .critica-obra {
+    font-size: 21px;
+  }
+}

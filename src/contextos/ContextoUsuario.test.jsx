@@ -15,7 +15,9 @@ function simularServidor(rotas = {}) {
       const rota = rotas[url] ?? { status: 404, corpo: {} };
       const resposta = typeof rota === "function" ? rota(corpo) : rota;
       if (resposta === "fora") throw new TypeError("Failed to fetch");
-      return new Response(JSON.stringify(resposta.corpo ?? {}), { status: resposta.status ?? 200 });
+      const status = resposta.status ?? 200;
+      // 204 não pode ter corpo
+      return new Response(status === 204 ? null : JSON.stringify(resposta.corpo ?? {}), { status });
     })
   );
   return chamadas;
@@ -226,6 +228,117 @@ describe("avaliação", () => {
     await waitFor(() => expect(result.current.obterAvaliacao("musica-matue-0").sincronizado).toBe(true));
     expect(result.current.sessaoExpirada).toBe(false);
     expect(chamadas.filter((c) => c.url === "/api/avaliacoes/musicas")).toHaveLength(2);
+  });
+
+  it("ao entrar, traz as notas do banco (feitas em outro aparelho) e guarda o id da conta", async () => {
+    simularServidor({
+      ...SERVIDOR_OK,
+      "/api/avaliacoes": {
+        corpo: {
+          albuns: [{ id: 11, usuario: { id: 7 }, artistaId: "matue", tituloAlbum: "333", nota: 4, texto: "Pesado" }],
+          musicas: [{ id: 12, usuario: { id: 7 }, artistaId: "matue", tituloMusica: "Kenny G", nota: 5, texto: null }],
+        },
+      },
+    });
+    const { result } = renderizarContexto();
+    await act(() => result.current.entrarComEmail("outro@rpm.test", "12345678"));
+
+    await waitFor(() => expect(result.current.totalAvaliacoes).toBe(2));
+    const album = Object.entries(result.current.avaliacoes).find(([chave]) => chave.startsWith("album-matue-"))[1];
+    expect(album).toMatchObject({ nota: 4, comentario: "Pesado", sincronizado: true, idServidor: 11 });
+    expect(result.current.usuarioLogado.idServidor).toBe(7);
+  });
+
+  it("nota que tinha subido e sumiu do banco (apagada em outro lugar) sai do navegador", async () => {
+    simularServidor({ ...SERVIDOR_OK, "/api/avaliacoes": { corpo: { albuns: [], musicas: [] } } });
+    const { result } = renderizarContexto();
+    await act(() => result.current.registrarUsuario("Lia", "lia@rpm.test", "12345678"));
+    const idLocal = result.current.usuarioLogado.id;
+    act(() => result.current.sairDaConta());
+
+    localStorage.setItem(
+      `rpm_avaliacoes_${idLocal}`,
+      JSON.stringify({
+        "album-matue-0": { nota: 3, comentario: "", obra: { tipo: "album", artistaId: "matue", titulo: "333" }, sincronizado: true, idServidor: 4 },
+        "musica-matue-0": { nota: 2, comentario: "", obra: { tipo: "musica", artistaId: "matue", titulo: "Kenny G" }, sincronizado: false },
+      })
+    );
+    await act(() => result.current.entrarComEmail("lia@rpm.test", "12345678"));
+
+    // A sincronizada sumiu; a pendente continua (e é reenviada)
+    await waitFor(() => expect(result.current.obterAvaliacao("album-matue-0").nota).toBe(0));
+    expect(result.current.obterAvaliacao("musica-matue-0").nota).toBe(2);
+  });
+
+  it("excluir na Coleção apaga no backend pelo id; desfazer grava de novo", async () => {
+    const chamadas = simularServidor({
+      ...SERVIDOR_OK,
+      "/api/avaliacoes/albuns": { status: 201, corpo: { id: 31, nota: 5, texto: null } },
+      "/api/avaliacoes/albuns/31": { status: 204 },
+    });
+    const { result } = renderizarContexto();
+    await act(() => result.current.registrarUsuario("Rui", "rui@rpm.test", "12345678"));
+
+    act(() => result.current.avaliarItem("album-matue-0", 5, "", { tipo: "album", artistaId: "matue", titulo: "333" }));
+    await waitFor(() => expect(result.current.obterAvaliacao("album-matue-0").idServidor).toBe(31));
+
+    act(() => result.current.removerAvaliacao("album-matue-0"));
+    await waitFor(() =>
+      expect(chamadas.some((c) => c.url === "/api/avaliacoes/albuns/31" && c.metodo === "DELETE")).toBe(true)
+    );
+
+    await act(() => result.current.desfazerExclusao());
+    await waitFor(() => expect(result.current.obterAvaliacao("album-matue-0").sincronizado).toBe(true));
+    expect(chamadas.filter((c) => c.url === "/api/avaliacoes/albuns" && c.metodo === "POST")).toHaveLength(2);
+  });
+
+  it("com o servidor fora, a exclusão fica pendente e é feita na próxima sincronização", async () => {
+    let servidorNoAr = true;
+    const chamadas = simularServidor({
+      ...SERVIDOR_OK,
+      "/api/avaliacoes/albuns": { status: 201, corpo: { id: 40, nota: 4 } },
+      "/api/avaliacoes/albuns/40": () => (servidorNoAr ? { status: 204 } : "fora"),
+      "/api/avaliacoes": () =>
+        servidorNoAr
+          ? { corpo: { albuns: [{ id: 40, artistaId: "matue", tituloAlbum: "333", nota: 4 }], musicas: [] } }
+          : "fora",
+    });
+    const { result } = renderizarContexto();
+    await act(() => result.current.registrarUsuario("Bel", "bel@rpm.test", "12345678"));
+    act(() => result.current.avaliarItem("album-matue-0", 4, "", { tipo: "album", artistaId: "matue", titulo: "333" }));
+    await waitFor(() => expect(result.current.obterAvaliacao("album-matue-0").idServidor).toBe(40));
+
+    servidorNoAr = false;
+    act(() => result.current.removerAvaliacao("album-matue-0"));
+    await waitFor(() => expect(result.current.statusServidor).toBe("offline"));
+    const idLocal = result.current.usuarioLogado.id;
+    expect(JSON.parse(localStorage.getItem(`rpm_exclusoes_${idLocal}`))).toHaveLength(1);
+
+    // Volta ao ar: ao entrar de novo, a sincronização apaga e a nota não volta
+    servidorNoAr = true;
+    act(() => result.current.sairDaConta());
+    await act(() => result.current.entrarComEmail("bel@rpm.test", "12345678"));
+    await waitFor(() => expect(JSON.parse(localStorage.getItem(`rpm_exclusoes_${idLocal}`))).toHaveLength(0));
+    expect(chamadas.filter((c) => c.url === "/api/avaliacoes/albuns/40" && c.metodo === "DELETE").length).toBe(2);
+    expect(result.current.obterAvaliacao("album-matue-0").nota).toBe(0);
+  });
+
+  it("desmarcar a nota (nota 0) apaga a avaliação no backend", async () => {
+    const chamadas = simularServidor({
+      ...SERVIDOR_OK,
+      "/api/avaliacoes/musicas": { status: 201, corpo: { id: 8, nota: 3 } },
+      "/api/avaliacoes/musicas/8": { status: 204 },
+    });
+    const { result } = renderizarContexto();
+    await act(() => result.current.registrarUsuario("Ted", "ted@rpm.test", "12345678"));
+    const obra = { tipo: "musica", artistaId: "matue", titulo: "Kenny G" };
+    act(() => result.current.avaliarItem("musica-matue-0", 3, "", obra));
+    await waitFor(() => expect(result.current.obterAvaliacao("musica-matue-0").idServidor).toBe(8));
+
+    act(() => result.current.avaliarItem("musica-matue-0", 0, "", obra));
+    await waitFor(() =>
+      expect(chamadas.some((c) => c.url === "/api/avaliacoes/musicas/8" && c.metodo === "DELETE")).toBe(true)
+    );
   });
 
   it("devolve nota zero para itens nunca avaliados", () => {

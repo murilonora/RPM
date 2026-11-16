@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { contarDoisDigitos } from "./itensColecao";
 
 // O que mais aparece numa lista (ex.: a vertente mais avaliada) e quantas vezes
@@ -59,6 +60,12 @@ export function FichaCritico({ usuario, itens = [], totalAvaliacoes, mediaAvalia
           <p className="ficha-credencial">
             CREDENTIAL: <code>{usuario.email || usuario.id}</code> · STATUS: ATIVO
           </p>
+          {/* Só aparece quando a conta já existe no servidor (o perfil público vem de lá) */}
+          {usuario.idServidor != null && (
+            <Link className="ficha-link-perfil" to={`/critico/${usuario.idServidor}`}>
+              VER MEU PERFIL PÚBLICO →
+            </Link>
+          )}
         </div>
 
         <div className="ficha-selo-caixa">
